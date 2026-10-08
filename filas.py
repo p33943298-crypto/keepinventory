@@ -356,7 +356,7 @@ HTML_CLIENTE_AUTH = """
 </html>
 """
 
-# CATÁLOGO INTERACTIVO DE CLIENTES CON ELIMINACIÓN DE PRODUCTOS Y NOTIFICACIÓN AL ADMIN
+# CATÁLOGO INTERACTIVO DE CLIENTES CON PRODUCTOS COMESTIBLES
 HTML_TIENDA = """
 <!DOCTYPE html>
 <html lang="es">
@@ -448,7 +448,7 @@ HTML_TIENDA = """
             <div class="brand">
                 <div class="logo">KI</div>
                 <div>
-                    <h2 style="font-size:20px;">Catálogo Digital</h2>
+                    <h2 style="font-size:20px;">Catálogo Alimentario Digital</h2>
                     <p style="font-size:12px; color:var(--gray-text);">Sede activa: <b>📍 {{ sede_actual }}</b></p>
                 </div>
             </div>
@@ -462,40 +462,151 @@ HTML_TIENDA = """
         <!-- FILTROS DE CATEGORÍA -->
         <div style="display:flex; gap:10px; margin-bottom:25px; overflow-x:auto; padding-bottom:5px;">
             <button class="btn cat-btn" onclick="filtrarCategoria('todos', this)">Todos los productos</button>
-            <button class="btn btn-outline cat-btn" onclick="filtrarCategoria('hardware', this)">Hardware & Pos</button>
-            <button class="btn btn-outline cat-btn" onclick="filtrarCategoria('consumibles', this)">Consumibles</button>
+            <button class="btn btn-outline cat-btn" onclick="filtrarCategoria('bebidas', this)">Bebidas</button>
+            <button class="btn btn-outline cat-btn" onclick="filtrarCategoria('snacks', this)">Snacks & Pasabocas</button>
+            <button class="btn btn-outline cat-btn" onclick="filtrarCategoria('lacteos', this)">Lácteos & Frescos</button>
+            <button class="btn btn-outline cat-btn" onclick="filtrarCategoria('despensa', this)">Despensa</button>
+            <button class="btn btn-outline cat-btn" onclick="filtrarCategoria('dulces', this)">Dulces & Postres</button>
         </div>
 
-        <!-- GRID DE PRODUCTOS -->
+        <!-- GRID DE PRODUCTOS COMESTIBLES -->
         <div class="grid">
-            <div class="product-card" data-cat="hardware">
+            <!-- BEBIDAS -->
+            <div class="product-card" data-cat="bebidas">
                 <span class="product-badge">POPULAR</span>
-                <div style="font-size:45px; text-align:center; margin:10px 0;">📦</div>
-                <h3 style="font-size:16px;">Lector Código de Barras 2D</h3>
-                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Escáner omnidireccional USB de alta velocidad.</p>
+                <div style="font-size:45px; text-align:center; margin:10px 0;">🥤</div>
+                <h3 style="font-size:16px;">Jugo Natural de Naranja (1L)</h3>
+                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Jugo 100% natural, recién exprimido sin azúcar añadida.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
-                    <b style="font-size:18px; color:var(--primary);">$120.000</b>
-                    <button class="btn" onclick="agregarProducto('Lector Código de Barras 2D', 120000)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <b style="font-size:18px; color:var(--primary);">$8.500</b>
+                    <button class="btn" onclick="agregarProducto('Jugo Natural de Naranja (1L)', 8500)" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
 
-            <div class="product-card" data-cat="hardware">
-                <div style="font-size:45px; text-align:center; margin:10px 0;">🖨️</div>
-                <h3 style="font-size:16px;">Impresora Térmica POS</h3>
-                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Impresora de recibos 80mm con corte automático.</p>
+            <div class="product-card" data-cat="bebidas">
+                <div style="font-size:45px; text-align:center; margin:10px 0;">☕</div>
+                <h3 style="font-size:16px;">Café Tostado en Grano (500g)</h3>
+                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Café de origen premium con notas a chocolate y avellanas.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
-                    <b style="font-size:18px; color:var(--primary);">$280.000</b>
-                    <button class="btn" onclick="agregarProducto('Impresora Térmica POS', 280000)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <b style="font-size:18px; color:var(--primary);">$24.000</b>
+                    <button class="btn" onclick="agregarProducto('Café Tostado en Grano (500g)', 24000)" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
 
-            <div class="product-card" data-cat="consumibles">
-                <div style="font-size:45px; text-align:center; margin:10px 0;">📄</div>
-                <h3 style="font-size:16px;">Caja Papel Térmico (50 Rollos)</h3>
-                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Rollos de alta durabilidad 80x60mm libre de BPA.</p>
+            <div class="product-card" data-cat="bebidas">
+                <div style="font-size:45px; text-align:center; margin:10px 0;">🧃</div>
+                <h3 style="font-size:16px;">Agua Mineral con Gas (600ml)</h3>
+                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Agua de manantial purificada, refrescante y natural.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
-                    <b style="font-size:18px; color:var(--primary);">$85.000</b>
-                    <button class="btn" onclick="agregarProducto('Caja Papel Térmico', 85000)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <b style="font-size:18px; color:var(--primary);">$3.200</b>
+                    <button class="btn" onclick="agregarProducto('Agua Mineral con Gas (600ml)', 3200)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                </div>
+            </div>
+
+            <!-- SNACKS -->
+            <div class="product-card" data-cat="snacks">
+                <span class="product-badge">OFERTA</span>
+                <div style="font-size:45px; text-align:center; margin:10px 0;">🍿</div>
+                <h3 style="font-size:16px;">Papas Fritas Artesanales (150g)</h3>
+                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Crocantes hojuelas de papa sazonadas con sal marina.</p>
+                <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
+                    <b style="font-size:18px; color:var(--primary);">$6.000</b>
+                    <button class="btn" onclick="agregarProducto('Papas Fritas Artesanales (150g)', 6000)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-cat="snacks">
+                <div style="font-size:45px; text-align:center; margin:10px 0;">🥜</div>
+                <h3 style="font-size:16px;">Mezcla de Frutos Secos (200g)</h3>
+                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Almendras, nueces, arándanos secos y maní horneado.</p>
+                <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
+                    <b style="font-size:18px; color:var(--primary);">$12.500</b>
+                    <button class="btn" onclick="agregarProducto('Mezcla de Frutos Secos (200g)', 12500)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-cat="snacks">
+                <div style="font-size:45px; text-align:center; margin:10px 0;">🥨</div>
+                <h3 style="font-size:16px;">Pretzels Horneados con Sal (120g)</h3>
+                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Deliciosas roscas crujientes horneadas bajo en grasa.</p>
+                <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
+                    <b style="font-size:18px; color:var(--primary);">$5.400</b>
+                    <button class="btn" onclick="agregarProducto('Pretzels Horneados con Sal (120g)', 5400)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                </div>
+            </div>
+
+            <!-- LÁCTEOS -->
+            <div class="product-card" data-cat="lacteos">
+                <div style="font-size:45px; text-align:center; margin:10px 0;">🧀</div>
+                <h3 style="font-size:16px;">Queso Gouda Madurado (250g)</h3>
+                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Queso semiduro de textura suave y sabor cremoso.</p>
+                <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
+                    <b style="font-size:18px; color:var(--primary);">$16.800</b>
+                    <button class="btn" onclick="agregarProducto('Queso Gouda Madurado (250g)', 16800)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-cat="lacteos">
+                <div style="font-size:45px; text-align:center; margin:10px 0;">🥛</div>
+                <h3 style="font-size:16px;">Yogurt Griego Natural (500g)</h3>
+                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Alto en proteína, sin azúcar añadida ni conservantes.</p>
+                <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
+                    <b style="font-size:18px; color:var(--primary);">$11.000</b>
+                    <button class="btn" onclick="agregarProducto('Yogurt Griego Natural (500g)', 11000)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                </div>
+            </div>
+
+            <!-- DESPENSA -->
+            <div class="product-card" data-cat="despensa">
+                <span class="product-badge">NUEVO</span>
+                <div style="font-size:45px; text-align:center; margin:10px 0;">🍞</div>
+                <h3 style="font-size:16px;">Pan Tajado de Masa Madre</h3>
+                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Elaborado artesanalmente con fermentación lenta de 24h.</p>
+                <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
+                    <b style="font-size:18px; color:var(--primary);">$9.800</b>
+                    <button class="btn" onclick="agregarProducto('Pan Tajado de Masa Madre', 9800)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-cat="despensa">
+                <div style="font-size:45px; text-align:center; margin:10px 0;">🫒</div>
+                <h3 style="font-size:16px;">Aceite de Oliva Extra Virgen (500ml)</h3>
+                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Prensado en frío, ideal para ensaladas y cocina gourmet.</p>
+                <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
+                    <b style="font-size:18px; color:var(--primary);">$32.000</b>
+                    <button class="btn" onclick="agregarProducto('Aceite de Oliva Extra Virgen (500ml)', 32000)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-cat="despensa">
+                <div style="font-size:45px; text-align:center; margin:10px 0;">🥫</div>
+                <h3 style="font-size:16px;">Salsa de Tomate Italiana (400g)</h3>
+                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Con albahaca fresca, tomates maduros y especias naturales.</p>
+                <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
+                    <b style="font-size:18px; color:var(--primary);">$7.500</b>
+                    <button class="btn" onclick="agregarProducto('Salsa de Tomate Italiana (400g)', 7500)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                </div>
+            </div>
+
+            <!-- DULCES -->
+            <div class="product-card" data-cat="dulces">
+                <span class="product-badge">DELICIA</span>
+                <div style="font-size:45px; text-align:center; margin:10px 0;">🍫</div>
+                <h3 style="font-size:16px;">Chocolate Negro 70% Cacao (100g)</h3>
+                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Barra de chocolate orgánico amargo con un toque de vainilla.</p>
+                <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
+                    <b style="font-size:18px; color:var(--primary);">$8.900</b>
+                    <button class="btn" onclick="agregarProducto('Chocolate Negro 70% Cacao (100g)', 8900)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-cat="dulces">
+                <div style="font-size:45px; text-align:center; margin:10px 0;">🍪</div>
+                <h3 style="font-size:16px;">Galletas de Avena y Miel (200g)</h3>
+                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Galletas horneadas crujientes con hojuelas de avena y miel pura.</p>
+                <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
+                    <b style="font-size:18px; color:var(--primary);">$6.800</b>
+                    <button class="btn" onclick="agregarProducto('Galletas de Avena y Miel (200g)', 6800)" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
         </div>
@@ -613,7 +724,7 @@ HTML_DASHBOARD = """
             <div id="panel" class="seccion-tab fade-in">
                 <div class="card">
                     <h2>Bienvenido al Panel de Administración Staff</h2>
-                    <p style="color:var(--gray-text);">Control de mercancía, movimiento entre sedes y monitoreo en tiempo real.</p>
+                    <p style="color:var(--gray-text);">Control de mercancía alimentaria, movimiento entre sedes y monitoreo en tiempo real.</p>
                 </div>
                 <div class="grid">
                     <div class="card">
@@ -658,7 +769,7 @@ HTML_DASHBOARD = """
                 <div class="card">
                     <h3>Registrar Nuevo Ítem de Inventario</h3>
                     <form id="form-prod" onsubmit="agregarNuevoProducto(event)" style="display:grid; grid-template-columns:1fr 1fr 1fr auto; gap:10px; margin-top:15px;">
-                        <input type="text" id="prod-nombre" placeholder="Nombre del Producto" required style="padding:10px; border:1px solid var(--gray); border-radius:8px;">
+                        <input type="text" id="prod-nombre" placeholder="Nombre del Producto Comestible" required style="padding:10px; border:1px solid var(--gray); border-radius:8px;">
                         <select id="prod-sede" style="padding:10px; border:1px solid var(--gray); border-radius:8px;">
                             <option>Sede Centro</option>
                             <option>Sede Norte</option>
@@ -682,16 +793,34 @@ HTML_DASHBOARD = """
                         </thead>
                         <tbody id="tabla-inventario">
                             <tr>
-                                <td>Lector Código de Barras 2D</td>
+                                <td>Jugo Natural de Naranja (1L)</td>
                                 <td>Sede Centro</td>
-                                <td>15 unidades</td>
+                                <td>45 unidades</td>
                                 <td><span class="tag tag-empleado">Disponible</span></td>
                             </tr>
                             <tr>
-                                <td>Impresora Térmica POS</td>
+                                <td>Café Tostado en Grano (500g)</td>
                                 <td>Sede Norte</td>
-                                <td>3 unidades</td>
+                                <td>28 unidades</td>
+                                <td><span class="tag tag-empleado">Disponible</span></td>
+                            </tr>
+                            <tr>
+                                <td>Queso Gouda Madurado (250g)</td>
+                                <td>Sede Sur</td>
+                                <td>4 unidades</td>
                                 <td><span class="tag tag-admin">Bajo Stock</span></td>
+                            </tr>
+                            <tr>
+                                <td>Aceite de Oliva Extra Virgen (500ml)</td>
+                                <td>Sede Centro</td>
+                                <td>18 unidades</td>
+                                <td><span class="tag tag-empleado">Disponible</span></td>
+                            </tr>
+                            <tr>
+                                <td>Chocolate Negro 70% Cacao (100g)</td>
+                                <td>Sede Norte</td>
+                                <td>50 unidades</td>
+                                <td><span class="tag tag-empleado">Disponible</span></td>
                             </tr>
                         </tbody>
                     </table>
