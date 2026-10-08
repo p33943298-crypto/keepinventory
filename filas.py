@@ -2,7 +2,7 @@ from flask import Flask, render_template_string, redirect, url_for, request
 
 app = Flask(__name__)
 
-# Credenciales de administrador agregadas
+# Credenciales de administrador
 ADMIN_EMAIL = "admin@keepinventory.com"
 ADMIN_PASSWORD = "admin123password"
 
@@ -31,7 +31,7 @@ body{background:var(--light); color:var(--dark); line-height:1.5;}
 .brand-large h1{font-size:42px; margin-bottom:5px;}
 .brand-large p{opacity:0.9; font-size:16px;}
 
-/* --- LANDING SELECTOR (index.html) --- */
+/* --- LANDING SELECTOR --- */
 .landing-body{display:flex;justify-content:center;align-items:center;min-height:100vh;background:linear-gradient(135deg,var(--primary),var(--primary-dark));padding:20px;}
 .landing-container{max-width:900px;width:100%;text-align:center;}
 .selector-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
@@ -60,7 +60,7 @@ button:hover{opacity:.9;} button:disabled{opacity:.5; cursor:not-allowed;}
 .sidebar{width:280px;background:var(--dark);color:white;padding:24px;flex-shrink:0;}
 .sidebar .brand{margin-bottom:30px;}
 .sidebar .brand .logo{width:38px;height:38px;font-size:16px;}
-.sidebar a{display:block;color:#cbd5e1;padding:12px 14px;text-decoration:none;border-radius:8px;margin:6px 0; font-size:14px; transition:all .2s;}
+.sidebar a{display:block;color:#cbd5e1;padding:12px 14px;text-decoration:none;border-radius:8px;margin:6px 0; font-size:14px; transition:all .2s; cursor:pointer;}
 .sidebar a:hover,.sidebar a.active{background:var(--primary);color:white;}
 .sidebar button{margin-top:30px; background:#334155;}
 .main{flex:1;padding:30px; overflow-y:auto;}
@@ -96,7 +96,7 @@ th{background:#f8fafc; font-weight:700; color:var(--gray-text); font-size:12px; 
 }
 """
 
-# PLANTILLA 1: LANDING PRINCIPAL
+# LANDING PRINCIPAL
 HTML_LANDING = """
 <!DOCTYPE html>
 <html lang="es">
@@ -115,15 +115,12 @@ HTML_LANDING = """
                 <p>Sistema de Gestión e Inventario</p>
             </div>
             <div class="selector-grid">
-                <!-- Enlace a la sección Staff / Login -->
                 <a href="/login" class="selector-card staff">
                     <div class="icon">💼</div>
                     <h2>Personal / Staff</h2>
                     <p>Acceso a administración y control de inventarios.</p>
                     <span>INGRESAR COMO STAFF →</span>
                 </a>
-                
-                <!-- Enlace a la sección Clientes / Tienda -->
                 <a href="/tienda" class="selector-card client">
                     <div class="icon">🛒</div>
                     <h2>Clientes</h2>
@@ -137,7 +134,7 @@ HTML_LANDING = """
 </html>
 """
 
-# PLANTILLA 2: LOGIN STAFF
+# LOGIN STAFF
 HTML_LOGIN = """
 <!DOCTYPE html>
 <html lang="es">
@@ -181,7 +178,7 @@ HTML_LOGIN = """
 </html>
 """
 
-# PLANTILLA 3: DASHBOARD ADMINISTRACIÓN
+# DASHBOARD STAFF CON INTERACTIVIDAD EN MENÚS
 HTML_DASHBOARD = """
 <!DOCTYPE html>
 <html lang="es">
@@ -190,6 +187,14 @@ HTML_DASHBOARD = """
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Staff</title>
     <style>{{ css | safe }}</style>
+    <script>
+        function cambiarSeccion(idSeccion, elemento) {
+            document.querySelectorAll('.seccion-tab').forEach(sec => sec.style.display = 'none');
+            document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
+            document.getElementById(idSeccion).style.display = 'block';
+            elemento.classList.add('active');
+        }
+    </script>
 </head>
 <body>
     <div class="dashboard">
@@ -198,24 +203,70 @@ HTML_DASHBOARD = """
                 <div class="logo">KI</div>
                 <h3>KeepInventory</h3>
             </div>
-            <a href="#" class="active">📊 Panel Principal</a>
-            <a href="#">📦 Inventario</a>
-            <a href="#">🏪 Sedes</a>
-            <a href="/">🚪 Cerrar Sesión</a>
+            <a onclick="cambiarSeccion('panel', this)" class="active">📊 Panel Principal</a>
+            <a onclick="cambiarSeccion('inventario', this)">📦 Inventario</a>
+            <a onclick="cambiarSeccion('sedes', this)">🏪 Sedes</a>
+            <a href="/" style="margin-top: 30px; background: #334155;">🚪 Cerrar Sesión</a>
         </div>
         <div class="main">
-            <div class="card">
-                <h2>Bienvenido al Panel de Control</h2>
-                <p>Gestión centralizada de stock, ventas y productos por sede.</p>
-            </div>
-            <div class="grid">
+            <!-- SECCIÓN 1: PANEL PRINCIPAL -->
+            <div id="panel" class="seccion-tab">
                 <div class="card">
-                    <h3>Sede Norte</h3>
-                    <p>Stock disponible: <b>1,240 ítems</b></p>
+                    <h2>Bienvenido al Panel de Control</h2>
+                    <p>Gestión centralizada de stock, ventas y productos por sede.</p>
                 </div>
+                <div class="grid">
+                    <div class="card">
+                        <h3>Sede Norte</h3>
+                        <p>Stock disponible: <b>1,240 ítems</b></p>
+                    </div>
+                    <div class="card">
+                        <h3>Sede Sur</h3>
+                        <p>Stock disponible: <b>850 ítems</b></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECCIÓN 2: INVENTARIO -->
+            <div id="inventario" class="seccion-tab" style="display:none;">
                 <div class="card">
-                    <h3>Sede Sur</h3>
-                    <p>Stock disponible: <b>850 ítems</b></p>
+                    <h2>Gestión de Inventario</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Producto</th>
+                                <th>Sede</th>
+                                <th>Cantidad</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Lector de Código de Barras</td>
+                                <td>Centro</td>
+                                <td>15</td>
+                                <td><span class="tag tag-empleado">Disponible</span></td>
+                            </tr>
+                            <tr>
+                                <td>Impresora Térmica</td>
+                                <td>Norte</td>
+                                <td>3</td>
+                                <td><span class="tag tag-admin">Bajo Stock</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- SECCIÓN 3: SEDES -->
+            <div id="sedes" class="seccion-tab" style="display:none;">
+                <div class="card">
+                    <h2>Sedes Registradas</h2>
+                    <p>Administra los puntos de atención y almacenes.</p>
+                    <div class="grid" style="margin-top:15px;">
+                        <div class="card"><b>Sede Principal - Centro</b><br>Calle 15 #23-45</div>
+                        <div class="card"><b>Sede Norte</b><br>Av. Principal #10-12</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -224,7 +275,7 @@ HTML_DASHBOARD = """
 </html>
 """
 
-# PLANTILLA 4: VISTA DE TIENDA CLIENTES
+# TIENDA CLIENTES CON BOTONES DE SEDE INTERACTIVOS
 HTML_TIENDA = """
 <!DOCTYPE html>
 <html lang="es">
@@ -233,6 +284,17 @@ HTML_TIENDA = """
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catálogo - Clientes</title>
     <style>{{ css | safe }}</style>
+    <script>
+        function seleccionarSede(elemento, nombreSede) {
+            document.querySelectorAll('.sede-card').forEach(card => card.classList.remove('active'));
+            elemento.classList.add('active');
+            document.getElementById('titulo-sede').innerText = 'Productos Disponibles - ' + nombreSede;
+        }
+
+        function agregarAlCarrito(producto) {
+            alert('¡' + producto + ' agregado al carrito!');
+        }
+    </script>
 </head>
 <body>
     <div style="padding: 30px; max-width: 1100px; margin: 0 auto;">
@@ -244,29 +306,31 @@ HTML_TIENDA = """
         
         <h3>Selecciona una Sede</h3>
         <div class="sede-selector">
-            <div class="sede-card active">
+            <div class="sede-card active" onclick="seleccionarSede(this, 'Sede Principal (Centro)')">
                 <div class="sede-icon">🏢</div>
                 <h3>Sede Principal (Centro)</h3>
                 <p>Abierto de 8:00 AM a 6:00 PM</p>
             </div>
-            <div class="sede-card">
+            <div class="sede-card" onclick="seleccionarSede(this, 'Sede Norte')">
                 <div class="sede-icon">🏬</div>
                 <h3>Sede Norte</h3>
                 <p>Abierto de 9:00 AM a 7:00 PM</p>
             </div>
         </div>
 
-        <h3>Productos Disponibles</h3>
+        <h3 id="titulo-sede">Productos Disponibles - Sede Principal (Centro)</h3>
         <div class="grid" style="margin-top: 20px;">
             <div class="product-shop">
                 <h4>Producto Ejemplo A</h4>
                 <p>Stock: 15 unidades</p>
                 <b>$25.000</b>
+                <button onclick="agregarAlCarrito('Producto Ejemplo A')">Agregar al Carrito</button>
             </div>
             <div class="product-shop">
                 <h4>Producto Ejemplo B</h4>
                 <p>Stock: 8 unidades</p>
                 <b>$45.000</b>
+                <button onclick="agregarAlCarrito('Producto Ejemplo B')">Agregar al Carrito</button>
             </div>
         </div>
     </div>
@@ -274,7 +338,7 @@ HTML_TIENDA = """
 </html>
 """
 
-# RUTAS
+# RUTAS FLASK
 @app.route('/')
 def inicio():
     return render_template_string(HTML_LANDING, css=CSS_ESTILOS)
@@ -286,7 +350,6 @@ def login():
         usuario = request.form.get('usuario')
         password = request.form.get('password')
         
-        # Validación con el correo de administrador
         if usuario == ADMIN_EMAIL and password == ADMIN_PASSWORD:
             return redirect(url_for('dashboard'))
         else:
