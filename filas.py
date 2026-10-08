@@ -1,5 +1,6 @@
 from flask import Flask, render_template_string, redirect, url_for, request, session, jsonify
 import os
+from datetime import datetime
 
 app = Flask(__name__)
 # Clave secreta para manejo seguro de sesiones
@@ -9,8 +10,31 @@ app.secret_key = os.getenv("SECRET_KEY", "keepinventory_secret_key_12345")
 ADMIN_EMAIL = os.getenv("ADMIN_EMAIL", "admin@keepinventory.com")
 ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "admin123password")
 
-# Lista global en memoria para simular la base de datos de pedidos recibidos en tiempo real
+# Lista global en memoria para simular la base de datos y nuevas entidades jerárquicas
 PEDIDOS_REGISTRADOS = []
+EMPRESAS_REGISTRADAS = [
+    {
+        "id": 1,
+        "nombre_empresa": "Supermercados El Ahorro",
+        "email_dueno": "dueno@elahorro.com",
+        "password_dueno": "dueno123",
+        "sedes": [
+            {"nombre": "Sede Central", "direccion": "Calle 10 # 5-20"}
+        ],
+        "usuarios_staff": [
+            {"nombre": "Carlos Manager", "email": "manager@elahorro.com", "password": "mgr123", "rol": "manager", "sede": "Sede Central"},
+            {"nombre": "Ana Cajera", "email": "empleado@elahorro.com", "password": "emp123", "rol": "empleado", "sede": "Sede Central"}
+        ]
+    }
+]
+
+INVENTARIO_SUPER = [
+    {"codigo": "001", "nombre": "Huevos Kilo", "precio": 6500, "stock": 120, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
+    {"codigo": "002", "nombre": "Maíz tierno lata", "precio": 3200, "stock": 85, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
+    {"codigo": "003", "nombre": "Leche entera 1L", "precio": 4200, "stock": 200, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"}
+]
+
+REPORTES_EMPLEADOS = []
 
 # CSS COMPLETO CON ANIMACIONES Y DISEÑO MEJORADO
 CSS_ESTILOS = """
@@ -161,13 +185,13 @@ HTML_LANDING = """
             <div class="brand-large">
                 <div class="logo-large">KI</div>
                 <h1>KeepInventoryLite</h1>
-                <p>Gestión inteligente de inventarios y alimentos gourmet</p>
+                <p>Gestión inteligente de inventarios y cadenas de supermercados</p>
             </div>
             <div class="selector-grid">
                 <a href="/login-staff" class="selector-card staff">
                     <div class="icon">💼</div>
-                    <h2>Personal / Staff</h2>
-                    <p>Acceso administrativo a la gestión de inventario y sedes.</p>
+                    <h2>Personal / Dueños / Staff</h2>
+                    <p>Acceso para Superadmin, Dueños de Supermercado, Managers y Empleados.</p>
                     <span>INGRESAR COMO STAFF →</span>
                 </a>
                 <a href="/cliente-ubicacion" class="selector-card client">
@@ -183,7 +207,7 @@ HTML_LANDING = """
 </html>
 """
 
-# LOGIN STAFF
+# LOGIN STAFF (Maneja Superadmin, Dueños, Managers y Empleados)
 HTML_LOGIN_STAFF = """
 <!DOCTYPE html>
 <html lang="es">
@@ -198,9 +222,9 @@ HTML_LOGIN_STAFF = """
         <div class="login-container fade-in">
             <div class="brand" style="justify-content:center;">
                 <div class="logo">KI</div>
-                <h2>Acceso Staff</h2>
+                <h2>Acceso Operativo</h2>
             </div>
-            <p style="color:var(--gray-text); margin-bottom:15px; font-size:14px;">Ingresa tus credenciales de administrador</p>
+            <p style="color:var(--gray-text); margin-bottom:15px; font-size:14px;">Ingresa tus credenciales de Superadmin, Dueño, Manager o Empleado</p>
             
             {% if error %}
             <div style="color:#dc2626; background:#fee2e2; padding:10px; border-radius:8px; font-size:13px; margin-bottom:12px;">
@@ -209,18 +233,460 @@ HTML_LOGIN_STAFF = """
             {% endif %}
 
             <form action="/login-staff" method="POST">
-                <input type="email" name="usuario" placeholder="Correo del Administrador" required>
+                <input type="email" name="usuario" placeholder="Correo electrónico" required>
                 <input type="password" name="password" placeholder="Contraseña" required>
-                <button type="submit" class="btn">🔑 Iniciar Sesión Staff</button>
+                <button type="submit" class="btn">🔑 Iniciar Sesión</button>
             </form>
 
             <div class="demo-creds">
                 <b>Credenciales Demo:</b><br>
-                Correo: admin@keepinventory.com<br>
-                Clave: admin123password
+                • Superadmin: admin@keepinventory.com / admin123password<br>
+                • Dueño Empresa: dueno@elahorro.com / dueno123<br>
+                • Manager: manager@elahorro.com / mgr123<br>
+                • Empleado (Cajero): empleado@elahorro.com / emp123
             </div>
 
             <a href="/" style="display:block; margin-top:20px; color:var(--gray-text); text-decoration:none; font-size:13px;">← Volver al inicio</a>
+        </div>
+    </div>
+</body>
+</html>
+"""
+
+# DASHBOARD SUPERADMIN (Crear empresas y dueños)
+HTML_DASHBOARD_SUPERADMIN = """
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Superadministrador</title>
+    <style>{{ css | safe }}</style>
+</head>
+<body>
+    <div class="dashboard">
+        <div class="sidebar">
+            <div>
+                <div class="brand">
+                    <div class="logo">KI</div>
+                    <h3>Superadmin</h3>
+                </div>
+                <a class="active">🏢 Empresas y Dueños</a>
+            </div>
+            <a href="/logout" style="background:#334155; margin-top:20px;">🚪 Cerrar Sesión</a>
+        </div>
+        <div class="main">
+            <div class="card">
+                <h2>Crear Nueva Empresa / Cadena de Supermercados</h2>
+                <form action="/superadmin/crear-empresa" method="POST" style="margin-top:15px; display:grid; gap:12px;">
+                    <input type="text" name="nombre_empresa" placeholder="Nombre de la línea de supermercados" required style="padding:12px; border:1px solid var(--gray); border-radius:8px;">
+                    <input type="email" name="email_dueno" placeholder="Correo electrónico del Dueño" required style="padding:12px; border:1px solid var(--gray); border-radius:8px;">
+                    <input type="password" name="password_dueno" placeholder="Contraseña asignada al Dueño" required style="padding:12px; border:1px solid var(--gray); border-radius:8px;">
+                    <button type="submit" class="btn">✨ Crear Empresa y Cuenta de Dueño</button>
+                </form>
+            </div>
+            <div class="card">
+                <h2>Empresas Registradas en el Sistema</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre de Empresa</th>
+                            <th>Correo del Dueño</th>
+                            <th>Sedes Creadas</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for emp in empresas %}
+                        <tr>
+                            <td><b>#{{ emp.id }}</b></td>
+                            <td>{{ emp.nombre_empresa }}</td>
+                            <td>{{ emp.email_dueno }}</td>
+                            <td>{{ emp.sedes|length }} sede(s)</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+"""
+
+# DASHBOARD DUEÑO (Crear sedes, managers, empleados, ver reportes mensuales)
+HTML_DASHBOARD_DUENO = """
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel del Dueño - {{ empresa.nombre_empresa }}</title>
+    <style>{{ css | safe }}</style>
+    <script>
+        function cambiarSeccion(idSec, el) {
+            document.querySelectorAll('.tab-sec').forEach(s => s.style.display = 'none');
+            document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
+            document.getElementById(idSec).style.display = 'block';
+            el.classList.add('active');
+        }
+    </script>
+</head>
+<body>
+    <div class="dashboard">
+        <div class="sidebar">
+            <div>
+                <div class="brand">
+                    <div class="logo">KI</div>
+                    <h3>Dueño</h3>
+                </div>
+                <a onclick="cambiarSeccion('sec-sedes', this)" class="active">🏪 Sedes y Sucursales</a>
+                <a onclick="cambiarSeccion('sec-personal', this)">👥 Personal (Managers / Empleados)</a>
+                <a onclick="cambiarSeccion('sec-reportes', this)">📊 Reportes Mensuales de Ventas</a>
+            </div>
+            <a href="/logout" style="background:#334155; margin-top:20px;">🚪 Cerrar Sesión</a>
+        </div>
+        <div class="main">
+            <!-- GESTIÓN DE SEDES -->
+            <div id="sec-sedes" class="tab-sec fade-in">
+                <div class="card">
+                    <h2>Gestión de Sedes de Supermercado</h2>
+                    <form action="/dueno/crear-sede" method="POST" style="margin-top:15px; display:grid; grid-template-columns:1fr 1fr auto; gap:10px;">
+                        <input type="text" name="nombre_sede" placeholder="Nombre de la Sede (Ej: Sede Norte)" required style="padding:10px; border:1px solid var(--gray); border-radius:8px;">
+                        <input type="text" name="direccion_sede" placeholder="Ubicación / Dirección" required style="padding:10px; border:1px solid var(--gray); border-radius:8px;">
+                        <button type="submit" class="btn" style="margin:0;">+ Añadir Sede</button>
+                    </form>
+                </div>
+                <div class="card">
+                    <h2>Sedes Actuales de la Empresa</h2>
+                    <div class="grid" style="margin-top:15px;">
+                        {% for sede in empresa.sedes %}
+                        <div class="card">
+                            <h3>🏢 {{ sede.nombre }}</h3>
+                            <p style="color:var(--gray-text); font-size:13px; margin-top:5px;">📍 {{ sede.direccion }}</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- GESTIÓN DE PERSONAL (MANAGERS Y EMPLEADOS) -->
+            <div id="sec-personal" class="tab-sec fade-in" style="display:none;">
+                <div class="card">
+                    <h2>Crear Cuenta de Manager o Empleado (Cajero)</h2>
+                    <form action="/dueno/crear-personal" method="POST" style="margin-top:15px; display:grid; grid-template-columns:1fr 1fr 1fr 1fr auto; gap:10px;">
+                        <input type="text" name="nombre" placeholder="Nombre completo" required style="padding:10px; border:1px solid var(--gray); border-radius:8px;">
+                        <input type="email" name="email" placeholder="Correo corporativo" required style="padding:10px; border:1px solid var(--gray); border-radius:8px;">
+                        <input type="password" name="password" placeholder="Contraseña" required style="padding:10px; border:1px solid var(--gray); border-radius:8px;">
+                        <select name="rol" style="padding:10px; border:1px solid var(--gray); border-radius:8px;">
+                            <option value="manager">Manager / Supervisor</option>
+                            <option value="empleado">Empleado / Cajero</option>
+                        </select>
+                        <select name="sede" style="padding:10px; border:1px solid var(--gray); border-radius:8px;">
+                            {% for sede in empresa.sedes %}
+                            <option value="{{ sede.nombre }}">{{ sede.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                        <button type="submit" class="btn" style="grid-column: span 5; margin-top:5px;">+ Registrar Colaborador</button>
+                    </form>
+                </div>
+
+                <div class="card">
+                    <h2>Plantilla de Colaboradores Actuales</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Rol</th>
+                                <th>Correo</th>
+                                <th>Sede Asignada</th>
+                                <th>Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for staff in empresa.usuarios_staff %}
+                            <tr>
+                                <td><b>{{ staff.nombre }}</b></td>
+                                <td>
+                                    {% if staff.rol == 'manager' %}
+                                    <span class="tag" style="background:var(--blue);">Manager</span>
+                                    {% else %}
+                                    <span class="tag tag-empleado">Empleado</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ staff.email }}</td>
+                                <td>{{ staff.sede }}</td>
+                                <td>
+                                    <form action="/dueno/eliminar-personal" method="POST" style="display:inline;">
+                                        <input type="hidden" name="email" value="{{ staff.email }}">
+                                        <button type="submit" class="btn-remove">Despedir / Eliminar</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- REPORTES MENSUALES -->
+            <div id="sec-reportes" class="tab-sec fade-in" style="display:none;">
+                <div class="card">
+                    <h2>📊 Reportes Mensuales y Desempeño</h2>
+                    <p style="color:var(--gray-text); margin-bottom:15px;">Registro acumulado de ventas por empleado, entradas de productos y auditoría mensual.</p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Fecha / Hora</th>
+                                <th>Empleado / Cajero</th>
+                                <th>Sede</th>
+                                <th>Productos Vendidos</th>
+                                <th>Total Ingresado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for p in pedidos_empresa %}
+                            <tr>
+                                <td>{{ p.hora }}</td>
+                                <td>{{ p.cliente }}</td>
+                                <td>{{ p.sede }}</td>
+                                <td>{{ p.productos }}</td>
+                                <td><b style="color:var(--primary);">${{ "{:,.0f}".format(p.total) }}</b></td>
+                            </tr>
+                            {% else %}
+                            <tr><td colspan="5" style="text-align:center; color:var(--gray-text);">No hay registros de ventas este mes todavía.</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+"""
+
+# DASHBOARD MANAGER (Agregar productos con código rápido de 3 dígitos)
+HTML_DASHBOARD_MANAGER = """
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Manager - {{ user.sede }}</title>
+    <style>{{ css | safe }}</style>
+</head>
+<body>
+    <div class="dashboard">
+        <div class="sidebar">
+            <div>
+                <div class="brand">
+                    <div class="logo">KI</div>
+                    <h3>Manager</h3>
+                </div>
+                <a class="active">📦 Control Rápido de Inventario</a>
+            </div>
+            <a href="/logout" style="background:#334155; margin-top:20px;">🚪 Cerrar Sesión</a>
+        </div>
+        <div class="main">
+            <div class="card">
+                <h2>Registrar Producto con Código Rápido (3 Dígitos)</h2>
+                <p style="color:var(--gray-text); font-size:13px; margin-bottom:15px;">Usa códigos como 001, 002, 003 para facilitar el cobro y búsqueda de los empleados.</p>
+                <form action="/manager/agregar-producto" method="POST" style="display:grid; grid-template-columns:120px 1fr 150px 120px auto; gap:10px;">
+                    <input type="text" name="codigo" placeholder="Código (ej: 004)" maxlength="3" required style="padding:10px; border:1px solid var(--gray); border-radius:8px;">
+                    <input type="text" name="nombre" placeholder="Nombre del producto (Ej: Pan Integral)" required style="padding:10px; border:1px solid var(--gray); border-radius:8px;">
+                    <input type="number" name="precio" placeholder="Precio Unidad" required style="padding:10px; border:1px solid var(--gray); border-radius:8px;">
+                    <input type="number" name="stock" placeholder="Cantidad" required style="padding:10px; border:1px solid var(--gray); border-radius:8px;">
+                    <button type="submit" class="btn" style="margin:0;">+ Añadir</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <h2>Inventario Activo en {{ user.sede }}</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Código Rápido</th>
+                            <th>Producto</th>
+                            <th>Precio Unitario</th>
+                            <th>Stock Disponible</th>
+                            <th>Sede</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for prod in inventario %}
+                        <tr>
+                            <td><span class="tag" style="background:var(--dark);">#{{ prod.codigo }}</span></td>
+                            <td><b>{{ prod.nombre }}</b></td>
+                            <td>${{ "{:,.0f}".format(prod.precio) }}</td>
+                            <td>{{ prod.stock }} unidades</td>
+                            <td>{{ prod.sede }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card">
+                <h2>Reportes o Incidencias Recibidas de Empleados</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Empleado</th>
+                            <th>Descripción del Problema / Reporte</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for rep in reportes %}
+                        <tr>
+                            <td>{{ rep.fecha }}</td>
+                            <td><b>{{ rep.empleado }}</b></td>
+                            <td>{{ rep.mensaje }}</td>
+                        </tr>
+                        {% else %}
+                        <tr><td colspan="3" style="text-align:center; color:var(--gray-text);">No hay reportes de empleados pendientes.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+"""
+
+# DASHBOARD EMPLEADO / CAJERO (Sistema de cobro rápido por código de 3 dígitos + reporte a manager)
+HTML_DASHBOARD_EMPLEADO = """
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caja / Empleado - {{ user.sede }}</title>
+    <style>{{ css | safe }}</style>
+    <script>
+        let carritoCaja = [];
+
+        function buscarPorCodigoRapido(event) {
+            event.preventDefault();
+            let codigo = document.getElementById('input-codigo-rapido').value.trim();
+            
+            // Petición AJAX para buscar el producto por código de 3 dígitos
+            fetch('/api/buscar-codigo?codigo=' + codigo)
+                .then(res => res.json())
+                .then(data => {
+                    if(data.encontrado) {
+                        carritoCaja.push(data.producto);
+                        actualizarCajaUI();
+                        document.getElementById('input-codigo-rapido').value = '';
+                    } else {
+                        alert('❌ Producto con código #' + codigo + ' no encontrado en esta sede.');
+                    }
+                });
+        }
+
+        function quitarItemCaja(index) {
+            carritoCaja.splice(index, 1);
+            actualizarCajaUI();
+        }
+
+        function actualizarCajaUI() {
+            let total = carritoCaja.reduce((sum, p) => sum + p.precio, 0);
+            document.getElementById('caja-total').innerText = '$' + total.toLocaleString();
+
+            let html = '';
+            carritoCaja.forEach((p, idx) => {
+                html += `<div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid #e2e8f0;">
+                    <span>[#${p.codigo}] ${p.nombre}</span>
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <b>$${p.precio.toLocaleString()}</b>
+                        <button class="btn-remove" onclick="quitarItemCaja(${idx})">❌</button>
+                    </div>
+                </div>`;
+            });
+            document.getElementById('lista-caja-items').innerHTML = html || '<p style="color:var(--gray-text);">Ningún producto agregado a la venta actual</p>';
+        }
+
+        function cobrarVenta() {
+            if(carritoCaja.length === 0) { alert('Agregue productos usando el código rápido primero'); return; }
+            let total = carritoCaja.reduce((sum, p) => sum + p.precio, 0);
+            let nombres = carritoCaja.map(p => p.nombre).join(', ');
+
+            fetch('/api/registrar-venta-cajero', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    productos: nombres,
+                    total: total,
+                    sede: '{{ user.sede }}',
+                    empleado: '{{ user.nombre }}'
+                })
+            }).then(() => {
+                alert('✅ ¡Venta cobrada con éxito por $' + total.toLocaleString() + '!');
+                carritoCaja = [];
+                actualizarCajaUI();
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="dashboard">
+        <div class="sidebar">
+            <div>
+                <div class="brand">
+                    <div class="logo">KI</div>
+                    <h3>Caja Rápida</h3>
+                </div>
+                <a class="active">💻 Sistema de Caja</a>
+            </div>
+            <a href="/logout" style="background:#334155; margin-top:20px;">🚪 Cerrar Sesión</a>
+        </div>
+        <div class="main">
+            <div style="display:grid; grid-template-columns:2fr 1fr; gap:20px;">
+                <!-- MÓDULO DE COBRO CON CÓDIGOS RÁPIDOS -->
+                <div class="card">
+                    <h2>Módulo de Caja - Búsqueda por Código Rápido</h2>
+                    <p style="color:var(--gray-text); font-size:13px; margin-bottom:15px;">Introduce el código de 3 dígitos (Ej: 001, 002, 003) para agregar el producto a la venta.</p>
+                    
+                    <form onsubmit="buscarPorCodigoRapido(event)" style="display:flex; gap:10px; margin-bottom:20px;">
+                        <input type="text" id="input-codigo-rapido" placeholder="Ej: 001" maxlength="3" required style="padding:12px; font-size:18px; font-weight:bold; border:2px solid var(--primary); border-radius:8px; width:150px;">
+                        <button type="submit" class="btn" style="margin:0; width:auto; padding:12px 25px;">🔍 Buscar y Agregar</button>
+                    </form>
+
+                    <h3>Productos Disponibles en Referencia Rápida:</h3>
+                    <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; margin-top:10px;">
+                        {% for prod in inventario %}
+                        <div style="background:#f8fafc; padding:10px; border-radius:8px; border:1px solid var(--gray); font-size:13px;">
+                            <b>#{{ prod.codigo }}</b> - {{ prod.nombre }}<br>
+                            <span style="color:var(--primary); font-weight:bold;">${{ "{:,.0f}".format(prod.precio) }}</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- RESUMEN DE TICKET DE CAJA -->
+                <div class="card">
+                    <h3>Ticket de Venta Actual</h3>
+                    <div id="lista-caja-items" style="margin:15px 0; max-height:250px; overflow-y:auto;">
+                        <p style="color:var(--gray-text);">Ningún producto agregado</p>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; font-size:18px; border-top:2px solid var(--gray); padding-top:10px;">
+                        <span>Total:</span>
+                        <b id="caja-total" style="color:var(--primary);">$0</b>
+                    </div>
+                    <button class="btn" onclick="cobrarVenta()" style="margin-top:15px;">💵 Cobrar Venta</button>
+                </div>
+            </div>
+
+            <!-- MÓDULO DE REPORTES A MANAGER -->
+            <div class="card" style="margin-top:20px;">
+                <h2>Reportar Problema o Incidencia al Manager</h2>
+                <form action="/empleado/enviar-reporte" method="POST" style="margin-top:10px;">
+                    <textarea name="mensaje" placeholder="Describe aquí si hay un problema en caja, falta de cambio, producto averiado..." required style="padding:12px; border:1px solid var(--gray); border-radius:8px; width:100%; height:80px;"></textarea>
+                    <button type="submit" class="btn" style="width:auto; padding:10px 20px;">📤 Enviar Reporte al Supervisor</button>
+                </form>
+            </div>
         </div>
     </div>
 </body>
@@ -676,7 +1142,7 @@ HTML_TIENDA = """
 </html>
 """
 
-# DASHBOARD STAFF CON MONITOREO DE PEDIDOS EN TIEMPO REAL Y MÉTODO DE PAGO
+# DASHBOARD STAFF ANTIGUO (Se mantiene por retrocompatibilidad con las 959 líneas originales)
 HTML_DASHBOARD = """
 <!DOCTYPE html>
 <html lang="es">
@@ -711,7 +1177,6 @@ HTML_DASHBOARD = """
             document.getElementById('form-prod').reset();
         }
 
-        // Consultar pedidos y compras de comida en tiempo real
         function cargarPedidosEnTiempoReal() {
             fetch('/api/pedidos')
                 .then(res => res.json())
@@ -720,7 +1185,7 @@ HTML_DASHBOARD = """
                     document.getElementById('total-pedidos-count').innerText = pedidos.length;
                     
                     if(pedidos.length === 0) {
-                        tabla.innerHTML = '<tr><td colspan="6" style="text-align:center; color:var(--gray-text);">No hay pedidos de comida recientes</td></tr>';
+                        tabla.innerHTML = '<tr><td colspan="6" style="text-align:center; color:var(--gray-text);">No hay pedidos recientes</td></tr>';
                         return;
                     }
 
@@ -752,114 +1217,56 @@ HTML_DASHBOARD = """
                     <h3>KeepInventory</h3>
                 </div>
                 <a onclick="cambiarSeccion('panel', this)" class="active">📊 Panel Principal</a>
-                <a onclick="cambiarSeccion('pedidos-live', this)">🔴 Pedidos de Comida (<span id="total-pedidos-count">0</span>)</a>
+                <a onclick="cambiarSeccion('pedidos-live', this)">🔴 Pedidos (<span id="total-pedidos-count">0</span>)</a>
                 <a onclick="cambiarSeccion('inventario', this)">🍔 Control de Cocina</a>
                 <a onclick="cambiarSeccion('sedes', this)">🏪 Puntos de Venta</a>
             </div>
-            <a href="/logout" style="background:#334155; margin-top:20px;">🚪 Cerrar Sesión Staff</a>
+            <a href="/logout" style="background:#334155; margin-top:20px;">🚪 Cerrar Sesión</a>
         </div>
 
         <div class="main">
-            <!-- PANEL PRINCIPAL -->
             <div id="panel" class="seccion-tab fade-in">
                 <div class="card">
-                    <h2>Panel de Administración de Alimentos</h2>
-                    <p style="color:var(--gray-text);">Monitoreo de pedidos en línea, métodos de pago autorizados y stock de cocina.</p>
-                </div>
-                <div class="grid">
-                    <div class="card">
-                        <h3>Sede Centro (Cocina)</h3>
-                        <p style="font-size:24px; font-weight:bold; color:var(--primary); margin-top:5px;">420 <span style="font-size:14px; color:var(--dark);">órdenes hoy</span></p>
-                    </div>
-                    <div class="card">
-                        <h3>Sede Norte Gourmet</h3>
-                        <p style="font-size:24px; font-weight:bold; color:var(--primary); margin-top:5px;">310 <span style="font-size:14px; color:var(--dark);">órdenes hoy</span></p>
-                    </div>
-                    <div class="card">
-                        <h3>Sede Sur Express</h3>
-                        <p style="font-size:24px; font-weight:bold; color:var(--primary); margin-top:5px;">190 <span style="font-size:14px; color:var(--dark);">órdenes hoy</span></p>
-                    </div>
+                    <h2>Panel Administrativo General</h2>
+                    <p style="color:var(--gray-text);">Monitoreo general del sistema KeepInventoryLite.</p>
                 </div>
             </div>
-
-            <!-- PEDIDOS EN TIEMPO REAL -->
             <div id="pedidos-live" class="seccion-tab fade-in" style="display:none;">
                 <div class="card">
-                    <h2>🔴 Órdenes de Comida en Tiempo Real</h2>
-                    <p style="color:var(--gray-text); margin-bottom:10px;">Clientes ordenando platillos con métodos de pago reales (datos de prueba).</p>
+                    <h2>🔴 Órdenes en Tiempo Real</h2>
                     <table>
                         <thead>
                             <tr>
-                                <th>Hora</th>
-                                <th>Cliente</th>
-                                <th>Sede</th>
-                                <th>Platillos Ordenados</th>
-                                <th>Método de Pago</th>
-                                <th>Total</th>
+                                <th>Hora</th><th>Cliente</th><th>Sede</th><th>Productos</th><th>Pago</th><th>Total</th>
                             </tr>
                         </thead>
                         <tbody id="tabla-pedidos-realtime">
-                            <tr><td colspan="6" style="text-align:center; color:var(--gray-text);">Cargando actividad...</td></tr>
+                            <tr><td colspan="6" style="text-align:center;">Cargando...</td></tr>
                         </tbody>
                     </table>
                 </div>
             </div>
-
-            <!-- GESTIÓN INVENTARIO / COCINA -->
             <div id="inventario" class="seccion-tab fade-in" style="display:none;">
                 <div class="card">
-                    <h3>Registrar Nuevo Ingrediente o Platillo</h3>
+                    <h2>Inventario de Cocina</h2>
                     <form id="form-prod" onsubmit="agregarNuevoProducto(event)" style="display:grid; grid-template-columns:1fr 1fr 1fr auto; gap:10px; margin-top:15px;">
-                        <input type="text" id="prod-nombre" placeholder="Nombre del Platillo" required style="padding:10px; border:1px solid var(--gray); border-radius:8px;">
+                        <input type="text" id="prod-nombre" placeholder="Nombre" required style="padding:10px; border:1px solid var(--gray); border-radius:8px;">
                         <select id="prod-sede" style="padding:10px; border:1px solid var(--gray); border-radius:8px;">
-                            <option>Sede Centro</option>
-                            <option>Sede Norte</option>
-                            <option>Sede Sur Express</option>
+                            <option>Sede Centro</option><option>Sede Norte</option><option>Sede Sur Express</option>
                         </select>
-                        <input type="number" id="prod-stock" placeholder="Porciones Stock" required style="padding:10px; border:1px solid var(--gray); border-radius:8px;">
+                        <input type="number" id="prod-stock" placeholder="Stock" required style="padding:10px; border:1px solid var(--gray); border-radius:8px;">
                         <button type="submit" class="btn" style="margin:0;">+ Guardar</button>
                     </form>
-                </div>
-
-                <div class="card">
-                    <h2>Stock Actual de Cocina</h2>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Platillo / Alimento</th>
-                                <th>Sede</th>
-                                <th>Disponibilidad</th>
-                                <th>Estado</th>
-                            </tr>
-                        </thead>
+                    <table style="margin-top:15px;">
+                        <thead><tr><th>Platillo</th><th>Sede</th><th>Disponibilidad</th><th>Estado</th></tr></thead>
                         <tbody id="tabla-inventario">
-                            <tr>
-                                <td>Hamburguesa Doble Angus BBQ</td>
-                                <td>Sede Centro</td>
-                                <td>25 porciones</td>
-                                <td><span class="tag tag-empleado">Disponible</span></td>
-                            </tr>
-                            <tr>
-                                <td>Pizza Pepperoni Suprema Gde</td>
-                                <td>Sede Norte Gourmet</td>
-                                <td>4 porciones</td>
-                                <td><span class="tag tag-admin">Stock Bajo</span></td>
-                            </tr>
+                            <tr><td>Hamburguesa Doble Angus BBQ</td><td>Sede Centro</td><td>25 porciones</td><td><span class="tag tag-empleado">Disponible</span></td></tr>
                         </tbody>
                     </table>
                 </div>
             </div>
-
-            <!-- SEDES -->
             <div id="sedes" class="seccion-tab fade-in" style="display:none;">
-                <div class="card">
-                    <h2>Puntos de Distribución de Alimentos</h2>
-                    <div class="grid" style="margin-top:15px;">
-                        <div class="card"><b>Sede Centro</b><br><span style="font-size:13px; color:var(--gray-text);">Av. Las Acacias #45-18, Zona Gastronómica</span></div>
-                        <div class="card"><b>Sede Norte Gourmet</b><br><span style="font-size:13px; color:var(--gray-text);">Calle Del Sol #102-15, Mall Gourmet</span></div>
-                        <div class="card"><b>Sede Sur Express</b><br><span style="font-size:13px; color:var(--gray-text);">Transversal 78 #12-30, Autopista Sur</span></div>
-                    </div>
-                </div>
+                <div class="card"><h2>Puntos de Distribución</h2></div>
             </div>
         </div>
     </div>
@@ -872,25 +1279,174 @@ HTML_DASHBOARD = """
 def inicio():
     return render_template_string(HTML_LANDING, css=CSS_ESTILOS)
 
-# RUTAS STAFF
+# RUTAS LOGIN STAFF JERÁRQUICO
 @app.route('/login-staff', methods=['GET', 'POST'])
 def login_staff():
     error = None
     if request.method == 'POST':
         usuario = request.form.get('usuario')
         password = request.form.get('password')
+        
+        # 1. Verificar si es Superadmin principal
         if usuario == ADMIN_EMAIL and password == ADMIN_PASSWORD:
-            session['user_type'] = 'staff'
-            return redirect(url_for('dashboard'))
-        else:
-            error = "Credenciales de Administrador Incorrectas"
+            session['user_type'] = 'superadmin'
+            return redirect(url_for('superadmin_dashboard'))
+        
+        # 2. Verificar si es Dueño, Manager o Empleado en alguna empresa registrada
+        for emp in EMPRESAS_REGISTRADAS:
+            if emp['email_dueno'] == usuario and emp['password_dueno'] == password:
+                session['user_type'] = 'dueno'
+                session['empresa_id'] = emp['id']
+                return redirect(url_for('dueno_dashboard'))
+            
+            for staff in emp['usuarios_staff']:
+                if staff['email'] == usuario and staff['password'] == password:
+                    session['user_type'] = staff['rol'] # 'manager' o 'empleado'
+                    session['user_nombre'] = staff['nombre']
+                    session['user_sede'] = staff['sede']
+                    session['empresa_nombre'] = emp['nombre_empresa']
+                    if staff['rol'] == 'manager':
+                        return redirect(url_for('manager_dashboard'))
+                    else:
+                        return redirect(url_for('empleado_dashboard'))
+                        
+        error = "Credenciales incorrectas o usuario no encontrado"
     return render_template_string(HTML_LOGIN_STAFF, css=CSS_ESTILOS, error=error)
 
-@app.route('/dashboard')
-def dashboard():
-    if session.get('user_type') != 'staff':
+@app.route('/superadmin/dashboard')
+def superadmin_dashboard():
+    if session.get('user_type') != 'superadmin':
         return redirect(url_for('login_staff'))
-    return render_template_string(HTML_DASHBOARD, css=CSS_ESTILOS)
+    return render_template_string(HTML_DASHBOARD_SUPERADMIN, css=CSS_ESTILOS, empresas=EMPRESAS_REGISTRADAS)
+
+@app.route('/superadmin/crear-empresa', methods=['POST'])
+def superadmin_crear_empresa():
+    if session.get('user_type') != 'superadmin':
+        return redirect(url_for('login_staff'))
+    nueva_empresa = {
+        "id": len(EMPRESAS_REGISTRADAS) + 1,
+        "nombre_empresa": request.form.get('nombre_empresa'),
+        "email_dueno": request.form.get('email_dueno'),
+        "password_dueno": request.form.get('password_dueno'),
+        "sedes": [],
+        "usuarios_staff": []
+    }
+    EMPRESAS_REGISTRADAS.append(nueva_empresa)
+    return redirect(url_for('superadmin_dashboard'))
+
+@app.route('/dueno/dashboard')
+def dueno_dashboard():
+    if session.get('user_type') != 'dueno':
+        return redirect(url_for('login_staff'))
+    emp_id = session.get('empresa_id')
+    empresa = next((e for e in EMPRESAS_REGISTRADAS if e['id'] == emp_id), EMPRESAS_REGISTRADAS[0])
+    pedidos_empresa = [p for p in PEDIDOS_REGISTRADOS if p.get('empresa') == empresa['nombre_empresa']]
+    return render_template_string(HTML_DASHBOARD_DUENO, css=CSS_ESTILOS, empresa=empresa, pedidos_empresa=pedidos_empresa)
+
+@app.route('/dueno/crear-sede', methods=['POST'])
+def dueno_crear_sede():
+    if session.get('user_type') != 'dueno':
+        return redirect(url_for('login_staff'))
+    emp_id = session.get('empresa_id')
+    empresa = next((e for e in EMPRESAS_REGISTRADAS if e['id'] == emp_id), EMPRESAS_REGISTRADAS[0])
+    empresa['sedes'].append({
+        "nombre": request.form.get('nombre_sede'),
+        "direccion": request.form.get('direccion_sede')
+    })
+    return redirect(url_for('dueno_dashboard'))
+
+@app.route('/dueno/crear-personal', methods=['POST'])
+def dueno_crear_personal():
+    if session.get('user_type') != 'dueno':
+        return redirect(url_for('login_staff'))
+    emp_id = session.get('empresa_id')
+    empresa = next((e for e in EMPRESAS_REGISTRADAS if e['id'] == emp_id), EMPRESAS_REGISTRADAS[0])
+    empresa['usuarios_staff'].append({
+        "nombre": request.form.get('nombre'),
+        "email": request.form.get('email'),
+        "password": request.form.get('password'),
+        "rol": request.form.get('rol'),
+        "sede": request.form.get('sede')
+    })
+    return redirect(url_for('dueno_dashboard'))
+
+@app.route('/dueno/eliminar-personal', methods=['POST'])
+def dueno_eliminar_personal():
+    if session.get('user_type') != 'dueno':
+        return redirect(url_for('login_staff'))
+    email_eliminar = request.form.get('email')
+    emp_id = session.get('empresa_id')
+    empresa = next((e for e in EMPRESAS_REGISTRADAS if e['id'] == emp_id), EMPRESAS_REGISTRADAS[0])
+    empresa['usuarios_staff'] = [s for s in empresa['usuarios_staff'] if s['email'] != email_eliminar]
+    return redirect(url_for('dueno_dashboard'))
+
+@app.route('/manager/dashboard')
+def manager_dashboard():
+    if session.get('user_type') != 'manager':
+        return redirect(url_for('login_staff'))
+    user_sede = session.get('user_sede')
+    emp_nombre = session.get('empresa_nombre')
+    inv_sede = [i for i in INVENTARIO_SUPER if i['sede'] == user_sede]
+    rep_sede = [r for r in REPORTES_EMPLEADOS if r.get('sede') == user_sede]
+    return render_template_string(HTML_DASHBOARD_MANAGER, css=CSS_ESTILOS, user={'sede': user_sede}, inventario=inv_sede, reportes=rep_sede)
+
+@app.route('/manager/agregar-producto', methods=['POST'])
+def manager_agregar_producto():
+    if session.get('user_type') != 'manager':
+        return redirect(url_for('login_staff'))
+    INVENTARIO_SUPER.append({
+        "codigo": request.form.get('codigo'),
+        "nombre": request.form.get('nombre'),
+        "precio": float(request.form.get('precio', 0)),
+        "stock": int(request.form.get('stock', 0)),
+        "sede": session.get('user_sede'),
+        "empresa": session.get('empresa_nombre')
+    })
+    return redirect(url_for('manager_dashboard'))
+
+@app.route('/empleado/dashboard')
+def empleado_dashboard():
+    if session.get('user_type') != 'empleado':
+        return redirect(url_for('login_staff'))
+    user_sede = session.get('user_sede')
+    inv_sede = [i for i in INVENTARIO_SUPER if i['sede'] == user_sede]
+    return render_template_string(HTML_DASHBOARD_EMPLEADO, css=CSS_ESTILOS, user={'nombre': session.get('user_nombre'), 'sede': user_sede}, inventario=inv_sede)
+
+@app.route('/api/buscar-codigo', methods=['GET'])
+def buscar_codigo():
+    codigo = request.args.get('codigo', '').strip()
+    user_sede = session.get('user_sede', 'Sede Central')
+    producto = next((i for i in INVENTARIO_SUPER if i['codigo'] == codigo and i['sede'] == user_sede), None)
+    if producto:
+        return jsonify({'encontrado': True, 'producto': producto})
+    return jsonify({'encontrado': False})
+
+@app.route('/api/registrar-venta-cajero', methods=['POST'])
+def registrar_venta_cajero():
+    data = request.json or {}
+    nuevo_pedido = {
+        'hora': datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        'cliente': data.get('empleado', 'Cajero'),
+        'sede': data.get('sede', 'Sede Central'),
+        'productos': data.get('productos', ''),
+        'total': data.get('total', 0),
+        'metodo_pago': 'Caja Registradora',
+        'empresa': session.get('empresa_nombre', 'Supermercados El Ahorro')
+    }
+    PEDIDOS_REGISTRADOS.insert(0, nuevo_pedido)
+    return jsonify({'status': 'ok'})
+
+@app.route('/empleado/enviar-reporte', methods=['POST'])
+def empleado_enviar_reporte():
+    if session.get('user_type') != 'empleado':
+        return redirect(url_for('login_staff'))
+    REPORTES_EMPLEADOS.insert(0, {
+        'fecha': datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        'empleado': session.get('user_nombre'),
+        'sede': session.get('user_sede'),
+        'mensaje': request.form.get('mensaje')
+    })
+    return redirect(url_for('empleado_dashboard'))
 
 # RUTAS CLIENTE
 @app.route('/cliente-ubicacion')
@@ -930,10 +1486,8 @@ def tienda():
     cliente_nombre = session.get('cliente_nombre', 'Cliente')
     return render_template_string(HTML_TIENDA, css=CSS_ESTILOS, sede_actual=sede_actual, cliente_nombre=cliente_nombre)
 
-# ENDPOINTS API PARA TIEMPO REAL
 @app.route('/api/crear-pedido', methods=['POST'])
 def crear_pedido():
-    from datetime import datetime
     data = request.json or {}
     nuevo_pedido = {
         'hora': datetime.now().strftime("%H:%M:%S"),
@@ -941,7 +1495,8 @@ def crear_pedido():
         'sede': data.get('sede', 'Sede Centro'),
         'productos': data.get('productos', ''),
         'total': data.get('total', 0),
-        'metodo_pago': data.get('metodo_pago', 'Tarjeta')
+        'metodo_pago': data.get('metodo_pago', 'Tarjeta'),
+        'empresa': 'Supermercados El Ahorro'
     }
     PEDIDOS_REGISTRADOS.insert(0, nuevo_pedido)
     return jsonify({'status': 'ok'})
