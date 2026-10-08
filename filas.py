@@ -12,7 +12,7 @@ ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "admin123password")
 # Lista global en memoria para simular la base de datos de pedidos recibidos en tiempo real
 PEDIDOS_REGISTRADOS = []
 
-# CSS COMPLETO CORREGIDO Y OPTIMIZADO
+# CSS COMPLETO
 CSS_ESTILOS = """
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
 
@@ -38,7 +38,7 @@ CSS_ESTILOS = """
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Plus Jakarta Sans', 'Segoe UI', system-ui, -apple-system, sans-serif;}
 body{background:#f1f5f9; color:var(--dark); line-height:1.6; overflow-x:hidden;}
 
-/* ANIMACIONES AVANZADAS */
+/* ANIMACIONES */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
@@ -126,11 +126,10 @@ tr:hover td{background:#f8fafc;}
 .product-card:hover{transform:translateY(-8px); box-shadow:0 20px 35px rgba(0,0,0,0.08); border-color:var(--primary);}
 .product-badge{position:absolute; top:15px; right:15px; background:var(--accent); color:white; font-size:11px; font-weight:800; padding:4px 10px; border-radius:30px; letter-spacing:0.5px; box-shadow:0 4px 10px rgba(245,158,11,0.3);}
 
-/* CARRITO MODAL Y NOTIFICACIONES */
-.cart-floating-btn{position:fixed; bottom:30px; right:30px; background:var(--primary-gradient); color:white; padding:16px 26px; border-radius:50px; cursor:pointer; font-weight:700; box-shadow:0 10px 30px rgba(15,138,95,0.4); display:flex; align-items:center; gap:12px; z-index:999; transition:all 0.3s ease;}
+/* CARRITO FLOTANTE Y MODAL */
+.cart-floating-btn{position:fixed; bottom:30px; right:30px; background:var(--primary-gradient); color:white; padding:16px 26px; border-radius:50px; cursor:pointer; font-weight:700; box-shadow:0 10px 30px rgba(15,138,95,0.4); display:flex; align-items:center; gap:12px; z-index:9999; transition:all 0.3s ease;}
 .cart-floating-btn:hover{transform:scale(1.08) translateY(-3px); box-shadow:0 15px 35px rgba(15,138,95,0.5);}
 
-/* CORRECCIÓN DE MODAL CAPA Z-INDEX Y POINTER EVENTS */
 .modal{display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(15,23,42,0.6); backdrop-filter:blur(6px); z-index:10000; justify-content:center; align-items:center;}
 .modal-content{background:white; padding:30px; border-radius:24px; width:90%; max-width:520px; position:relative; animation:fadeIn 0.3s ease; box-shadow:0 25px 50px rgba(0,0,0,0.25); max-height:85vh; overflow-y:auto;}
 .btn-remove{background:#fee2e2; color:#dc2626; border:none; border-radius:8px; padding:6px 10px; cursor:pointer; font-size:12px; font-weight:700; transition:all 0.2s;}
@@ -248,7 +247,7 @@ HTML_CLIENTE_UBICACION = """
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({sede: nombreSede, direccion: direccion})
-            }).then(() => {
+            }).then(function() {
                 window.location.href = '/cliente-auth';
             });
         }
@@ -359,7 +358,7 @@ HTML_CLIENTE_AUTH = """
 </html>
 """
 
-# CATÁLOGO INTERACTIVO DE CLIENTES CON JS ROBUSTO DE EVENTOS
+# CATÁLOGO INTERACTIVO DE CLIENTES CON JS TOTALMENTE COMPATIBLE CON JINJA2
 HTML_TIENDA = """
 <!DOCTYPE html>
 <html lang="es">
@@ -544,7 +543,7 @@ HTML_TIENDA = """
                 <div class="pay-card" data-metodo="efectivo">💵 Pago Contra Entrega</div>
             </div>
 
-            <!-- FORMULARIOS ADAPTATIVOS DE PAGO -->
+            <!-- FORMULARIO DE PAGOS -->
             <div id="form-pago-tarjeta" class="form-pago-sub">
                 <input type="text" id="pay-card-num" class="pay-input" placeholder="Número de Tarjeta (ej: 4532 0000 0000 0000)">
                 <div style="display:flex; gap:10px;">
@@ -584,96 +583,116 @@ HTML_TIENDA = """
         </div>
     </div>
 
-    <!-- SCRIPT CORREGIDO SIN BLOQUEO DE EVENTOS -->
+    <!-- SCRIPT CORREGIDO SIN CONFLICTOS DE JINJA2 -->
     <script>
-        let carrito = [];
-        let metodoPagoSeleccionado = 'tarjeta';
+        var CLIENTE_NOMBRE = "{{ cliente_nombre }}";
+        var SEDE_ACTUAL = "{{ sede_actual }}";
+        
+        var carrito = [];
+        var metodoPagoSeleccionado = 'tarjeta';
 
         document.addEventListener("DOMContentLoaded", function() {
-            // Eventos para botones de añadir producto
-            document.querySelectorAll(".btn-add").forEach(btn => {
-                btn.addEventListener("click", function() {
-                    let nombre = this.getAttribute("data-nombre");
-                    let precio = parseInt(this.getAttribute("data-precio"));
-                    carrito.push({nombre, precio});
+            // Asignar eventos de click a botones de productos
+            var btnsAdd = document.querySelectorAll(".btn-add");
+            for (var i = 0; i < btnsAdd.length; i++) {
+                btnsAdd[i].addEventListener("click", function() {
+                    var nombre = this.getAttribute("data-nombre");
+                    var precio = parseInt(this.getAttribute("data-precio"));
+                    carrito.push({nombre: nombre, precio: precio});
                     actualizarCarritoUI();
                 });
-            });
+            }
 
-            // Abrir y cerrar carrito
-            document.getElementById("btn-open-cart").addEventListener("click", function() {
+            // Abrir modal de carrito
+            document.getElementById("btn-open-cart").onclick = function() {
                 document.getElementById("modal-carrito").style.display = "flex";
-            });
+            };
 
-            document.getElementById("btn-close-cart").addEventListener("click", function() {
+            // Cerrar modal de carrito
+            document.getElementById("btn-close-cart").onclick = function() {
                 document.getElementById("modal-carrito").style.display = "none";
-            });
+            };
 
-            // Seleccionar métodos de pago
-            document.querySelectorAll(".pay-card").forEach(card => {
-                card.addEventListener("click", function() {
-                    document.querySelectorAll(".pay-card").forEach(c => c.classList.remove("selected"));
+            // Selección de tarjeta/método de pago
+            var payCards = document.querySelectorAll(".pay-card");
+            for (var j = 0; j < payCards.length; j++) {
+                payCards[j].addEventListener("click", function() {
+                    for (var k = 0; k < payCards.length; k++) {
+                        payCards[k].classList.remove("selected");
+                    }
                     this.classList.add("selected");
                     metodoPagoSeleccionado = this.getAttribute("data-metodo");
 
-                    document.querySelectorAll(".form-pago-sub").forEach(f => f.style.display = "none");
-                    let subForm = document.getElementById("form-pago-" + metodoPagoSeleccionado);
-                    if(subForm) subForm.style.display = "block";
+                    var subForms = document.querySelectorAll(".form-pago-sub");
+                    for (var m = 0; m < subForms.length; m++) {
+                        subForms[m].style.display = "none";
+                    }
+                    
+                    var targetForm = document.getElementById("form-pago-" + metodoPagoSeleccionado);
+                    if(targetForm) {
+                        targetForm.style.display = "block";
+                    }
                 });
-            });
+            }
 
-            // Procesar compra
-            document.getElementById("btn-process-pay").addEventListener("click", function() {
-                if(carrito.length === 0) {
-                    alert('Añade productos al carrito primero.');
+            // Procesar compra al hacer click
+            document.getElementById("btn-process-pay").onclick = function() {
+                if (carrito.length === 0) {
+                    alert("Añade productos al carrito primero.");
                     return;
                 }
 
-                if(metodoPagoSeleccionado === 'tarjeta') {
-                    let num = document.getElementById('pay-card-num').value;
-                    let exp = document.getElementById('pay-card-exp').value;
-                    let cvc = document.getElementById('pay-card-cvc').value;
-                    if(!num || !exp || !cvc) { alert('Completa los campos de la tarjeta.'); return; }
-                } else if(metodoPagoSeleccionado === 'pse') {
-                    let banco = document.getElementById('pay-pse-bank').value;
-                    let doc = document.getElementById('pay-pse-doc').value;
-                    if(!banco || !doc) { alert('Selecciona tu banco e ingresa tu documento.'); return; }
-                } else if(metodoPagoSeleccionado === 'billetera') {
-                    let tel = document.getElementById('pay-wallet-tel').value;
-                    if(!tel) { alert('Ingresa tu número celular registrado.'); return; }
+                if (metodoPagoSeleccionado === 'tarjeta') {
+                    var num = document.getElementById('pay-card-num').value;
+                    var exp = document.getElementById('pay-card-exp').value;
+                    var cvc = document.getElementById('pay-card-cvc').value;
+                    if (!num || !exp || !cvc) { alert('Completa los campos de la tarjeta.'); return; }
+                } else if (metodoPagoSeleccionado === 'pse') {
+                    var banco = document.getElementById('pay-pse-bank').value;
+                    var doc = document.getElementById('pay-pse-doc').value;
+                    if (!banco || !doc) { alert('Selecciona tu banco e ingresa tu documento.'); return; }
+                } else if (metodoPagoSeleccionado === 'billetera') {
+                    var tel = document.getElementById('pay-wallet-tel').value;
+                    if (!tel) { alert('Ingresa tu número celular registrado.'); return; }
                 }
 
-                let total = carrito.reduce((sum, p) => sum + p.precio, 0);
-                let detallesItems = carrito.map(p => p.nombre).join(', ');
-                let nombreMetodo = {
-                    'tarjeta': '💳 Tarjeta Crédito/Débito',
-                    'pse': '🏦 PSE / Transferencia Bancaria',
-                    'billetera': '📱 Billetera Digital (Nequi/Daviplata/MP)',
-                    'efectivo': '💵 Pago Contra Entrega'
-                }[metodoPagoSeleccionado] || '💳 Tarjeta';
+                var total = 0;
+                var nombresArr = [];
+                for (var n = 0; n < carrito.length; n++) {
+                    total += carrito[n].precio;
+                    nombresArr.push(carrito[n].nombre);
+                }
+                var detallesItems = nombresArr.join(', ');
+
+                var nombreMetodo = '💳 Tarjeta Crédito/Débito';
+                if (metodoPagoSeleccionado === 'pse') nombreMetodo = '🏦 PSE / Transferencia Bancaria';
+                if (metodoPagoSeleccionado === 'billetera') nombreMetodo = '📱 Billetera Digital (Nequi/Daviplata/MP)';
+                if (metodoPagoSeleccionado === 'efectivo') nombreMetodo = '💵 Pago Contra Entrega';
 
                 fetch('/api/crear-pedido', {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({
-                        cliente: '{{ cliente_nombre }}',
-                        sede: '{{ sede_actual }}',
+                        cliente: CLIENTE_NOMBRE,
+                        sede: SEDE_ACTUAL,
                         productos: detallesItems,
                         metodo_pago: nombreMetodo,
                         total: total
                     })
                 })
-                .then(res => res.json())
-                .then(data => {
-                    if(data.status === 'ok') {
-                        alert('🎉 ¡Pago procesado con éxito mediante ' + nombreMetodo + '!\nTu pedido se enviará desde la sede ' + '{{ sede_actual }}');
+                .then(function(res) { return res.json(); })
+                .then(function(data) {
+                    if (data.status === 'ok') {
+                        alert('🎉 ¡Pago procesado con éxito mediante ' + nombreMetodo + '!\nTu pedido se enviará desde la sede ' + SEDE_ACTUAL);
                         carrito = [];
                         actualizarCarritoUI();
                         document.getElementById("modal-carrito").style.display = "none";
                     }
                 })
-                .catch(() => alert('Error de conexión con el servidor.'));
-            });
+                .catch(function() {
+                    alert('Error al procesar el pedido con el servidor.');
+                });
+            };
         });
 
         function quitarProducto(index) {
@@ -683,43 +702,49 @@ HTML_TIENDA = """
 
         function actualizarCarritoUI() {
             document.getElementById('cart-count').innerText = carrito.length;
-            let total = carrito.reduce((sum, p) => sum + p.precio, 0);
+            var total = 0;
+            for (var i = 0; i < carrito.length; i++) {
+                total += carrito[i].precio;
+            }
             document.getElementById('cart-total').innerText = '$' + total.toLocaleString();
 
-            let listaHtml = '';
-            carrito.forEach((p, index) => {
-                listaHtml += `<div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid #e2e8f0;">
-                    <span>${p.nombre}</span>
-                    <div style="display:flex; align-items:center; gap:10px;">
-                        <b>$${p.precio.toLocaleString()}</b>
-                        <button class="btn-remove" type="button" onclick="quitarProducto(${index})">❌ Quitar</button>
-                    </div>
-                </div>`;
-            });
+            var listaHtml = '';
+            for (var j = 0; j < carrito.length; j++) {
+                listaHtml += '<div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid #e2e8f0;">' +
+                    '<span>' + carrito[j].nombre + '</span>' +
+                    '<div style="display:flex; align-items:center; gap:10px;">' +
+                        '<b>$' + carrito[j].precio.toLocaleString() + '</b>' +
+                        '<button class="btn-remove" type="button" onclick="quitarProducto(' + j + ')">❌ Quitar</button>' +
+                    '</div>' +
+                '</div>';
+            }
             document.getElementById('cart-items').innerHTML = listaHtml || '<p style="color:var(--gray-text);">El carrito está vacío</p>';
         }
 
         function filtrarCategoria(cat, btn) {
-            document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('btn'));
-            document.querySelectorAll('.cat-btn').forEach(b => b.classList.add('btn-outline'));
+            var catBtns = document.querySelectorAll('.cat-btn');
+            for (var i = 0; i < catBtns.length; i++) {
+                catBtns[i].classList.remove('btn');
+                catBtns[i].classList.add('btn-outline');
+            }
             btn.classList.add('btn');
             btn.classList.remove('btn-outline');
 
-            let productos = document.querySelectorAll('.product-card');
-            productos.forEach(p => {
-                if(cat === 'todos' || p.dataset.cat === cat) {
-                    p.style.display = 'flex';
+            var productos = document.querySelectorAll('.product-card');
+            for (var j = 0; j < productos.length; j++) {
+                if (cat === 'todos' || productos[j].getAttribute('data-cat') === cat) {
+                    productos[j].style.display = 'flex';
                 } else {
-                    p.style.display = 'none';
+                    productos[j].style.display = 'none';
                 }
-            });
+            }
         }
     </script>
 </body>
 </html>
 """
 
-# DASHBOARD STAFF CON MONITOREO DE PEDIDOS Y MÉTODO DE PAGO EN TIEMPO REAL
+# DASHBOARD STAFF CON MONITOREO EN TIEMPO REAL
 HTML_DASHBOARD = """
 <!DOCTYPE html>
 <html lang="es">
@@ -730,8 +755,8 @@ HTML_DASHBOARD = """
     <style>{{ css | safe }}</style>
     <script>
         function cambiarSeccion(idSeccion, elemento) {
-            document.querySelectorAll('.seccion-tab').forEach(sec => sec.style.display = 'none');
-            document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
+            document.querySelectorAll('.seccion-tab').forEach(function(sec) { sec.style.display = 'none'; });
+            document.querySelectorAll('.sidebar a').forEach(function(a) { a.classList.remove('active'); });
             document.getElementById(idSeccion).style.display = 'block';
             elemento.classList.add('active');
         }
@@ -743,12 +768,12 @@ HTML_DASHBOARD = """
             let stock = document.getElementById('prod-stock').value;
 
             let tabla = document.getElementById('tabla-inventario');
-            let nuevaFila = `<tr>
-                <td><b>${nombre}</b></td>
-                <td>${sede}</td>
-                <td>${stock} unidades</td>
-                <td><span class="tag tag-empleado">Disponible</span></td>
-            </tr>`;
+            let nuevaFila = '<tr>' +
+                '<td><b>' + nombre + '</b></td>' +
+                '<td>' + sede + '</td>' +
+                '<td>' + stock + ' unidades</td>' +
+                '<td><span class="tag tag-empleado">Disponible</span></td>' +
+            '</tr>';
             tabla.innerHTML += nuevaFila;
             alert('¡Producto agregado al inventario!');
             document.getElementById('form-prod').reset();
@@ -756,8 +781,8 @@ HTML_DASHBOARD = """
 
         function cargarPedidosEnTiempoReal() {
             fetch('/api/pedidos')
-                .then(res => res.json())
-                .then(pedidos => {
+                .then(function(res) { return res.json(); })
+                .then(function(pedidos) {
                     let tabla = document.getElementById('tabla-pedidos-realtime');
                     document.getElementById('total-pedidos-count').innerText = pedidos.length;
                     
@@ -767,15 +792,15 @@ HTML_DASHBOARD = """
                     }
 
                     let html = '';
-                    pedidos.forEach(p => {
-                        html += `<tr>
-                            <td><b>${p.hora}</b></td>
-                            <td>${p.cliente}</td>
-                            <td>${p.sede}</td>
-                            <td>${p.productos}</td>
-                            <td><span style="font-size:12px; font-weight:bold; color:#0369a1; background:#e0f2fe; padding:4px 8px; border-radius:6px;">${p.metodo_pago || '💳 Tarjeta'}</span></td>
-                            <td><b style="color:var(--primary);">$${p.total.toLocaleString()}</b></td>
-                        </tr>`;
+                    pedidos.forEach(function(p) {
+                        html += '<tr>' +
+                            '<td><b>' + p.hora + '</b></td>' +
+                            '<td>' + p.cliente + '</td>' +
+                            '<td>' + p.sede + '</td>' +
+                            '<td>' + p.productos + '</td>' +
+                            '<td><span style="font-size:12px; font-weight:bold; color:#0369a1; background:#e0f2fe; padding:4px 8px; border-radius:6px;">' + (p.metodo_pago || '💳 Tarjeta') + '</span></td>' +
+                            '<td><b style="color:var(--primary);">$' + p.total.toLocaleString() + '</b></td>' +
+                        '</tr>';
                     });
                     tabla.innerHTML = html;
                 });
