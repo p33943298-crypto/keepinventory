@@ -56,11 +56,6 @@ body{background:#f1f5f9; color:var(--dark); line-height:1.6; overflow-x:hidden;}
   100% { box-shadow: 0 0 0 0 rgba(15, 138, 95, 0); }
 }
 
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-
 .fade-in { animation: fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 .float-anim { animation: float 4s ease-in-out infinite; }
 
@@ -131,13 +126,16 @@ tr:hover td{background:#f8fafc;}
 .product-card:hover{transform:translateY(-8px); box-shadow:0 20px 35px rgba(0,0,0,0.08); border-color:var(--primary);}
 .product-badge{position:absolute; top:15px; right:15px; background:var(--accent); color:white; font-size:11px; font-weight:800; padding:4px 10px; border-radius:30px; letter-spacing:0.5px; box-shadow:0 4px 10px rgba(245,158,11,0.3);}
 
-/* CARRITO MODAL Y NOTIFICACIONES */
+/* CARRITO MODAL Y CHECKOUT CON METODOS DE PAGO REALES */
 .cart-floating-btn{position:fixed; bottom:30px; right:30px; background:var(--primary-gradient); color:white; padding:16px 26px; border-radius:50px; cursor:pointer; font-weight:700; box-shadow:0 10px 30px rgba(15,138,95,0.4); display:flex; align-items:center; gap:12px; z-index:99; transition:all 0.3s ease;}
 .cart-floating-btn:hover{transform:scale(1.08) translateY(-3px); box-shadow:0 15px 35px rgba(15,138,95,0.5);}
 .modal{display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(15,23,42,0.6); backdrop-filter:blur(6px); z-index:1000; justify-content:center; align-items:center;}
-.modal-content{background:white; padding:35px; border-radius:24px; width:90%; max-width:500px; position:relative; animation:fadeIn 0.3s ease; box-shadow:0 25px 50px rgba(0,0,0,0.25);}
+.modal-content{background:white; padding:35px; border-radius:24px; width:90%; max-width:540px; position:relative; animation:fadeIn 0.3s ease; box-shadow:0 25px 50px rgba(0,0,0,0.25); max-height:90vh; overflow-y:auto;}
 .btn-remove{background:#fee2e2; color:#dc2626; border:none; border-radius:8px; padding:6px 10px; cursor:pointer; font-size:12px; font-weight:700; transition:all 0.2s;}
 .btn-remove:hover{background:#fca5a5; transform:scale(1.05);}
+.payment-method-grid{display:grid; grid-template-columns:repeat(2, 1fr); gap:10px; margin:15px 0;}
+.payment-option{border:2px solid var(--gray); padding:12px; border-radius:12px; text-align:center; cursor:pointer; font-size:13px; font-weight:600; transition:all 0.2s;}
+.payment-option:hover, .payment-option.selected{border-color:var(--primary); background:var(--primary-light); color:var(--primary-dark);}
 
 /* RESPONSIVE */
 @media(max-width:800px){
@@ -145,6 +143,7 @@ tr:hover td{background:#f8fafc;}
   .dashboard{flex-direction:column;}
   .sidebar{width:100%;}
   .header-cliente{flex-direction:column; gap:15px; align-items:flex-start;}
+  .payment-method-grid{grid-template-columns:1fr;}
 }
 """
 
@@ -230,7 +229,7 @@ HTML_LOGIN_STAFF = """
 </html>
 """
 
-# PASO 1 CLIENTE: SELECCIÓN DE UBICACIÓN Y SEDE CON DIRECCIONES INVENTADAS
+# PASO 1 CLIENTE: SELECCIÓN DE UBICACIÓN Y SEDE
 HTML_CLIENTE_UBICACION = """
 <!DOCTYPE html>
 <html lang="es">
@@ -356,7 +355,7 @@ HTML_CLIENTE_AUTH = """
 </html>
 """
 
-# CATÁLOGO INTERACTIVO DE CLIENTES CON ELIMINACIÓN DE PRODUCTOS Y NOTIFICACIÓN AL ADMIN
+# CATÁLOGO AMPLIADO CON GRAN VARIEDAD DE CONSUMIBLES Y MÉTODOS DE PAGO REALES
 HTML_TIENDA = """
 <!DOCTYPE html>
 <html lang="es">
@@ -367,6 +366,7 @@ HTML_TIENDA = """
     <style>{{ css | safe }}</style>
     <script>
         let carrito = [];
+        let metodoPagoSeleccionado = 'Tarjeta Crédito/Débito';
 
         function agregarProducto(nombre, precio) {
             carrito.push({nombre, precio});
@@ -399,6 +399,44 @@ HTML_TIENDA = """
         function abrirCarrito() { document.getElementById('modal-carrito').style.display = 'flex'; }
         function cerrarCarrito() { document.getElementById('modal-carrito').style.display = 'none'; }
         
+        function seleccionarMetodoPago(metodo, elemento) {
+            metodoPagoSeleccionado = metodo;
+            document.querySelectorAll('.payment-option').forEach(el => el.classList.remove('selected'));
+            elemento.classList.add('selected');
+
+            // Mostrar campos dinámicos según el método elegido (datos inventados/ficticios)
+            let camposHtml = '';
+            if(metodo === 'Tarjeta Crédito/Débito') {
+                camposHtml = `
+                    <input type="text" placeholder="Número de Tarjeta (Ej: 4532 •••• •••• 8821)" required style="width:100%; padding:10px; margin:6px 0; border:1px solid var(--gray); border-radius:8px;">
+                    <div style="display:flex; gap:10px;">
+                        <input type="text" placeholder="MM/AA" required style="width:50%; padding:10px; margin:6px 0; border:1px solid var(--gray); border-radius:8px;">
+                        <input type="password" placeholder="CVV" maxlength="4" required style="width:50%; padding:10px; margin:6px 0; border:1px solid var(--gray); border-radius:8px;">
+                    </div>
+                `;
+            } else if(metodo === 'PSE (Bancos)') {
+                camposHtml = `
+                    <select style="width:100%; padding:10px; margin:6px 0; border:1px solid var(--gray); border-radius:8px;">
+                        <option>Seleccione su banco simulado</option>
+                        <option>Bancolombia (Demo)</option>
+                        <option>Banco de Bogotá (Demo)</option>
+                        <option>Davivienda (Demo)</option>
+                        <option>NEQUI (Demo)</option>
+                    </select>
+                    <input type="text" placeholder="Número de Cédula o NIT ficticio" required style="width:100%; padding:10px; margin:6px 0; border:1px solid var(--gray); border-radius:8px;">
+                `;
+            } else if(metodo === 'Billetera Digital (Nequi/Daviplata)') {
+                camposHtml = `
+                    <input type="text" placeholder="Número Celular Vinculado (Ej: 300 123 4567)" required style="width:100%; padding:10px; margin:6px 0; border:1px solid var(--gray); border-radius:8px;">
+                `;
+            } else if(metodo === 'Efectivo / Pago en Puntos (Efecty/Baloto)') {
+                camposHtml = `
+                    <p style="font-size:12px; color:var(--gray-text); margin:6px 0;">Se generará un código de referencia ficticio para pagar en cualquier punto aliado autorizado.</p>
+                `;
+            }
+            document.getElementById('detalles-pago-container').innerHTML = camposHtml;
+        }
+
         function procesarCompra() {
             if(carrito.length === 0) { alert('Añade productos primero'); return; }
             
@@ -413,10 +451,11 @@ HTML_TIENDA = """
                     cliente: '{{ cliente_nombre }}',
                     sede: '{{ sede_actual }}',
                     productos: detallesItems,
-                    total: total
+                    total: total,
+                    metodo_pago: metodoPagoSeleccionado
                 })
             }).then(() => {
-                alert('🎉 ¡Pedido realizado con éxito para entrega en ' + '{{ sede_actual }}!');
+                alert('🎉 ¡Pago procesado con éxito vía ' + metodoPagoSeleccionado + ' para entrega en ' + '{{ sede_actual }}!');
                 carrito = [];
                 actualizarCarritoUI();
                 cerrarCarrito();
@@ -463,11 +502,12 @@ HTML_TIENDA = """
         <div style="display:flex; gap:10px; margin-bottom:25px; overflow-x:auto; padding-bottom:5px;">
             <button class="btn cat-btn" onclick="filtrarCategoria('todos', this)">Todos los productos</button>
             <button class="btn btn-outline cat-btn" onclick="filtrarCategoria('hardware', this)">Hardware & Pos</button>
-            <button class="btn btn-outline cat-btn" onclick="filtrarCategoria('consumibles', this)">Consumibles</button>
+            <button class="btn btn-outline cat-btn" onclick="filtrarCategoria('consumibles', this)">Consumibles Variados</button>
         </div>
 
-        <!-- GRID DE PRODUCTOS -->
+        <!-- GRID DE PRODUCTOS (CON GRAN VARIEDAD DE CONSUMIBLES) -->
         <div class="grid">
+            <!-- Hardware -->
             <div class="product-card" data-cat="hardware">
                 <span class="product-badge">POPULAR</span>
                 <div style="font-size:45px; text-align:center; margin:10px 0;">📦</div>
@@ -489,13 +529,65 @@ HTML_TIENDA = """
                 </div>
             </div>
 
+            <!-- Gran Variedad de Consumibles -->
             <div class="product-card" data-cat="consumibles">
+                <span class="product-badge">OFERTA</span>
                 <div style="font-size:45px; text-align:center; margin:10px 0;">📄</div>
                 <h3 style="font-size:16px;">Caja Papel Térmico (50 Rollos)</h3>
-                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Rollos de alta durabilidad 80x60mm libre de BPA.</p>
+                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Rollos 80x60mm de alta durabilidad y libre de BPA.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
                     <b style="font-size:18px; color:var(--primary);">$85.000</b>
-                    <button class="btn" onclick="agregarProducto('Caja Papel Térmico', 85000)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <button class="btn" onclick="agregarProducto('Caja Papel Térmico (50 Rollos)', 85000)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-cat="consumibles">
+                <div style="font-size:45px; text-align:center; margin:10px 0;">🏷️</div>
+                <h3 style="font-size:16px;">Rollos de Etiquetas Autoadhesivas (Paquete x10)</h3>
+                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Medida 50x30mm en térmico directo para códigos.</p>
+                <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
+                    <b style="font-size:18px; color:var(--primary);">$45.000</b>
+                    <button class="btn" onclick="agregarProducto('Rollos de Etiquetas Autoadhesivas (x10)', 45000)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-cat="consumibles">
+                <div style="font-size:45px; text-align:center; margin:10px 0;">📜</div>
+                <h3 style="font-size:16px;">Cinta Ribbon de Cera (Pack x3 unidades)</h3>
+                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Ribbon 110mm x 74m para impresoras de transferencia térmica.</p>
+                <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
+                    <b style="font-size:18px; color:var(--primary);">$62.000</b>
+                    <button class="btn" onclick="agregarProducto('Cinta Ribbon de Cera (x3)', 62000)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-cat="consumibles">
+                <div style="font-size:45px; text-align:center; margin:10px 0;">🔖</div>
+                <h3 style="font-size:16px;">Etiquetas de Precios Flúor (Rollo x1000)</h3>
+                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Etiquetas autoadhesivas de colores brillantes para ofertas.</p>
+                <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
+                    <b style="font-size:18px; color:var(--primary);">$22.000</b>
+                    <button class="btn" onclick="agregarProducto('Etiquetas de Precios Flúor', 22000)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-cat="consumibles">
+                <div style="font-size:45px; text-align:center; margin:10px 0;">🖋️</div>
+                <h3 style="font-size:16px;">Cartucho de Tinta Alternativo para Facturadores</h3>
+                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Tinta negra de secado rápido resistente al agua.</p>
+                <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
+                    <b style="font-size:18px; color:var(--primary);">$38.000</b>
+                    <button class="btn" onclick="agregarProducto('Cartucho de Tinta Facturadores', 38000)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-cat="consumibles">
+                <div style="font-size:45px; text-align:center; margin:10px 0;">📦</div>
+                <h3 style="font-size:16px;">Papel Bond para Sumadora (Pack x12 rollos)</h3>
+                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Papel bond de 1 raya 76mm x 60m para terminales tradicionales.</p>
+                <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
+                    <b style="font-size:18px; color:var(--primary);">$54.000</b>
+                    <button class="btn" onclick="agregarProducto('Papel Bond Sumadora (x12)', 54000)" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
         </div>
@@ -506,18 +598,36 @@ HTML_TIENDA = """
         🛒 Mi Carrito (<span id="cart-count">0</span>)
     </div>
 
-    <!-- MODAL DEL CARRITO -->
+    <!-- MODAL DEL CARRITO Y PASARELA DE PAGO -->
     <div id="modal-carrito" class="modal">
         <div class="modal-content">
             <h3>Tu Pedido - <span style="color:var(--primary);">{{ sede_actual }}</span></h3>
-            <div id="cart-items" style="margin:20px 0; max-height:200px; overflow-y:auto;">
+            <div id="cart-items" style="margin:15px 0; max-height:160px; overflow-y:auto;">
                 <p style="color:var(--gray-text);">El carrito está vacío</p>
             </div>
-            <div style="display:flex; justify-content:space-between; align-items:center; font-size:18px; border-top:2px solid var(--gray); padding-top:10px;">
-                <span>Total:</span>
+            
+            <div style="margin-top:15px;">
+                <label style="font-size:13px; font-weight:700; color:var(--gray-text);">Selecciona Método de Pago Real (Demo):</label>
+                <div class="payment-method-grid">
+                    <div class="payment-option selected" onclick="seleccionarMetodoPago('Tarjeta Crédito/Débito', this)">💳 Tarjeta Crédito / Débito</div>
+                    <div class="payment-option" onclick="seleccionarMetodoPago('PSE (Bancos)', this)">🏦 PSE (Bancos)</div>
+                    <div class="payment-option" onclick="seleccionarMetodoPago('Billetera Digital (Nequi/Daviplata)', this)">📱 Nequi / Daviplata</div>
+                    <div class="payment-option" onclick="seleccionarMetodoPago('Efectivo / Pago en Puntos (Efecty/Baloto)', this)">💵 Efectivo (Efecty/Baloto)</div>
+                </div>
+                <div id="detalles-pago-container" style="margin-top:10px;">
+                    <input type="text" placeholder="Número de Tarjeta (Ej: 4532 •••• •••• 8821)" required style="width:100%; padding:10px; margin:6px 0; border:1px solid var(--gray); border-radius:8px;">
+                    <div style="display:flex; gap:10px;">
+                        <input type="text" placeholder="MM/AA" required style="width:50%; padding:10px; margin:6px 0; border:1px solid var(--gray); border-radius:8px;">
+                        <input type="password" placeholder="CVV" maxlength="4" required style="width:50%; padding:10px; margin:6px 0; border:1px solid var(--gray); border-radius:8px;">
+                    </div>
+                </div>
+            </div>
+
+            <div style="display:flex; justify-content:space-between; align-items:center; font-size:18px; border-top:2px solid var(--gray); padding-top:10px; margin-top:15px;">
+                <span>Total a Pagar:</span>
                 <b id="cart-total" style="color:var(--primary);">$0</b>
             </div>
-            <button class="btn" onclick="procesarCompra()" style="margin-top:20px;">💳 Confirmar y Finalizar Pedido</button>
+            <button class="btn" onclick="procesarCompra()" style="margin-top:15px;">💳 Pagar y Finalizar Pedido</button>
             <button class="btn btn-outline" onclick="cerrarCarrito()" style="margin-top:8px;">Seguir Comprando</button>
         </div>
     </div>
@@ -569,7 +679,7 @@ HTML_DASHBOARD = """
                     document.getElementById('total-pedidos-count').innerText = pedidos.length;
                     
                     if(pedidos.length === 0) {
-                        tabla.innerHTML = '<tr><td colspan="5" style="text-align:center; color:var(--gray-text);">No hay actividad de clientes reciente</td></tr>';
+                        tabla.innerHTML = '<tr><td colspan="6" style="text-align:center; color:var(--gray-text);">No hay actividad de clientes reciente</td></tr>';
                         return;
                     }
 
@@ -580,6 +690,7 @@ HTML_DASHBOARD = """
                             <td>${p.cliente}</td>
                             <td>${p.sede}</td>
                             <td>${p.productos}</td>
+                            <td><span class="tag tag-empleado" style="font-size:11px;">${p.metodo_pago || 'Tarjeta'}</span></td>
                             <td><b style="color:var(--primary);">$${p.total.toLocaleString()}</b></td>
                         </tr>`;
                     });
@@ -643,11 +754,12 @@ HTML_DASHBOARD = """
                                 <th>Cliente</th>
                                 <th>Sede</th>
                                 <th>Detalle Pedido</th>
+                                <th>Método Pago</th>
                                 <th>Total</th>
                             </tr>
                         </thead>
                         <tbody id="tabla-pedidos-realtime">
-                            <tr><td colspan="5" style="text-align:center; color:var(--gray-text);">Cargando actividad...</td></tr>
+                            <tr><td colspan="6" style="text-align:center; color:var(--gray-text);">Cargando actividad...</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -682,15 +794,15 @@ HTML_DASHBOARD = """
                         </thead>
                         <tbody id="tabla-inventario">
                             <tr>
-                                <td>Lector Código de Barras 2D</td>
+                                <td>Caja Papel Térmico (50 Rollos)</td>
                                 <td>Sede Centro</td>
-                                <td>15 unidades</td>
+                                <td>24 unidades</td>
                                 <td><span class="tag tag-empleado">Disponible</span></td>
                             </tr>
                             <tr>
-                                <td>Impresora Térmica POS</td>
+                                <td>Rollos de Etiquetas Autoadhesivas</td>
                                 <td>Sede Norte</td>
-                                <td>3 unidades</td>
+                                <td>5 unidades</td>
                                 <td><span class="tag tag-admin">Bajo Stock</span></td>
                             </tr>
                         </tbody>
@@ -698,7 +810,7 @@ HTML_DASHBOARD = """
                 </div>
             </div>
 
-            <!-- SEDES CON DIRECCIONES INVENTADAS -->
+            <!-- SEDES CON DIRECCIONES -->
             <div id="sedes" class="seccion-tab fade-in" style="display:none;">
                 <div class="card">
                     <h2>Configuración de Puntos de Atención</h2>
@@ -788,6 +900,7 @@ def crear_pedido():
         'cliente': data.get('cliente', 'Anonimo'),
         'sede': data.get('sede', 'Sede Centro'),
         'productos': data.get('productos', ''),
+        'metodo_pago': data.get('metodo_pago', 'Tarjeta'),
         'total': data.get('total', 0)
     }
     PEDIDOS_REGISTRADOS.insert(0, nuevo_pedido)
