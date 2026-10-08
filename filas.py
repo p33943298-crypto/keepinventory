@@ -339,7 +339,7 @@ HTML_CLIENTE_AUTH = """
 </html>
 """
 
-# VISTA CLIENTE CORREGIDA CON FUNCIONES DIRECTAS EN WINDOW
+# CATALOGO Y TIENDA CON BLOQUE RAW DE JINJA PARA PROTEGER EL JAVASCRIPT
 HTML_TIENDA = """
 <!DOCTYPE html>
 <html lang="es">
@@ -348,150 +348,6 @@ HTML_TIENDA = """
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catálogo - Cliente</title>
     <style>{{ css | safe }}</style>
-    <script>
-        var CLIENTE_NOMBRE = "{{ cliente_nombre }}";
-        var SEDE_ACTUAL = "{{ sede_actual }}";
-        var carrito = [];
-        var metodoPagoSeleccionado = 'tarjeta';
-
-        function agregarProducto(nombre, precio) {
-            carrito.push({nombre: nombre, precio: precio});
-            actualizarCarritoUI();
-        }
-
-        function quitarProducto(index) {
-            carrito.splice(index, 1);
-            actualizarCarritoUI();
-        }
-
-        function actualizarCarritoUI() {
-            var countElem = document.getElementById('cart-count');
-            if(countElem) countElem.innerText = carrito.length;
-
-            var total = 0;
-            for (var i = 0; i < carrito.length; i++) {
-                total += carrito[i].precio;
-            }
-
-            var totalElem = document.getElementById('cart-total');
-            if(totalElem) totalElem.innerText = '$' + total.toLocaleString();
-
-            var listaHtml = '';
-            for (var j = 0; j < carrito.length; j++) {
-                listaHtml += '<div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid #e2e8f0;">' +
-                    '<span>' + carrito[j].nombre + '</span>' +
-                    '<div style="display:flex; align-items:center; gap:10px;">' +
-                        '<b>$' + carrito[j].precio.toLocaleString() + '</b>' +
-                        '<button class="btn-remove" type="button" onclick="quitarProducto(' + j + ')">❌ Quitar</button>' +
-                    '</div>' +
-                '</div>';
-            }
-            var itemsElem = document.getElementById('cart-items');
-            if(itemsElem) itemsElem.innerHTML = listaHtml || '<p style="color:var(--gray-text);">El carrito está vacío</p>';
-        }
-
-        function abrirCarrito() {
-            document.getElementById("modal-carrito").style.display = "flex";
-        }
-
-        function cerrarCarrito() {
-            document.getElementById("modal-carrito").style.display = "none";
-        }
-
-        function seleccionarMetodoPago(metodo, elem) {
-            metodoPagoSeleccionado = metodo;
-            var payCards = document.querySelectorAll(".pay-card");
-            for (var k = 0; k < payCards.length; k++) {
-                payCards[k].classList.remove("selected");
-            }
-            elem.classList.add("selected");
-
-            var subForms = document.querySelectorAll(".form-pago-sub");
-            for (var m = 0; m < subForms.length; m++) {
-                subForms[m].style.display = "none";
-            }
-            
-            var targetForm = document.getElementById("form-pago-" + metodo);
-            if(targetForm) targetForm.style.display = "block";
-        }
-
-        function procesarCompra() {
-            if (carrito.length === 0) {
-                alert("Añade productos al carrito primero.");
-                return;
-            }
-
-            if (metodoPagoSeleccionado === 'tarjeta') {
-                var num = document.getElementById('pay-card-num').value;
-                var exp = document.getElementById('pay-card-exp').value;
-                var cvc = document.getElementById('pay-card-cvc').value;
-                if (!num || !exp || !cvc) { alert('Completa los campos de la tarjeta.'); return; }
-            } else if (metodoPagoSeleccionado === 'pse') {
-                var banco = document.getElementById('pay-pse-bank').value;
-                var doc = document.getElementById('pay-pse-doc').value;
-                if (!banco || !doc) { alert('Selecciona tu banco e ingresa tu documento.'); return; }
-            } else if (metodoPagoSeleccionado === 'billetera') {
-                var tel = document.getElementById('pay-wallet-tel').value;
-                if (!tel) { alert('Ingresa tu número celular registrado.'); return; }
-            }
-
-            var total = 0;
-            var nombresArr = [];
-            for (var n = 0; n < carrito.length; n++) {
-                total += carrito[n].precio;
-                nombresArr.push(carrito[n].nombre);
-            }
-            var detallesItems = nombresArr.join(', ');
-
-            var nombreMetodo = '💳 Tarjeta Crédito/Débito';
-            if (metodoPagoSeleccionado === 'pse') nombreMetodo = '🏦 PSE / Transferencia Bancaria';
-            if (metodoPagoSeleccionado === 'billetera') nombreMetodo = '📱 Billetera Digital (Nequi/Daviplata/MP)';
-            if (metodoPagoSeleccionado === 'efectivo') nombreMetodo = '💵 Pago Contra Entrega';
-
-            fetch('/api/crear-pedido', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({
-                    cliente: CLIENTE_NOMBRE,
-                    sede: SEDE_ACTUAL,
-                    productos: detallesItems,
-                    metodo_pago: nombreMetodo,
-                    total: total
-                })
-            })
-            .then(function(res) { return res.json(); })
-            .then(function(data) {
-                if (data.status === 'ok') {
-                    alert('🎉 ¡Pago procesado con éxito mediante ' + nombreMetodo + '!\nTu pedido se enviará desde la sede ' + SEDE_ACTUAL);
-                    carrito = [];
-                    actualizarCarritoUI();
-                    cerrarCarrito();
-                }
-            })
-            .catch(function() {
-                alert('Error al procesar el pedido con el servidor.');
-            });
-        }
-
-        function filtrarCategoria(cat, btn) {
-            var catBtns = document.querySelectorAll('.cat-btn');
-            for (var i = 0; i < catBtns.length; i++) {
-                catBtns[i].classList.remove('btn');
-                catBtns[i].classList.add('btn-outline');
-            }
-            btn.classList.add('btn');
-            btn.classList.remove('btn-outline');
-
-            var productos = document.querySelectorAll('.product-card');
-            for (var j = 0; j < productos.length; j++) {
-                if (cat === 'todos' || productos[j].getAttribute('data-cat') === cat) {
-                    productos[j].style.display = 'flex';
-                } else {
-                    productos[j].style.display = 'none';
-                }
-            }
-        }
-    </script>
 </head>
 <body style="background:#f8fafc;">
     <div style="padding:25px; max-width:1200px; margin:0 auto;" class="fade-in">
@@ -695,6 +551,156 @@ HTML_TIENDA = """
             <button type="button" class="btn btn-outline" onclick="cerrarCarrito()" style="margin-top:8px;">Seguir Comprando</button>
         </div>
     </div>
+
+    <script>
+        var CLIENTE_NOMBRE = "{{ cliente_nombre }}";
+        var SEDE_ACTUAL = "{{ sede_actual }}";
+    </script>
+
+    {% raw %}
+    <script>
+        window.carrito = [];
+        window.metodoPagoSeleccionado = 'tarjeta';
+
+        window.agregarProducto = function(nombre, precio) {
+            window.carrito.push({nombre: nombre, precio: precio});
+            window.actualizarCarritoUI();
+        };
+
+        window.quitarProducto = function(index) {
+            window.carrito.splice(index, 1);
+            window.actualizarCarritoUI();
+        };
+
+        window.actualizarCarritoUI = function() {
+            var countElem = document.getElementById('cart-count');
+            if(countElem) countElem.innerText = window.carrito.length;
+
+            var total = 0;
+            for (var i = 0; i < window.carrito.length; i++) {
+                total += window.carrito[i].precio;
+            }
+
+            var totalElem = document.getElementById('cart-total');
+            if(totalElem) totalElem.innerText = '$' + total.toLocaleString();
+
+            var listaHtml = '';
+            for (var j = 0; j < window.carrito.length; j++) {
+                listaHtml += '<div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid #e2e8f0;">' +
+                    '<span>' + window.carrito[j].nombre + '</span>' +
+                    '<div style="display:flex; align-items:center; gap:10px;">' +
+                        '<b>$' + window.carrito[j].precio.toLocaleString() + '</b>' +
+                        '<button class="btn-remove" type="button" onclick="window.quitarProducto(' + j + ')">❌ Quitar</button>' +
+                    '</div>' +
+                '</div>';
+            }
+            var itemsElem = document.getElementById('cart-items');
+            if(itemsElem) itemsElem.innerHTML = listaHtml || '<p style="color:var(--gray-text);">El carrito está vacío</p>';
+        };
+
+        window.abrirCarrito = function() {
+            document.getElementById("modal-carrito").style.display = "flex";
+        };
+
+        window.cerrarCarrito = function() {
+            document.getElementById("modal-carrito").style.display = "none";
+        };
+
+        window.seleccionarMetodoPago = function(metodo, elem) {
+            window.metodoPagoSeleccionado = metodo;
+            var payCards = document.querySelectorAll(".pay-card");
+            for (var k = 0; k < payCards.length; k++) {
+                payCards[k].classList.remove("selected");
+            }
+            elem.classList.add("selected");
+
+            var subForms = document.querySelectorAll(".form-pago-sub");
+            for (var m = 0; m < subForms.length; m++) {
+                subForms[m].style.display = "none";
+            }
+            
+            var targetForm = document.getElementById("form-pago-" + metodo);
+            if(targetForm) targetForm.style.display = "block";
+        };
+
+        window.procesarCompra = function() {
+            if (window.carrito.length === 0) {
+                alert("Añade productos al carrito primero.");
+                return;
+            }
+
+            if (window.metodoPagoSeleccionado === 'tarjeta') {
+                var num = document.getElementById('pay-card-num').value;
+                var exp = document.getElementById('pay-card-exp').value;
+                var cvc = document.getElementById('pay-card-cvc').value;
+                if (!num || !exp || !cvc) { alert('Completa los campos de la tarjeta.'); return; }
+            } else if (window.metodoPagoSeleccionado === 'pse') {
+                var banco = document.getElementById('pay-pse-bank').value;
+                var doc = document.getElementById('pay-pse-doc').value;
+                if (!banco || !doc) { alert('Selecciona tu banco e ingresa tu documento.'); return; }
+            } else if (window.metodoPagoSeleccionado === 'billetera') {
+                var tel = document.getElementById('pay-wallet-tel').value;
+                if (!tel) { alert('Ingresa tu número celular registrado.'); return; }
+            }
+
+            var total = 0;
+            var nombresArr = [];
+            for (var n = 0; n < window.carrito.length; n++) {
+                total += window.carrito[n].precio;
+                nombresArr.push(window.carrito[n].nombre);
+            }
+            var detallesItems = nombresArr.join(', ');
+
+            var nombreMetodo = '💳 Tarjeta Crédito/Débito';
+            if (window.metodoPagoSeleccionado === 'pse') nombreMetodo = '🏦 PSE / Transferencia Bancaria';
+            if (window.metodoPagoSeleccionado === 'billetera') nombreMetodo = '📱 Billetera Digital (Nequi/Daviplata/MP)';
+            if (window.metodoPagoSeleccionado === 'efectivo') nombreMetodo = '💵 Pago Contra Entrega';
+
+            fetch('/api/crear-pedido', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    cliente: CLIENTE_NOMBRE,
+                    sede: SEDE_ACTUAL,
+                    productos: detallesItems,
+                    metodo_pago: nombreMetodo,
+                    total: total
+                })
+            })
+            .then(function(res) { return res.json(); })
+            .then(function(data) {
+                if (data.status === 'ok') {
+                    alert('🎉 ¡Pago procesado con éxito mediante ' + nombreMetodo + '!\nTu pedido se enviará desde la sede ' + SEDE_ACTUAL);
+                    window.carrito = [];
+                    window.actualizarCarritoUI();
+                    window.cerrarCarrito();
+                }
+            })
+            .catch(function() {
+                alert('Error al procesar el pedido con el servidor.');
+            });
+        };
+
+        window.filtrarCategoria = function(cat, btn) {
+            var catBtns = document.querySelectorAll('.cat-btn');
+            for (var i = 0; i < catBtns.length; i++) {
+                catBtns[i].classList.remove('btn');
+                catBtns[i].classList.add('btn-outline');
+            }
+            btn.classList.add('btn');
+            btn.classList.remove('btn-outline');
+
+            var productos = document.querySelectorAll('.product-card');
+            for (var j = 0; j < productos.length; j++) {
+                if (cat === 'todos' || productos[j].getAttribute('data-cat') === cat) {
+                    productos[j].style.display = 'flex';
+                } else {
+                    productos[j].style.display = 'none';
+                }
+            }
+        };
+    </script>
+    {% endraw %}
 </body>
 </html>
 """
