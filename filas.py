@@ -126,16 +126,15 @@ tr:hover td{background:#f8fafc;}
 .product-card:hover{transform:translateY(-8px); box-shadow:0 20px 35px rgba(0,0,0,0.08); border-color:var(--primary);}
 .product-badge{position:absolute; top:15px; right:15px; background:var(--accent); color:white; font-size:11px; font-weight:800; padding:4px 10px; border-radius:30px; letter-spacing:0.5px; box-shadow:0 4px 10px rgba(245,158,11,0.3);}
 
-/* CARRITO MODAL Y CHECKOUT CON METODOS DE PAGO REALES */
+/* CARRITO MODAL Y PASARELA DE PAGOS */
 .cart-floating-btn{position:fixed; bottom:30px; right:30px; background:var(--primary-gradient); color:white; padding:16px 26px; border-radius:50px; cursor:pointer; font-weight:700; box-shadow:0 10px 30px rgba(15,138,95,0.4); display:flex; align-items:center; gap:12px; z-index:99; transition:all 0.3s ease;}
 .cart-floating-btn:hover{transform:scale(1.08) translateY(-3px); box-shadow:0 15px 35px rgba(15,138,95,0.5);}
 .modal{display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(15,23,42,0.6); backdrop-filter:blur(6px); z-index:1000; justify-content:center; align-items:center;}
-.modal-content{background:white; padding:35px; border-radius:24px; width:90%; max-width:540px; position:relative; animation:fadeIn 0.3s ease; box-shadow:0 25px 50px rgba(0,0,0,0.25); max-height:90vh; overflow-y:auto;}
+.modal-content{background:white; padding:35px; border-radius:24px; width:90%; max-width:520px; position:relative; animation:fadeIn 0.3s ease; box-shadow:0 25px 50px rgba(0,0,0,0.25); max-height:90vh; overflow-y:auto;}
 .btn-remove{background:#fee2e2; color:#dc2626; border:none; border-radius:8px; padding:6px 10px; cursor:pointer; font-size:12px; font-weight:700; transition:all 0.2s;}
 .btn-remove:hover{background:#fca5a5; transform:scale(1.05);}
-.payment-method-grid{display:grid; grid-template-columns:repeat(2, 1fr); gap:10px; margin:15px 0;}
-.payment-option{border:2px solid var(--gray); padding:12px; border-radius:12px; text-align:center; cursor:pointer; font-size:13px; font-weight:600; transition:all 0.2s;}
-.payment-option:hover, .payment-option.selected{border-color:var(--primary); background:var(--primary-light); color:var(--primary-dark);}
+.payment-method-box{border:2px solid var(--gray); border-radius:12px; padding:12px 16px; margin:10px 0; cursor:pointer; transition:all 0.2s;}
+.payment-method-box:hover{border-color:var(--primary); background:var(--primary-light);}
 
 /* RESPONSIVE */
 @media(max-width:800px){
@@ -143,7 +142,6 @@ tr:hover td{background:#f8fafc;}
   .dashboard{flex-direction:column;}
   .sidebar{width:100%;}
   .header-cliente{flex-direction:column; gap:15px; align-items:flex-start;}
-  .payment-method-grid{grid-template-columns:1fr;}
 }
 """
 
@@ -163,7 +161,7 @@ HTML_LANDING = """
             <div class="brand-large">
                 <div class="logo-large">KI</div>
                 <h1>KeepInventoryLite</h1>
-                <p>Gestión inteligente de inventarios y catálogo digital</p>
+                <p>Gestión inteligente de inventarios y alimentos gourmet</p>
             </div>
             <div class="selector-grid">
                 <a href="/login-staff" class="selector-card staff">
@@ -173,9 +171,9 @@ HTML_LANDING = """
                     <span>INGRESAR COMO STAFF →</span>
                 </a>
                 <a href="/cliente-ubicacion" class="selector-card client">
-                    <div class="icon">🛒</div>
-                    <h2>Portal Clientes</h2>
-                    <p>Encuentra tu sede más cercana y consulta disponibilidad.</p>
+                    <div class="icon">🍔</div>
+                    <h2>Portal de Comidas</h2>
+                    <p>Encuentra tu sede y pide hamburguesas, pizzas, bebidas y postres.</p>
                     <span>SELECCIONAR MI SEDE →</span>
                 </a>
             </div>
@@ -254,29 +252,29 @@ HTML_CLIENTE_UBICACION = """
     <div style="max-width:900px; margin:0 auto;" class="fade-in">
         <div class="brand" style="margin-bottom:20px;">
             <div class="logo">KI</div>
-            <h2>Paso 1: Selecciona tu Ubicación de Atención</h2>
+            <h2>Paso 1: Selecciona tu Sede de Comida Cercana</h2>
         </div>
-        <p style="color:var(--gray-text); margin-bottom:25px;">Elige tu sede o almacén preferido para verificar stock local e itinerario de entregas.</p>
+        <p style="color:var(--gray-text); margin-bottom:25px;">Elige el restaurante o punto express para preparar tu pedido al instante.</p>
 
         <div class="sede-selector-grid">
-            <div class="sede-card-interactive" onclick="guardarSedeYContinuar('Sede Principal (Centro)', 'Av. Las Acacias #45-18, Sector Comercial')">
+            <div class="sede-card-interactive" onclick="guardarSedeYContinuar('Sede Principal (Centro)', 'Av. Las Acacias #45-18, Zona Gastronómica')">
                 <div style="font-size:40px; margin-bottom:10px;">🏢</div>
                 <h3>Sede Centro</h3>
-                <p style="color:var(--gray-text); font-size:13px;">Av. Las Acacias #45-18, Sector Comercial</p>
+                <p style="color:var(--gray-text); font-size:13px;">Av. Las Acacias #45-18, Zona Gastronómica</p>
                 <span style="color:var(--primary); font-weight:bold; font-size:13px; margin-top:10px; display:inline-block;">SELECCIONAR ESTA SEDE →</span>
             </div>
 
-            <div class="sede-card-interactive" onclick="guardarSedeYContinuar('Sede Norte', 'Calle Del Sol #102-15, Plaza Mayor')">
+            <div class="sede-card-interactive" onclick="guardarSedeYContinuar('Sede Norte (Plaza)', 'Calle Del Sol #102-15, Mall Gourmet')">
                 <div style="font-size:40px; margin-bottom:10px;">🏬</div>
-                <h3>Sede Norte</h3>
-                <p style="color:var(--gray-text); font-size:13px;">Calle Del Sol #102-15, Plaza Mayor</p>
+                <h3>Sede Norte Gourmet</h3>
+                <p style="color:var(--gray-text); font-size:13px;">Calle Del Sol #102-15, Mall Gourmet</p>
                 <span style="color:var(--primary); font-weight:bold; font-size:13px; margin-top:10px; display:inline-block;">SELECCIONAR ESTA SEDE →</span>
             </div>
 
-            <div class="sede-card-interactive" onclick="guardarSedeYContinuar('Sede Sur (Express)', 'Transversal 78 #12-30, Parque Industrial')">
+            <div class="sede-card-interactive" onclick="guardarSedeYContinuar('Sede Sur (Autoservicio)', 'Transversal 78 #12-30, Autopista Sur')">
                 <div style="font-size:40px; margin-bottom:10px;">🏪</div>
                 <h3>Sede Sur Express</h3>
-                <p style="color:var(--gray-text); font-size:13px;">Transversal 78 #12-30, Parque Industrial</p>
+                <p style="color:var(--gray-text); font-size:13px;">Transversal 78 #12-30, Autopista Sur</p>
                 <span style="color:var(--primary); font-weight:bold; font-size:13px; margin-top:10px; display:inline-block;">SELECCIONAR ESTA SEDE →</span>
             </div>
         </div>
@@ -337,7 +335,7 @@ HTML_CLIENTE_AUTH = """
             <form id="form-login" action="/login-cliente" method="POST">
                 <input type="email" name="email" placeholder="Tu correo electrónico" required>
                 <input type="password" name="password" placeholder="Tu contraseña" required>
-                <button type="submit" class="btn">🛒 Entrar a Comprar</button>
+                <button type="submit" class="btn">🍔 Entrar a Pedir Comida</button>
             </form>
 
             <!-- FORMULARIO REGISTRO CLIENTE -->
@@ -345,7 +343,7 @@ HTML_CLIENTE_AUTH = """
                 <input type="text" name="nombre" placeholder="Nombre Completo" required>
                 <input type="email" name="email" placeholder="Correo electrónico" required>
                 <input type="password" name="password" placeholder="Crea una Contraseña" required>
-                <button type="submit" class="btn">✨ Crear Cuenta y Continuar</button>
+                <button type="submit" class="btn">✨ Crear Cuenta y Pedir</button>
             </form>
 
             <a href="/cliente-ubicacion" style="display:block; margin-top:20px; color:var(--gray-text); text-decoration:none; font-size:13px;">← Cambiar de Sede</a>
@@ -355,18 +353,17 @@ HTML_CLIENTE_AUTH = """
 </html>
 """
 
-# CATÁLOGO AMPLIADO CON GRAN VARIEDAD DE CONSUMIBLES Y MÉTODOS DE PAGO REALES
+# CATÁLOGO DE COMIDAS CON PAGO REAL ELEGIBLE Y DATOS INVENTADOS
 HTML_TIENDA = """
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catálogo - Cliente</title>
+    <title>Menú Gourmet - Cliente</title>
     <style>{{ css | safe }}</style>
     <script>
         let carrito = [];
-        let metodoPagoSeleccionado = 'Tarjeta Crédito/Débito';
 
         function agregarProducto(nombre, precio) {
             carrito.push({nombre, precio});
@@ -389,61 +386,47 @@ HTML_TIENDA = """
                     <span>${p.nombre}</span>
                     <div style="display:flex; align-items:center; gap:10px;">
                         <b>$${p.precio.toLocaleString()}</b>
-                        <button class="btn-remove" onclick="quitarProducto(${index})">❌ Quitar</button>
+                        <button class="btn-remove" onclick="quitarProducto(${index})">❌</button>
                     </div>
                 </div>`;
             });
             document.getElementById('cart-items').innerHTML = listaHtml || '<p style="color:var(--gray-text);">El carrito está vacío</p>';
         }
 
-        function abrirCarrito() { document.getElementById('modal-carrito').style.display = 'flex'; }
-        function cerrarCarrito() { document.getElementById('modal-carrito').style.display = 'none'; }
-        
-        function seleccionarMetodoPago(metodo, elemento) {
-            metodoPagoSeleccionado = metodo;
-            document.querySelectorAll('.payment-option').forEach(el => el.classList.remove('selected'));
-            elemento.classList.add('selected');
-
-            // Mostrar campos dinámicos según el método elegido (datos inventados/ficticios)
-            let camposHtml = '';
-            if(metodo === 'Tarjeta Crédito/Débito') {
-                camposHtml = `
-                    <input type="text" placeholder="Número de Tarjeta (Ej: 4532 •••• •••• 8821)" required style="width:100%; padding:10px; margin:6px 0; border:1px solid var(--gray); border-radius:8px;">
-                    <div style="display:flex; gap:10px;">
-                        <input type="text" placeholder="MM/AA" required style="width:50%; padding:10px; margin:6px 0; border:1px solid var(--gray); border-radius:8px;">
-                        <input type="password" placeholder="CVV" maxlength="4" required style="width:50%; padding:10px; margin:6px 0; border:1px solid var(--gray); border-radius:8px;">
-                    </div>
-                `;
-            } else if(metodo === 'PSE (Bancos)') {
-                camposHtml = `
-                    <select style="width:100%; padding:10px; margin:6px 0; border:1px solid var(--gray); border-radius:8px;">
-                        <option>Seleccione su banco simulado</option>
-                        <option>Bancolombia (Demo)</option>
-                        <option>Banco de Bogotá (Demo)</option>
-                        <option>Davivienda (Demo)</option>
-                        <option>NEQUI (Demo)</option>
-                    </select>
-                    <input type="text" placeholder="Número de Cédula o NIT ficticio" required style="width:100%; padding:10px; margin:6px 0; border:1px solid var(--gray); border-radius:8px;">
-                `;
-            } else if(metodo === 'Billetera Digital (Nequi/Daviplata)') {
-                camposHtml = `
-                    <input type="text" placeholder="Número Celular Vinculado (Ej: 300 123 4567)" required style="width:100%; padding:10px; margin:6px 0; border:1px solid var(--gray); border-radius:8px;">
-                `;
-            } else if(metodo === 'Efectivo / Pago en Puntos (Efecty/Baloto)') {
-                camposHtml = `
-                    <p style="font-size:12px; color:var(--gray-text); margin:6px 0;">Se generará un código de referencia ficticio para pagar en cualquier punto aliado autorizado.</p>
-                `;
-            }
-            document.getElementById('detalles-pago-container').innerHTML = camposHtml;
+        function abrirCarrito() { 
+            document.getElementById('modal-carrito').style.display = 'flex'; 
+            document.getElementById('paso-carrito').style.display = 'block';
+            document.getElementById('paso-pago').style.display = 'none';
         }
 
-        function procesarCompra() {
-            if(carrito.length === 0) { alert('Añade productos primero'); return; }
-            
+        function cerrarCarrito() { document.getElementById('modal-carrito').style.display = 'none'; }
+        
+        function irAPago() {
+            if(carrito.length === 0) { alert('Añade productos de comida primero'); return; }
+            let total = carrito.reduce((sum, p) => sum + p.precio, 0);
+            document.getElementById('monto-pagar').innerText = '$' + total.toLocaleString();
+            document.getElementById('paso-carrito').style.display = 'none';
+            document.getElementById('paso-pago').style.display = 'block';
+        }
+
+        function seleccionarMetodoPago(metodo) {
+            document.querySelectorAll('.payment-sec').forEach(el => el.style.display = 'none');
+            if(metodo === 'tarjeta') {
+                document.getElementById('pago-tarjeta').style.display = 'block';
+            } else if(metodo === 'pse') {
+                document.getElementById('pago-pse').style.display = 'block';
+            } else if(metodo === 'nequi') {
+                document.getElementById('pago-nequi').style.display = 'block';
+            } else if(metodo === 'efectivo') {
+                document.getElementById('pago-efectivo').style.display = 'block';
+            }
+        }
+
+        function confirmarPagoFinal(metodoNombre) {
             let total = carrito.reduce((sum, p) => sum + p.precio, 0);
             let detallesItems = carrito.map(p => p.nombre).join(', ');
 
-            // Enviar pedido al servidor para reflejarse en tiempo real al Administrador
+            // Enviar pedido al servidor en tiempo real
             fetch('/api/crear-pedido', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
@@ -452,10 +435,10 @@ HTML_TIENDA = """
                     sede: '{{ sede_actual }}',
                     productos: detallesItems,
                     total: total,
-                    metodo_pago: metodoPagoSeleccionado
+                    metodo_pago: metodoNombre
                 })
             }).then(() => {
-                alert('🎉 ¡Pago procesado con éxito vía ' + metodoPagoSeleccionado + ' para entrega en ' + '{{ sede_actual }}!');
+                alert('🎉 ¡Pago exitoso vía ' + metodoNombre + '! Tu pedido de comida está en camino en ' + '{{ sede_actual }}.');
                 carrito = [];
                 actualizarCarritoUI();
                 cerrarCarrito();
@@ -487,107 +470,111 @@ HTML_TIENDA = """
             <div class="brand">
                 <div class="logo">KI</div>
                 <div>
-                    <h2 style="font-size:20px;">Catálogo Digital</h2>
+                    <h2 style="font-size:20px;">Menú de Alimentos y Consumibles</h2>
                     <p style="font-size:12px; color:var(--gray-text);">Sede activa: <b>📍 {{ sede_actual }}</b></p>
                 </div>
             </div>
             <div style="display:flex; align-items:center; gap:15px;">
                 <span style="font-size:14px;">Hola, <b>{{ cliente_nombre }}</b></span>
-                <a href="/cliente-ubicacion" class="btn btn-outline" style="padding:8px 12px; font-size:12px;">📍 Cambiar Ubicación</a>
+                <a href="/cliente-ubicacion" class="btn btn-outline" style="padding:8px 12px; font-size:12px;">📍 Cambiar Sede</a>
                 <a href="/logout" class="btn btn-danger" style="padding:8px 12px; font-size:12px;">Cerrar Sesión</a>
             </div>
         </div>
 
         <!-- FILTROS DE CATEGORÍA -->
         <div style="display:flex; gap:10px; margin-bottom:25px; overflow-x:auto; padding-bottom:5px;">
-            <button class="btn cat-btn" onclick="filtrarCategoria('todos', this)">Todos los productos</button>
-            <button class="btn btn-outline cat-btn" onclick="filtrarCategoria('hardware', this)">Hardware & Pos</button>
-            <button class="btn btn-outline cat-btn" onclick="filtrarCategoria('consumibles', this)">Consumibles Variados</button>
+            <button class="btn cat-btn" onclick="filtrarCategoria('todos', this)">🍔 Todo el Menú</button>
+            <button class="btn btn-outline cat-btn" onclick="filtrarCategoria('hamburguesas', this)">🔥 Hamburguesas</button>
+            <button class="btn btn-outline cat-btn" onclick="filtrarCategoria('pizzas', this)">🍕 Pizzas Artesanales</button>
+            <button class="btn btn-outline cat-btn" onclick="filtrarCategoria('bebidas', this)">🥤 Bebidas & Jugos</button>
+            <button class="btn btn-outline cat-btn" onclick="filtrarCategoria('postres', this)">🍰 Postres</button>
         </div>
 
-        <!-- GRID DE PRODUCTOS (CON GRAN VARIEDAD DE CONSUMIBLES) -->
+        <!-- GRID DE PRODUCTOS COMIBLES -->
         <div class="grid">
-            <!-- Hardware -->
-            <div class="product-card" data-cat="hardware">
-                <span class="product-badge">POPULAR</span>
-                <div style="font-size:45px; text-align:center; margin:10px 0;">📦</div>
-                <h3 style="font-size:16px;">Lector Código de Barras 2D</h3>
-                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Escáner omnidireccional USB de alta velocidad.</p>
+            <!-- Hamburguesas -->
+            <div class="product-card" data-cat="hamburguesas">
+                <span class="product-badge">BEST SELLER</span>
+                <div style="font-size:45px; text-align:center; margin:10px 0;">🍔</div>
+                <h3 style="font-size:16px;">Hamburguesa Doble Angus BBQ</h3>
+                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Carne 100% angus, queso cheddar fundido, tocino crujiente y salsa BBQ artesanal.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
-                    <b style="font-size:18px; color:var(--primary);">$120.000</b>
-                    <button class="btn" onclick="agregarProducto('Lector Código de Barras 2D', 120000)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <b style="font-size:18px; color:var(--primary);">$28.900</b>
+                    <button class="btn" onclick="agregarProducto('Hamburguesa Doble Angus BBQ', 28900)" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
 
-            <div class="product-card" data-cat="hardware">
-                <div style="font-size:45px; text-align:center; margin:10px 0;">🖨️</div>
-                <h3 style="font-size:16px;">Impresora Térmica POS</h3>
-                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Impresora de recibos 80mm con corte automático.</p>
+            <div class="product-card" data-cat="hamburguesas">
+                <div style="font-size:45px; text-align:center; margin:10px 0;">🍟</div>
+                <h3 style="font-size:16px;">Hamburguesa Crispy Chicken</h3>
+                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Pechuga de pollo apanada crujiente, ensalada coleslaw y aderezo especial de la casa.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
-                    <b style="font-size:18px; color:var(--primary);">$280.000</b>
-                    <button class="btn" onclick="agregarProducto('Impresora Térmica POS', 280000)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <b style="font-size:18px; color:var(--primary);">$24.500</b>
+                    <button class="btn" onclick="agregarProducto('Hamburguesa Crispy Chicken', 24500)" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
 
-            <!-- Gran Variedad de Consumibles -->
-            <div class="product-card" data-cat="consumibles">
-                <span class="product-badge">OFERTA</span>
-                <div style="font-size:45px; text-align:center; margin:10px 0;">📄</div>
-                <h3 style="font-size:16px;">Caja Papel Térmico (50 Rollos)</h3>
-                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Rollos 80x60mm de alta durabilidad y libre de BPA.</p>
-                <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
-                    <b style="font-size:18px; color:var(--primary);">$85.000</b>
-                    <button class="btn" onclick="agregarProducto('Caja Papel Térmico (50 Rollos)', 85000)" style="width:auto; padding:8px 12px;">+ Añadir</button>
-                </div>
-            </div>
-
-            <div class="product-card" data-cat="consumibles">
-                <div style="font-size:45px; text-align:center; margin:10px 0;">🏷️</div>
-                <h3 style="font-size:16px;">Rollos de Etiquetas Autoadhesivas (Paquete x10)</h3>
-                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Medida 50x30mm en térmico directo para códigos.</p>
+            <!-- Pizzas -->
+            <div class="product-card" data-cat="pizzas">
+                <span class="product-badge">FAVORITA</span>
+                <div style="font-size:45px; text-align:center; margin:10px 0;">🍕</div>
+                <h3 style="font-size:16px;">Pizza Pepperoni Suprema (Grande)</h3>
+                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Masa madre fermentada 48 horas, doble pepperoni italiano y queso mozzarella.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
                     <b style="font-size:18px; color:var(--primary);">$45.000</b>
-                    <button class="btn" onclick="agregarProducto('Rollos de Etiquetas Autoadhesivas (x10)', 45000)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <button class="btn" onclick="agregarProducto('Pizza Pepperoni Suprema Gde', 45000)" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
 
-            <div class="product-card" data-cat="consumibles">
-                <div style="font-size:45px; text-align:center; margin:10px 0;">📜</div>
-                <h3 style="font-size:16px;">Cinta Ribbon de Cera (Pack x3 unidades)</h3>
-                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Ribbon 110mm x 74m para impresoras de transferencia térmica.</p>
-                <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
-                    <b style="font-size:18px; color:var(--primary);">$62.000</b>
-                    <button class="btn" onclick="agregarProducto('Cinta Ribbon de Cera (x3)', 62000)" style="width:auto; padding:8px 12px;">+ Añadir</button>
-                </div>
-            </div>
-
-            <div class="product-card" data-cat="consumibles">
-                <div style="font-size:45px; text-align:center; margin:10px 0;">🔖</div>
-                <h3 style="font-size:16px;">Etiquetas de Precios Flúor (Rollo x1000)</h3>
-                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Etiquetas autoadhesivas de colores brillantes para ofertas.</p>
-                <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
-                    <b style="font-size:18px; color:var(--primary);">$22.000</b>
-                    <button class="btn" onclick="agregarProducto('Etiquetas de Precios Flúor', 22000)" style="width:auto; padding:8px 12px;">+ Añadir</button>
-                </div>
-            </div>
-
-            <div class="product-card" data-cat="consumibles">
-                <div style="font-size:45px; text-align:center; margin:10px 0;">🖋️</div>
-                <h3 style="font-size:16px;">Cartucho de Tinta Alternativo para Facturadores</h3>
-                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Tinta negra de secado rápido resistente al agua.</p>
+            <div class="product-card" data-cat="pizzas">
+                <div style="font-size:45px; text-align:center; margin:10px 0;">🍅</div>
+                <h3 style="font-size:16px;">Pizza Margarita Tradicional</h3>
+                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Salsa de tomate pomodoro natural, albahaca fresca y bocconcini de mozzarella.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
                     <b style="font-size:18px; color:var(--primary);">$38.000</b>
-                    <button class="btn" onclick="agregarProducto('Cartucho de Tinta Facturadores', 38000)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <button class="btn" onclick="agregarProducto('Pizza Margarita Tradicional', 38000)" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
 
-            <div class="product-card" data-cat="consumibles">
-                <div style="font-size:45px; text-align:center; margin:10px 0;">📦</div>
-                <h3 style="font-size:16px;">Papel Bond para Sumadora (Pack x12 rollos)</h3>
-                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Papel bond de 1 raya 76mm x 60m para terminales tradicionales.</p>
+            <!-- Bebidas -->
+            <div class="product-card" data-cat="bebidas">
+                <div style="font-size:45px; text-align:center; margin:10px 0;">🥤</div>
+                <h3 style="font-size:16px;">Gaseosa Helada 400ml</h3>
+                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Refrescante bebida gaseosa bien fría en presentación personal.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
-                    <b style="font-size:18px; color:var(--primary);">$54.000</b>
-                    <button class="btn" onclick="agregarProducto('Papel Bond Sumadora (x12)', 54000)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <b style="font-size:18px; color:var(--primary);">$6.000</b>
+                    <button class="btn" onclick="agregarProducto('Gaseosa Helada 400ml', 6000)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-cat="bebidas">
+                <div style="font-size:45px; text-align:center; margin:10px 0;">🍹</div>
+                <h3 style="font-size:16px;">Limonada de Coco Natural</h3>
+                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Bebida tropical cremosa con limón fresco, crema de coco y hielo frappé.</p>
+                <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
+                    <b style="font-size:18px; color:var(--primary);">$11.000</b>
+                    <button class="btn" onclick="agregarProducto('Limonada de Coco Natural', 11000)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                </div>
+            </div>
+
+            <!-- Postres -->
+            <div class="product-card" data-cat="postres">
+                <div style="font-size:45px; text-align:center; margin:10px 0;">🍰</div>
+                <h3 style="font-size:16px;">Cheesecake de Frutos Rojos</h3>
+                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Suave pastel de queso estilo Nueva York con compota de moras y arándanos.</p>
+                <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
+                    <b style="font-size:18px; color:var(--primary);">$14.000</b>
+                    <button class="btn" onclick="agregarProducto('Cheesecake de Frutos Rojos', 14000)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-cat="postres">
+                <div style="font-size:45px; text-align:center; margin:10px 0;">🍫</div>
+                <h3 style="font-size:16px;">Volcán de Chocolate Tibio</h3>
+                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Bizcocho de chocolate relleno con fudge fundido y acompañado de helado de vainilla.</p>
+                <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
+                    <b style="font-size:18px; color:var(--primary);">$15.500</b>
+                    <button class="btn" onclick="agregarProducto('Volcán de Chocolate Tibio', 15500)" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
         </div>
@@ -595,47 +582,101 @@ HTML_TIENDA = """
 
     <!-- BOTÓN FLOTANTE DEL CARRITO -->
     <div class="cart-floating-btn" onclick="abrirCarrito()">
-        🛒 Mi Carrito (<span id="cart-count">0</span>)
+        🛒 Carrito de Comida (<span id="cart-count">0</span>)
     </div>
 
-    <!-- MODAL DEL CARRITO Y PASARELA DE PAGO -->
+    <!-- MODAL DEL CARRITO Y PASARELA DE PAGOS -->
     <div id="modal-carrito" class="modal">
         <div class="modal-content">
-            <h3>Tu Pedido - <span style="color:var(--primary);">{{ sede_actual }}</span></h3>
-            <div id="cart-items" style="margin:15px 0; max-height:160px; overflow-y:auto;">
-                <p style="color:var(--gray-text);">El carrito está vacío</p>
-            </div>
             
-            <div style="margin-top:15px;">
-                <label style="font-size:13px; font-weight:700; color:var(--gray-text);">Selecciona Método de Pago Real (Demo):</label>
-                <div class="payment-method-grid">
-                    <div class="payment-option selected" onclick="seleccionarMetodoPago('Tarjeta Crédito/Débito', this)">💳 Tarjeta Crédito / Débito</div>
-                    <div class="payment-option" onclick="seleccionarMetodoPago('PSE (Bancos)', this)">🏦 PSE (Bancos)</div>
-                    <div class="payment-option" onclick="seleccionarMetodoPago('Billetera Digital (Nequi/Daviplata)', this)">📱 Nequi / Daviplata</div>
-                    <div class="payment-option" onclick="seleccionarMetodoPago('Efectivo / Pago en Puntos (Efecty/Baloto)', this)">💵 Efectivo (Efecty/Baloto)</div>
+            <!-- PASO A: REVISIÓN DE CARRITO -->
+            <div id="paso-carrito">
+                <h3>Tu Pedido - <span style="color:var(--primary);">{{ sede_actual }}</span></h3>
+                <div id="cart-items" style="margin:20px 0; max-height:220px; overflow-y:auto;">
+                    <p style="color:var(--gray-text);">El carrito está vacío</p>
                 </div>
-                <div id="detalles-pago-container" style="margin-top:10px;">
-                    <input type="text" placeholder="Número de Tarjeta (Ej: 4532 •••• •••• 8821)" required style="width:100%; padding:10px; margin:6px 0; border:1px solid var(--gray); border-radius:8px;">
-                    <div style="display:flex; gap:10px;">
-                        <input type="text" placeholder="MM/AA" required style="width:50%; padding:10px; margin:6px 0; border:1px solid var(--gray); border-radius:8px;">
-                        <input type="password" placeholder="CVV" maxlength="4" required style="width:50%; padding:10px; margin:6px 0; border:1px solid var(--gray); border-radius:8px;">
-                    </div>
+                <div style="display:flex; justify-content:space-between; align-items:center; font-size:18px; border-top:2px solid var(--gray); padding-top:10px;">
+                    <span>Total a Pagar:</span>
+                    <b id="cart-total" style="color:var(--primary);">$0</b>
                 </div>
+                <button class="btn" onclick="irAPago()" style="margin-top:20px;">💳 Proceder al Pago Seguro</button>
+                <button class="btn btn-outline" onclick="cerrarCarrito()" style="margin-top:8px;">Seguir Eligiendo Comida</button>
             </div>
 
-            <div style="display:flex; justify-content:space-between; align-items:center; font-size:18px; border-top:2px solid var(--gray); padding-top:10px; margin-top:15px;">
-                <span>Total a Pagar:</span>
-                <b id="cart-total" style="color:var(--primary);">$0</b>
+            <!-- PASO B: MÉTODOS DE PAGO REALES CON DATOS INVENTADOS -->
+            <div id="paso-pago" style="display:none;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                    <h3>Selecciona Método de Pago</h3>
+                    <b id="monto-pagar" style="color:var(--primary); font-size:18px;">$0</b>
+                </div>
+                <p style="font-size:13px; color:var(--gray-text); margin-bottom:15px;">Pasarela integrada simulada (Rellena con datos ficticios)</p>
+
+                <!-- Selector de métodos -->
+                <div class="payment-method-box" onclick="seleccionarMetodoPago('tarjeta')">
+                    <b>💳 Tarjeta de Crédito / Débito</b>
+                    <p style="font-size:12px; color:var(--gray-text);">Visa, Mastercard, American Express</p>
+                </div>
+                <div class="payment-method-box" onclick="seleccionarMetodoPago('pse')">
+                    <b>🏦 PSE (Pagos Seguros en Línea)</b>
+                    <p style="font-size:12px; color:var(--gray-text);">Debita directo de tu cuenta bancaria</p>
+                </div>
+                <div class="payment-method-box" onclick="seleccionarMetodoPago('nequi')">
+                    <b>📱 Nequi / Daviplata</b>
+                    <p style="font-size:12px; color:var(--gray-text);">Billetera digital rápida</p>
+                </div>
+                <div class="payment-method-box" onclick="seleccionarMetodoPago('efectivo')">
+                    <b>💵 Pago contra entrega (Efectivo)</b>
+                    <p style="font-size:12px; color:var(--gray-text);">Paga al recibir en la puerta</p>
+                </div>
+
+                <!-- FORMULARIO 1: TARJETA -->
+                <div id="pago-tarjeta" class="payment-sec" style="display:none; margin-top:15px; background:#f8fafc; padding:15px; border-radius:12px;">
+                    <p style="font-size:13px; font-weight:bold; margin-bottom:8px;">Datos de la Tarjeta (Inventados)</p>
+                    <input type="text" placeholder="Número de Tarjeta (ej: 4532 •••• •••• 8890)" value="4532 8821 9012 3456" style="padding:10px; font-size:13px;">
+                    <div style="display:flex; gap:10px;">
+                        <input type="text" placeholder="MM/AA" value="12/28" style="padding:10px; font-size:13px;">
+                        <input type="text" placeholder="CVV" value="482" style="padding:10px; font-size:13px;">
+                    </div>
+                    <button class="btn" onclick="confirmarPagoFinal('Tarjeta de Crédito')">Pagar con Tarjeta</button>
+                </div>
+
+                <!-- FORMULARIO 2: PSE -->
+                <div id="pago-pse" class="payment-sec" style="display:none; margin-top:15px; background:#f8fafc; padding:15px; border-radius:12px;">
+                    <p style="font-size:13px; font-weight:bold; margin-bottom:8px;">Conexión Bancaria PSE (Inventado)</p>
+                    <select style="padding:10px; font-size:13px; width:100%; border:1px solid var(--gray); border-radius:8px; margin-bottom:10px;">
+                        <option>Bancolombia (Demo)</option>
+                        <option>Banco de Bogotá (Demo)</option>
+                        <option>Davivienda (Demo)</option>
+                        <option>BBVA Colombia (Demo)</option>
+                    </select>
+                    <input type="text" placeholder="Correo electrónico asociado" value="cliente.demo@correo.com" style="padding:10px; font-size:13px;">
+                    <button class="btn" onclick="confirmarPagoFinal('PSE Bancario')">Autorizar Pago en Banco</button>
+                </div>
+
+                <!-- FORMULARIO 3: NEQUI -->
+                <div id="pago-nequi" class="payment-sec" style="display:none; margin-top:15px; background:#f8fafc; padding:15px; border-radius:12px;">
+                    <p style="font-size:13px; font-weight:bold; margin-bottom:8px;">Billetera Móvil (Inventado)</p>
+                    <input type="text" placeholder="Número Celular (ej: 310 456 7890)" value="312 456 7890" style="padding:10px; font-size:13px;">
+                    <button class="btn" onclick="confirmarPagoFinal('Nequi/Daviplata')">Generar Notificación Push</button>
+                </div>
+
+                <!-- FORMULARIO 4: EFECTIVO -->
+                <div id="pago-efectivo" class="payment-sec" style="display:none; margin-top:15px; background:#f8fafc; padding:15px; border-radius:12px;">
+                    <p style="font-size:13px; font-weight:bold; margin-bottom:8px;">Pago contra entrega</p>
+                    <input type="text" placeholder="¿Con cuánto dinero vas a pagar?" value="$50.000" style="padding:10px; font-size:13px;">
+                    <button class="btn" onclick="confirmarPagoFinal('Efectivo contra entrega')">Confirmar Pedido</button>
+                </div>
+
+                <button class="btn btn-outline" onclick="abrirCarrito()" style="margin-top:15px;">← Volver al Carrito</button>
             </div>
-            <button class="btn" onclick="procesarCompra()" style="margin-top:15px;">💳 Pagar y Finalizar Pedido</button>
-            <button class="btn btn-outline" onclick="cerrarCarrito()" style="margin-top:8px;">Seguir Comprando</button>
+
         </div>
     </div>
 </body>
 </html>
 """
 
-# DASHBOARD STAFF CON MONITOREO DE PEDIDOS EN TIEMPO REAL
+# DASHBOARD STAFF CON MONITOREO DE PEDIDOS EN TIEMPO REAL Y MÉTODO DE PAGO
 HTML_DASHBOARD = """
 <!DOCTYPE html>
 <html lang="es">
@@ -662,15 +703,15 @@ HTML_DASHBOARD = """
             let nuevaFila = `<tr>
                 <td><b>${nombre}</b></td>
                 <td>${sede}</td>
-                <td>${stock} unidades</td>
+                <td>${stock} porciones</td>
                 <td><span class="tag tag-empleado">Disponible</span></td>
             </tr>`;
             tabla.innerHTML += nuevaFila;
-            alert('¡Producto agregado al inventario!');
+            alert('¡Alimento agregado al stock de cocina!');
             document.getElementById('form-prod').reset();
         }
 
-        // Función para consultar y actualizar en tiempo real las compras de los clientes
+        // Consultar pedidos y compras de comida en tiempo real
         function cargarPedidosEnTiempoReal() {
             fetch('/api/pedidos')
                 .then(res => res.json())
@@ -679,7 +720,7 @@ HTML_DASHBOARD = """
                     document.getElementById('total-pedidos-count').innerText = pedidos.length;
                     
                     if(pedidos.length === 0) {
-                        tabla.innerHTML = '<tr><td colspan="6" style="text-align:center; color:var(--gray-text);">No hay actividad de clientes reciente</td></tr>';
+                        tabla.innerHTML = '<tr><td colspan="6" style="text-align:center; color:var(--gray-text);">No hay pedidos de comida recientes</td></tr>';
                         return;
                     }
 
@@ -690,7 +731,7 @@ HTML_DASHBOARD = """
                             <td>${p.cliente}</td>
                             <td>${p.sede}</td>
                             <td>${p.productos}</td>
-                            <td><span class="tag tag-empleado" style="font-size:11px;">${p.metodo_pago || 'Tarjeta'}</span></td>
+                            <td><span class="tag" style="background:#3b82f6;">${p.metodo_pago || 'Tarjeta'}</span></td>
                             <td><b style="color:var(--primary);">$${p.total.toLocaleString()}</b></td>
                         </tr>`;
                     });
@@ -698,7 +739,6 @@ HTML_DASHBOARD = """
                 });
         }
 
-        // Consultar cada 2 segundos
         setInterval(cargarPedidosEnTiempoReal, 2000);
         window.onload = cargarPedidosEnTiempoReal;
     </script>
@@ -712,9 +752,9 @@ HTML_DASHBOARD = """
                     <h3>KeepInventory</h3>
                 </div>
                 <a onclick="cambiarSeccion('panel', this)" class="active">📊 Panel Principal</a>
-                <a onclick="cambiarSeccion('pedidos-live', this)">🛒 Pedidos en Vivo (<span id="total-pedidos-count">0</span>)</a>
-                <a onclick="cambiarSeccion('inventario', this)">📦 Inventario</a>
-                <a onclick="cambiarSeccion('sedes', this)">🏪 Sedes</a>
+                <a onclick="cambiarSeccion('pedidos-live', this)">🔴 Pedidos de Comida (<span id="total-pedidos-count">0</span>)</a>
+                <a onclick="cambiarSeccion('inventario', this)">🍔 Control de Cocina</a>
+                <a onclick="cambiarSeccion('sedes', this)">🏪 Puntos de Venta</a>
             </div>
             <a href="/logout" style="background:#334155; margin-top:20px;">🚪 Cerrar Sesión Staff</a>
         </div>
@@ -723,38 +763,38 @@ HTML_DASHBOARD = """
             <!-- PANEL PRINCIPAL -->
             <div id="panel" class="seccion-tab fade-in">
                 <div class="card">
-                    <h2>Bienvenido al Panel de Administración Staff</h2>
-                    <p style="color:var(--gray-text);">Control de mercancía, movimiento entre sedes y monitoreo en tiempo real.</p>
+                    <h2>Panel de Administración de Alimentos</h2>
+                    <p style="color:var(--gray-text);">Monitoreo de pedidos en línea, métodos de pago autorizados y stock de cocina.</p>
                 </div>
                 <div class="grid">
                     <div class="card">
-                        <h3>Sede Principal Centro</h3>
-                        <p style="font-size:24px; font-weight:bold; color:var(--primary); margin-top:5px;">1,240 <span style="font-size:14px; color:var(--dark);">ítems</span></p>
+                        <h3>Sede Centro (Cocina)</h3>
+                        <p style="font-size:24px; font-weight:bold; color:var(--primary); margin-top:5px;">420 <span style="font-size:14px; color:var(--dark);">órdenes hoy</span></p>
                     </div>
                     <div class="card">
-                        <h3>Sede Norte</h3>
-                        <p style="font-size:24px; font-weight:bold; color:var(--primary); margin-top:5px;">850 <span style="font-size:14px; color:var(--dark);">ítems</span></p>
+                        <h3>Sede Norte Gourmet</h3>
+                        <p style="font-size:24px; font-weight:bold; color:var(--primary); margin-top:5px;">310 <span style="font-size:14px; color:var(--dark);">órdenes hoy</span></p>
                     </div>
                     <div class="card">
                         <h3>Sede Sur Express</h3>
-                        <p style="font-size:24px; font-weight:bold; color:var(--primary); margin-top:5px;">410 <span style="font-size:14px; color:var(--dark);">ítems</span></p>
+                        <p style="font-size:24px; font-weight:bold; color:var(--primary); margin-top:5px;">190 <span style="font-size:14px; color:var(--dark);">órdenes hoy</span></p>
                     </div>
                 </div>
             </div>
 
-            <!-- ACTIVIDAD DE PEDIDOS EN TIEMPO REAL -->
+            <!-- PEDIDOS EN TIEMPO REAL -->
             <div id="pedidos-live" class="seccion-tab fade-in" style="display:none;">
                 <div class="card">
-                    <h2>🔴 Ventas y Pedidos en Tiempo Real</h2>
-                    <p style="color:var(--gray-text); margin-bottom:10px;">Esta lista se actualiza automáticamente con la actividad del portal de clientes.</p>
+                    <h2>🔴 Órdenes de Comida en Tiempo Real</h2>
+                    <p style="color:var(--gray-text); margin-bottom:10px;">Clientes ordenando platillos con métodos de pago reales (datos de prueba).</p>
                     <table>
                         <thead>
                             <tr>
                                 <th>Hora</th>
                                 <th>Cliente</th>
                                 <th>Sede</th>
-                                <th>Detalle Pedido</th>
-                                <th>Método Pago</th>
+                                <th>Platillos Ordenados</th>
+                                <th>Método de Pago</th>
                                 <th>Total</th>
                             </tr>
                         </thead>
@@ -765,59 +805,59 @@ HTML_DASHBOARD = """
                 </div>
             </div>
 
-            <!-- GESTIÓN INVENTARIO -->
+            <!-- GESTIÓN INVENTARIO / COCINA -->
             <div id="inventario" class="seccion-tab fade-in" style="display:none;">
                 <div class="card">
-                    <h3>Registrar Nuevo Ítem de Inventario</h3>
+                    <h3>Registrar Nuevo Ingrediente o Platillo</h3>
                     <form id="form-prod" onsubmit="agregarNuevoProducto(event)" style="display:grid; grid-template-columns:1fr 1fr 1fr auto; gap:10px; margin-top:15px;">
-                        <input type="text" id="prod-nombre" placeholder="Nombre del Producto" required style="padding:10px; border:1px solid var(--gray); border-radius:8px;">
+                        <input type="text" id="prod-nombre" placeholder="Nombre del Platillo" required style="padding:10px; border:1px solid var(--gray); border-radius:8px;">
                         <select id="prod-sede" style="padding:10px; border:1px solid var(--gray); border-radius:8px;">
                             <option>Sede Centro</option>
                             <option>Sede Norte</option>
-                            <option>Sede Sur</option>
+                            <option>Sede Sur Express</option>
                         </select>
-                        <input type="number" id="prod-stock" placeholder="Cantidad" required style="padding:10px; border:1px solid var(--gray); border-radius:8px;">
+                        <input type="number" id="prod-stock" placeholder="Porciones Stock" required style="padding:10px; border:1px solid var(--gray); border-radius:8px;">
                         <button type="submit" class="btn" style="margin:0;">+ Guardar</button>
                     </form>
                 </div>
 
                 <div class="card">
-                    <h2>Stock Global Registrado</h2>
+                    <h2>Stock Actual de Cocina</h2>
                     <table>
                         <thead>
                             <tr>
-                                <th>Producto</th>
+                                <th>Platillo / Alimento</th>
                                 <th>Sede</th>
-                                <th>Cantidad</th>
+                                <th>Disponibilidad</th>
                                 <th>Estado</th>
                             </tr>
                         </thead>
                         <tbody id="tabla-inventario">
                             <tr>
-                                <td>Caja Papel Térmico (50 Rollos)</td>
+                                <td>Hamburguesa Doble Angus BBQ</td>
                                 <td>Sede Centro</td>
-                                <td>24 unidades</td>
+                                <td>25 porciones</td>
                                 <td><span class="tag tag-empleado">Disponible</span></td>
                             </tr>
                             <tr>
-                                <td>Rollos de Etiquetas Autoadhesivas</td>
-                                <td>Sede Norte</td>
-                                <td>5 unidades</td>
-                                <td><span class="tag tag-admin">Bajo Stock</span></td>
+                                <td>Pizza Pepperoni Suprema Gde</td>
+                                <td>Sede Norte Gourmet</td>
+                                <td>4 porciones</td>
+                                <td><span class="tag tag-admin">Stock Bajo</span></td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
 
-            <!-- SEDES CON DIRECCIONES -->
+            <!-- SEDES -->
             <div id="sedes" class="seccion-tab fade-in" style="display:none;">
                 <div class="card">
-                    <h2>Configuración de Puntos de Atención</h2>
+                    <h2>Puntos de Distribución de Alimentos</h2>
                     <div class="grid" style="margin-top:15px;">
-                        <div class="card"><b>Sede Centro</b><br><span style="font-size:13px; color:var(--gray-text);">Av. Las Acacias #45-18, Sector Comercial</span></div>
-                        <div class="card"><b>Sede Norte</b><br><span style="font-size:13px; color:var(--gray-text);">Calle Del Sol #102-15, Plaza Mayor</span></div>
-                        <div class="card"><b>Sede Sur Express</b><br><span style="font-size:13px; color:var(--gray-text);">Transversal 78 #12-30, Parque Industrial</span></div>
+                        <div class="card"><b>Sede Centro</b><br><span style="font-size:13px; color:var(--gray-text);">Av. Las Acacias #45-18, Zona Gastronómica</span></div>
+                        <div class="card"><b>Sede Norte Gourmet</b><br><span style="font-size:13px; color:var(--gray-text);">Calle Del Sol #102-15, Mall Gourmet</span></div>
+                        <div class="card"><b>Sede Sur Express</b><br><span style="font-size:13px; color:var(--gray-text);">Transversal 78 #12-30, Autopista Sur</span></div>
                     </div>
                 </div>
             </div>
@@ -900,8 +940,8 @@ def crear_pedido():
         'cliente': data.get('cliente', 'Anonimo'),
         'sede': data.get('sede', 'Sede Centro'),
         'productos': data.get('productos', ''),
-        'metodo_pago': data.get('metodo_pago', 'Tarjeta'),
-        'total': data.get('total', 0)
+        'total': data.get('total', 0),
+        'metodo_pago': data.get('metodo_pago', 'Tarjeta')
     }
     PEDIDOS_REGISTRADOS.insert(0, nuevo_pedido)
     return jsonify({'status': 'ok'})
