@@ -2,17 +2,13 @@ from flask import Flask, render_template_string, redirect, url_for, request, ses
 import os
 
 app = Flask(__name__)
-# Clave secreta para manejo seguro de sesiones
 app.secret_key = os.getenv("SECRET_KEY", "keepinventory_secret_key_12345")
 
-# Credenciales de administrador demo
 ADMIN_EMAIL = os.getenv("ADMIN_EMAIL", "admin@keepinventory.com")
 ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "admin123password")
 
-# Lista global en memoria para simular la base de datos de pedidos recibidos en tiempo real
 PEDIDOS_REGISTRADOS = []
 
-# CSS COMPLETO
 CSS_ESTILOS = """
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
 
@@ -38,7 +34,6 @@ CSS_ESTILOS = """
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Plus Jakarta Sans', 'Segoe UI', system-ui, -apple-system, sans-serif;}
 body{background:#f1f5f9; color:var(--dark); line-height:1.6; overflow-x:hidden;}
 
-/* ANIMACIONES */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
@@ -59,7 +54,6 @@ body{background:#f1f5f9; color:var(--dark); line-height:1.6; overflow-x:hidden;}
 .fade-in { animation: fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 .float-anim { animation: float 4s ease-in-out infinite; }
 
-/* BRANDING */
 .brand{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
 .logo{width:44px;height:44px;background:var(--primary-gradient);color:white;display:flex;align-items:center;justify-content:center;border-radius:14px;font-weight:800;font-size:20px;flex-shrink:0;box-shadow:0 8px 16px rgba(15,138,95,0.3); transition: transform 0.3s ease;}
 .logo:hover{transform: rotate(5deg) scale(1.05);}
@@ -68,7 +62,6 @@ body{background:#f1f5f9; color:var(--dark); line-height:1.6; overflow-x:hidden;}
 .brand-large h1{font-size:42px; margin-bottom:8px; font-weight:800; letter-spacing:-1px;}
 .brand-large p{opacity:0.9; font-size:16px; font-weight:300;}
 
-/* LANDING SELECTOR */
 .landing-body{display:flex;justify-content:center;align-items:center;min-height:100vh;background:var(--bg-gradient);padding:20px; position:relative;}
 .landing-container{max-width:900px;width:100%;text-align:center; z-index:1;}
 .selector-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;}
@@ -83,7 +76,6 @@ body{background:#f1f5f9; color:var(--dark); line-height:1.6; overflow-x:hidden;}
 .selector-card.staff{border-top:6px solid var(--dark);}
 .selector-card.client{border-top:6px solid var(--primary);}
 
-/* FORMULARIOS Y LOGIN */
 .login-body{display:flex;justify-content:center;align-items:center;min-height:100vh;background:var(--bg-gradient);padding:20px;}
 .login-container{background:white;padding:42px 35px;border-radius:24px;width:100%;max-width:440px;box-shadow:0 25px 50px -12px rgba(0,0,0,0.35);text-align:center; transition: transform 0.3s ease;}
 .login-container input, .login-container select, .login-container textarea, .pay-input{width:100%;padding:12px 14px;margin:6px 0;border:2px solid var(--gray);border-radius:12px;outline:none; font-size:14px; transition:all 0.3s ease; background:#f8fafc;}
@@ -97,7 +89,6 @@ body{background:#f1f5f9; color:var(--dark); line-height:1.6; overflow-x:hidden;}
 .btn-danger:hover{box-shadow:0 8px 20px rgba(239,68,68,0.4);}
 .demo-creds{margin-top:20px; font-size:13px; background:#f8fafc; padding:14px; border-radius:12px; text-align:left; border-left:4px solid var(--primary); border:1px solid #e2e8f0; border-left-width:4px;}
 
-/* DASHBOARD STAFF */
 .dashboard{display:flex;min-height:100vh;}
 .sidebar{width:280px;background:var(--dark);color:white;padding:28px 20px;flex-shrink:0;display:flex;flex-direction:column;justify-content:space-between; box-shadow:4px 0 25px rgba(0,0,0,0.1);}
 .sidebar .brand{margin-bottom:30px;}
@@ -116,7 +107,6 @@ tr:hover td{background:#f8fafc;}
 .tag-admin{background:linear-gradient(135deg, #ef4444, #b91c1c);} 
 .tag-empleado{background:linear-gradient(135deg, #10b981, #047857);}
 
-/* TIENDA CLIENTE */
 .header-cliente{display:flex; justify-content:space-between; align-items:center; background:white; padding:20px 32px; border-radius:20px; margin-bottom:30px; box-shadow:var(--card-shadow); border:1px solid #f1f5f9;}
 .sede-selector-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px;margin:25px 0;}
 .sede-card-interactive{background:white;border:2px solid var(--gray);border-radius:20px;padding:28px 22px;text-align:center;cursor:pointer;transition:all .3s ease; position:relative;}
@@ -126,7 +116,6 @@ tr:hover td{background:#f8fafc;}
 .product-card:hover{transform:translateY(-8px); box-shadow:0 20px 35px rgba(0,0,0,0.08); border-color:var(--primary);}
 .product-badge{position:absolute; top:15px; right:15px; background:var(--accent); color:white; font-size:11px; font-weight:800; padding:4px 10px; border-radius:30px; letter-spacing:0.5px; box-shadow:0 4px 10px rgba(245,158,11,0.3);}
 
-/* CARRITO FLOTANTE Y MODAL */
 .cart-floating-btn{position:fixed; bottom:30px; right:30px; background:var(--primary-gradient); color:white; padding:16px 26px; border-radius:50px; cursor:pointer; font-weight:700; box-shadow:0 10px 30px rgba(15,138,95,0.4); display:flex; align-items:center; gap:12px; z-index:9999; transition:all 0.3s ease;}
 .cart-floating-btn:hover{transform:scale(1.08) translateY(-3px); box-shadow:0 15px 35px rgba(15,138,95,0.5);}
 
@@ -135,12 +124,10 @@ tr:hover td{background:#f8fafc;}
 .btn-remove{background:#fee2e2; color:#dc2626; border:none; border-radius:8px; padding:6px 10px; cursor:pointer; font-size:12px; font-weight:700; transition:all 0.2s;}
 .btn-remove:hover{background:#fca5a5; transform:scale(1.05);}
 
-/* METODOS DE PAGO UI */
 .pay-options{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:15px 0;}
 .pay-card{border:2px solid var(--gray); border-radius:12px; padding:12px; text-align:center; cursor:pointer; font-size:13px; font-weight:600; transition:all 0.2s; user-select:none;}
 .pay-card:hover, .pay-card.selected{border-color:var(--primary); background:var(--primary-light); color:var(--primary-dark);}
 
-/* RESPONSIVE */
 @media(max-width:800px){
   .selector-grid{grid-template-columns:1fr;}
   .dashboard{flex-direction:column;}
@@ -150,7 +137,6 @@ tr:hover td{background:#f8fafc;}
 }
 """
 
-# LANDING PRINCIPAL
 HTML_LANDING = """
 <!DOCTYPE html>
 <html lang="es">
@@ -188,7 +174,6 @@ HTML_LANDING = """
 </html>
 """
 
-# LOGIN STAFF
 HTML_LOGIN_STAFF = """
 <!DOCTYPE html>
 <html lang="es">
@@ -232,7 +217,6 @@ HTML_LOGIN_STAFF = """
 </html>
 """
 
-# PASO 1 CLIENTE: SELECCIÓN DE UBICACIÓN Y SEDE
 HTML_CLIENTE_UBICACION = """
 <!DOCTYPE html>
 <html lang="es">
@@ -290,7 +274,6 @@ HTML_CLIENTE_UBICACION = """
 </html>
 """
 
-# PASO 2 CLIENTE: INICIO DE SESIÓN O REGISTRO
 HTML_CLIENTE_AUTH = """
 <!DOCTYPE html>
 <html lang="es">
@@ -336,14 +319,12 @@ HTML_CLIENTE_AUTH = """
                 <button id="tab-registro" type="button" class="btn btn-outline" onclick="alternarModo('registro')" style="flex:1;">Registrarse</button>
             </div>
 
-            <!-- FORMULARIO LOGIN CLIENTE -->
             <form id="form-login" action="/login-cliente" method="POST">
                 <input type="email" name="email" placeholder="Tu correo electrónico" required>
                 <input type="password" name="password" placeholder="Tu contraseña" required>
                 <button type="submit" class="btn">🛒 Entrar a Comprar</button>
             </form>
 
-            <!-- FORMULARIO REGISTRO CLIENTE -->
             <form id="form-registro" action="/registro-cliente" method="POST" style="display:none;">
                 <input type="text" name="nombre" placeholder="Nombre Completo" required>
                 <input type="email" name="email" placeholder="Correo electrónico" required>
@@ -358,7 +339,7 @@ HTML_CLIENTE_AUTH = """
 </html>
 """
 
-# CATÁLOGO INTERACTIVO DE CLIENTES CON JS TOTALMENTE COMPATIBLE CON JINJA2
+# VISTA CLIENTE CORREGIDA CON FUNCIONES DIRECTAS EN WINDOW
 HTML_TIENDA = """
 <!DOCTYPE html>
 <html lang="es">
@@ -367,11 +348,154 @@ HTML_TIENDA = """
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catálogo - Cliente</title>
     <style>{{ css | safe }}</style>
+    <script>
+        var CLIENTE_NOMBRE = "{{ cliente_nombre }}";
+        var SEDE_ACTUAL = "{{ sede_actual }}";
+        var carrito = [];
+        var metodoPagoSeleccionado = 'tarjeta';
+
+        function agregarProducto(nombre, precio) {
+            carrito.push({nombre: nombre, precio: precio});
+            actualizarCarritoUI();
+        }
+
+        function quitarProducto(index) {
+            carrito.splice(index, 1);
+            actualizarCarritoUI();
+        }
+
+        function actualizarCarritoUI() {
+            var countElem = document.getElementById('cart-count');
+            if(countElem) countElem.innerText = carrito.length;
+
+            var total = 0;
+            for (var i = 0; i < carrito.length; i++) {
+                total += carrito[i].precio;
+            }
+
+            var totalElem = document.getElementById('cart-total');
+            if(totalElem) totalElem.innerText = '$' + total.toLocaleString();
+
+            var listaHtml = '';
+            for (var j = 0; j < carrito.length; j++) {
+                listaHtml += '<div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid #e2e8f0;">' +
+                    '<span>' + carrito[j].nombre + '</span>' +
+                    '<div style="display:flex; align-items:center; gap:10px;">' +
+                        '<b>$' + carrito[j].precio.toLocaleString() + '</b>' +
+                        '<button class="btn-remove" type="button" onclick="quitarProducto(' + j + ')">❌ Quitar</button>' +
+                    '</div>' +
+                '</div>';
+            }
+            var itemsElem = document.getElementById('cart-items');
+            if(itemsElem) itemsElem.innerHTML = listaHtml || '<p style="color:var(--gray-text);">El carrito está vacío</p>';
+        }
+
+        function abrirCarrito() {
+            document.getElementById("modal-carrito").style.display = "flex";
+        }
+
+        function cerrarCarrito() {
+            document.getElementById("modal-carrito").style.display = "none";
+        }
+
+        function seleccionarMetodoPago(metodo, elem) {
+            metodoPagoSeleccionado = metodo;
+            var payCards = document.querySelectorAll(".pay-card");
+            for (var k = 0; k < payCards.length; k++) {
+                payCards[k].classList.remove("selected");
+            }
+            elem.classList.add("selected");
+
+            var subForms = document.querySelectorAll(".form-pago-sub");
+            for (var m = 0; m < subForms.length; m++) {
+                subForms[m].style.display = "none";
+            }
+            
+            var targetForm = document.getElementById("form-pago-" + metodo);
+            if(targetForm) targetForm.style.display = "block";
+        }
+
+        function procesarCompra() {
+            if (carrito.length === 0) {
+                alert("Añade productos al carrito primero.");
+                return;
+            }
+
+            if (metodoPagoSeleccionado === 'tarjeta') {
+                var num = document.getElementById('pay-card-num').value;
+                var exp = document.getElementById('pay-card-exp').value;
+                var cvc = document.getElementById('pay-card-cvc').value;
+                if (!num || !exp || !cvc) { alert('Completa los campos de la tarjeta.'); return; }
+            } else if (metodoPagoSeleccionado === 'pse') {
+                var banco = document.getElementById('pay-pse-bank').value;
+                var doc = document.getElementById('pay-pse-doc').value;
+                if (!banco || !doc) { alert('Selecciona tu banco e ingresa tu documento.'); return; }
+            } else if (metodoPagoSeleccionado === 'billetera') {
+                var tel = document.getElementById('pay-wallet-tel').value;
+                if (!tel) { alert('Ingresa tu número celular registrado.'); return; }
+            }
+
+            var total = 0;
+            var nombresArr = [];
+            for (var n = 0; n < carrito.length; n++) {
+                total += carrito[n].precio;
+                nombresArr.push(carrito[n].nombre);
+            }
+            var detallesItems = nombresArr.join(', ');
+
+            var nombreMetodo = '💳 Tarjeta Crédito/Débito';
+            if (metodoPagoSeleccionado === 'pse') nombreMetodo = '🏦 PSE / Transferencia Bancaria';
+            if (metodoPagoSeleccionado === 'billetera') nombreMetodo = '📱 Billetera Digital (Nequi/Daviplata/MP)';
+            if (metodoPagoSeleccionado === 'efectivo') nombreMetodo = '💵 Pago Contra Entrega';
+
+            fetch('/api/crear-pedido', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    cliente: CLIENTE_NOMBRE,
+                    sede: SEDE_ACTUAL,
+                    productos: detallesItems,
+                    metodo_pago: nombreMetodo,
+                    total: total
+                })
+            })
+            .then(function(res) { return res.json(); })
+            .then(function(data) {
+                if (data.status === 'ok') {
+                    alert('🎉 ¡Pago procesado con éxito mediante ' + nombreMetodo + '!\nTu pedido se enviará desde la sede ' + SEDE_ACTUAL);
+                    carrito = [];
+                    actualizarCarritoUI();
+                    cerrarCarrito();
+                }
+            })
+            .catch(function() {
+                alert('Error al procesar el pedido con el servidor.');
+            });
+        }
+
+        function filtrarCategoria(cat, btn) {
+            var catBtns = document.querySelectorAll('.cat-btn');
+            for (var i = 0; i < catBtns.length; i++) {
+                catBtns[i].classList.remove('btn');
+                catBtns[i].classList.add('btn-outline');
+            }
+            btn.classList.add('btn');
+            btn.classList.remove('btn-outline');
+
+            var productos = document.querySelectorAll('.product-card');
+            for (var j = 0; j < productos.length; j++) {
+                if (cat === 'todos' || productos[j].getAttribute('data-cat') === cat) {
+                    productos[j].style.display = 'flex';
+                } else {
+                    productos[j].style.display = 'none';
+                }
+            }
+        }
+    </script>
 </head>
 <body style="background:#f8fafc;">
     <div style="padding:25px; max-width:1200px; margin:0 auto;" class="fade-in">
         
-        <!-- HEADER CLIENTE -->
         <div class="header-cliente">
             <div class="brand">
                 <div class="logo">KI</div>
@@ -387,7 +511,6 @@ HTML_TIENDA = """
             </div>
         </div>
 
-        <!-- FILTROS DE CATEGORÍA -->
         <div style="display:flex; gap:10px; margin-bottom:25px; overflow-x:auto; padding-bottom:5px;">
             <button type="button" class="btn cat-btn" onclick="filtrarCategoria('todos', this)">Todos los productos</button>
             <button type="button" class="btn btn-outline cat-btn" onclick="filtrarCategoria('bebidas', this)">Bebidas</button>
@@ -397,9 +520,7 @@ HTML_TIENDA = """
             <button type="button" class="btn btn-outline cat-btn" onclick="filtrarCategoria('dulces', this)">Dulces & Postres</button>
         </div>
 
-        <!-- GRID DE PRODUCTOS COMESTIBLES -->
         <div class="grid">
-            <!-- BEBIDAS -->
             <div class="product-card" data-cat="bebidas">
                 <span class="product-badge">POPULAR</span>
                 <div style="font-size:45px; text-align:center; margin:10px 0;">🥤</div>
@@ -407,7 +528,7 @@ HTML_TIENDA = """
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Jugo 100% natural, recién exprimido sin azúcar añadida.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
                     <b style="font-size:18px; color:var(--primary);">$8.500</b>
-                    <button type="button" class="btn btn-add" data-nombre="Jugo Natural de Naranja (1L)" data-precio="8500" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <button type="button" class="btn" onclick="agregarProducto('Jugo Natural de Naranja (1L)', 8500)" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
 
@@ -417,7 +538,7 @@ HTML_TIENDA = """
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Café de origen premium con notas a chocolate y avellanas.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
                     <b style="font-size:18px; color:var(--primary);">$24.000</b>
-                    <button type="button" class="btn btn-add" data-nombre="Café Tostado en Grano (500g)" data-precio="24000" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <button type="button" class="btn" onclick="agregarProducto('Café Tostado en Grano (500g)', 24000)" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
 
@@ -427,11 +548,10 @@ HTML_TIENDA = """
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Agua de manantial purificada, refrescante y natural.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
                     <b style="font-size:18px; color:var(--primary);">$3.200</b>
-                    <button type="button" class="btn btn-add" data-nombre="Agua Mineral con Gas (600ml)" data-precio="3200" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <button type="button" class="btn" onclick="agregarProducto('Agua Mineral con Gas (600ml)', 3200)" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
 
-            <!-- SNACKS -->
             <div class="product-card" data-cat="snacks">
                 <span class="product-badge">OFERTA</span>
                 <div style="font-size:45px; text-align:center; margin:10px 0;">🍿</div>
@@ -439,7 +559,7 @@ HTML_TIENDA = """
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Crocantes hojuelas de papa sazonadas con sal marina.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
                     <b style="font-size:18px; color:var(--primary);">$6.000</b>
-                    <button type="button" class="btn btn-add" data-nombre="Papas Fritas Artesanales (150g)" data-precio="6000" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <button type="button" class="btn" onclick="agregarProducto('Papas Fritas Artesanales (150g)', 6000)" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
 
@@ -449,7 +569,7 @@ HTML_TIENDA = """
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Almendras, nueces, arándanos secos y maní horneado.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
                     <b style="font-size:18px; color:var(--primary);">$12.500</b>
-                    <button type="button" class="btn btn-add" data-nombre="Mezcla de Frutos Secos (200g)" data-precio="12500" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <button type="button" class="btn" onclick="agregarProducto('Mezcla de Frutos Secos (200g)', 12500)" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
 
@@ -459,18 +579,17 @@ HTML_TIENDA = """
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Deliciosas roscas crujientes horneadas bajo en grasa.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
                     <b style="font-size:18px; color:var(--primary);">$5.400</b>
-                    <button type="button" class="btn btn-add" data-nombre="Pretzels Horneados con Sal (120g)" data-precio="5400" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <button type="button" class="btn" onclick="agregarProducto('Pretzels Horneados con Sal (120g)', 5400)" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
 
-            <!-- LÁCTEOS -->
             <div class="product-card" data-cat="lacteos">
                 <div style="font-size:45px; text-align:center; margin:10px 0;">🧀</div>
                 <h3 style="font-size:16px;">Queso Gouda Madurado (250g)</h3>
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Queso semiduro de textura suave y sabor cremoso.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
                     <b style="font-size:18px; color:var(--primary);">$16.800</b>
-                    <button type="button" class="btn btn-add" data-nombre="Queso Gouda Madurado (250g)" data-precio="16800" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <button type="button" class="btn" onclick="agregarProducto('Queso Gouda Madurado (250g)', 16800)" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
 
@@ -480,11 +599,10 @@ HTML_TIENDA = """
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Alto en proteína, sin azúcar añadida ni conservantes.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
                     <b style="font-size:18px; color:var(--primary);">$11.000</b>
-                    <button type="button" class="btn btn-add" data-nombre="Yogurt Griego Natural (500g)" data-precio="11000" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <button type="button" class="btn" onclick="agregarProducto('Yogurt Griego Natural (500g)', 11000)" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
 
-            <!-- DESPENSA -->
             <div class="product-card" data-cat="despensa">
                 <span class="product-badge">NUEVO</span>
                 <div style="font-size:45px; text-align:center; margin:10px 0;">🍞</div>
@@ -492,7 +610,7 @@ HTML_TIENDA = """
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Elaborado artesanalmente con fermentación lenta de 24h.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
                     <b style="font-size:18px; color:var(--primary);">$9.800</b>
-                    <button type="button" class="btn btn-add" data-nombre="Pan Tajado de Masa Madre" data-precio="9800" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <button type="button" class="btn" onclick="agregarProducto('Pan Tajado de Masa Madre', 9800)" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
 
@@ -502,11 +620,10 @@ HTML_TIENDA = """
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Prensado en frío, ideal para ensaladas y cocina gourmet.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
                     <b style="font-size:18px; color:var(--primary);">$32.000</b>
-                    <button type="button" class="btn btn-add" data-nombre="Aceite de Oliva Extra Virgen (500ml)" data-precio="32000" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <button type="button" class="btn" onclick="agregarProducto('Aceite de Oliva Extra Virgen (500ml)', 32000)" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
 
-            <!-- DULCES -->
             <div class="product-card" data-cat="dulces">
                 <span class="product-badge">DELICIA</span>
                 <div style="font-size:45px; text-align:center; margin:10px 0;">🍫</div>
@@ -514,18 +631,16 @@ HTML_TIENDA = """
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Barra de chocolate orgánico amargo con un toque de vainilla.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
                     <b style="font-size:18px; color:var(--primary);">$8.900</b>
-                    <button type="button" class="btn btn-add" data-nombre="Chocolate Negro 70% Cacao (100g)" data-precio="8900" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <button type="button" class="btn" onclick="agregarProducto('Chocolate Negro 70% Cacao (100g)', 8900)" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- BOTÓN FLOTANTE DEL CARRITO -->
-    <div id="btn-open-cart" class="cart-floating-btn">
+    <div onclick="abrirCarrito()" class="cart-floating-btn">
         🛒 Mi Carrito (<span id="cart-count">0</span>)
     </div>
 
-    <!-- MODAL DEL CARRITO Y PASARELA DE PAGO -->
     <div id="modal-carrito" class="modal">
         <div class="modal-content">
             <h3>Tu Pedido - <span style="color:var(--primary);">{{ sede_actual }}</span></h3>
@@ -534,16 +649,14 @@ HTML_TIENDA = """
                 <p style="color:var(--gray-text);">El carrito está vacío</p>
             </div>
 
-            <!-- SELECCIÓN DE MÉTODO DE PAGO REAL -->
             <h4 style="margin-top:15px; font-size:14px; color:var(--dark);">Selecciona tu Método de Pago:</h4>
             <div class="pay-options">
-                <div class="pay-card selected" data-metodo="tarjeta">💳 Tarjeta Débito / Crédito</div>
-                <div class="pay-card" data-metodo="pse">🏦 PSE / Transferencia</div>
-                <div class="pay-card" data-metodo="billetera">📱 Nequi / Daviplata / MP</div>
-                <div class="pay-card" data-metodo="efectivo">💵 Pago Contra Entrega</div>
+                <div class="pay-card selected" onclick="seleccionarMetodoPago('tarjeta', this)">💳 Tarjeta Débito / Crédito</div>
+                <div class="pay-card" onclick="seleccionarMetodoPago('pse', this)">🏦 PSE / Transferencia</div>
+                <div class="pay-card" onclick="seleccionarMetodoPago('billetera', this)">📱 Nequi / Daviplata / MP</div>
+                <div class="pay-card" onclick="seleccionarMetodoPago('efectivo', this)">💵 Pago Contra Entrega</div>
             </div>
 
-            <!-- FORMULARIO DE PAGOS -->
             <div id="form-pago-tarjeta" class="form-pago-sub">
                 <input type="text" id="pay-card-num" class="pay-input" placeholder="Número de Tarjeta (ej: 4532 0000 0000 0000)">
                 <div style="display:flex; gap:10px;">
@@ -578,173 +691,14 @@ HTML_TIENDA = """
                 <b id="cart-total" style="color:var(--primary);">$0</b>
             </div>
 
-            <button id="btn-process-pay" type="button" class="btn" style="margin-top:15px;">🔒 Procesar Pago Seguro</button>
-            <button id="btn-close-cart" type="button" class="btn btn-outline" style="margin-top:8px;">Seguir Comprando</button>
+            <button type="button" class="btn" onclick="procesarCompra()" style="margin-top:15px;">🔒 Procesar Pago Seguro</button>
+            <button type="button" class="btn btn-outline" onclick="cerrarCarrito()" style="margin-top:8px;">Seguir Comprando</button>
         </div>
     </div>
-
-    <!-- SCRIPT CORREGIDO SIN CONFLICTOS DE JINJA2 -->
-    <script>
-        var CLIENTE_NOMBRE = "{{ cliente_nombre }}";
-        var SEDE_ACTUAL = "{{ sede_actual }}";
-        
-        var carrito = [];
-        var metodoPagoSeleccionado = 'tarjeta';
-
-        document.addEventListener("DOMContentLoaded", function() {
-            // Asignar eventos de click a botones de productos
-            var btnsAdd = document.querySelectorAll(".btn-add");
-            for (var i = 0; i < btnsAdd.length; i++) {
-                btnsAdd[i].addEventListener("click", function() {
-                    var nombre = this.getAttribute("data-nombre");
-                    var precio = parseInt(this.getAttribute("data-precio"));
-                    carrito.push({nombre: nombre, precio: precio});
-                    actualizarCarritoUI();
-                });
-            }
-
-            // Abrir modal de carrito
-            document.getElementById("btn-open-cart").onclick = function() {
-                document.getElementById("modal-carrito").style.display = "flex";
-            };
-
-            // Cerrar modal de carrito
-            document.getElementById("btn-close-cart").onclick = function() {
-                document.getElementById("modal-carrito").style.display = "none";
-            };
-
-            // Selección de tarjeta/método de pago
-            var payCards = document.querySelectorAll(".pay-card");
-            for (var j = 0; j < payCards.length; j++) {
-                payCards[j].addEventListener("click", function() {
-                    for (var k = 0; k < payCards.length; k++) {
-                        payCards[k].classList.remove("selected");
-                    }
-                    this.classList.add("selected");
-                    metodoPagoSeleccionado = this.getAttribute("data-metodo");
-
-                    var subForms = document.querySelectorAll(".form-pago-sub");
-                    for (var m = 0; m < subForms.length; m++) {
-                        subForms[m].style.display = "none";
-                    }
-                    
-                    var targetForm = document.getElementById("form-pago-" + metodoPagoSeleccionado);
-                    if(targetForm) {
-                        targetForm.style.display = "block";
-                    }
-                });
-            }
-
-            // Procesar compra al hacer click
-            document.getElementById("btn-process-pay").onclick = function() {
-                if (carrito.length === 0) {
-                    alert("Añade productos al carrito primero.");
-                    return;
-                }
-
-                if (metodoPagoSeleccionado === 'tarjeta') {
-                    var num = document.getElementById('pay-card-num').value;
-                    var exp = document.getElementById('pay-card-exp').value;
-                    var cvc = document.getElementById('pay-card-cvc').value;
-                    if (!num || !exp || !cvc) { alert('Completa los campos de la tarjeta.'); return; }
-                } else if (metodoPagoSeleccionado === 'pse') {
-                    var banco = document.getElementById('pay-pse-bank').value;
-                    var doc = document.getElementById('pay-pse-doc').value;
-                    if (!banco || !doc) { alert('Selecciona tu banco e ingresa tu documento.'); return; }
-                } else if (metodoPagoSeleccionado === 'billetera') {
-                    var tel = document.getElementById('pay-wallet-tel').value;
-                    if (!tel) { alert('Ingresa tu número celular registrado.'); return; }
-                }
-
-                var total = 0;
-                var nombresArr = [];
-                for (var n = 0; n < carrito.length; n++) {
-                    total += carrito[n].precio;
-                    nombresArr.push(carrito[n].nombre);
-                }
-                var detallesItems = nombresArr.join(', ');
-
-                var nombreMetodo = '💳 Tarjeta Crédito/Débito';
-                if (metodoPagoSeleccionado === 'pse') nombreMetodo = '🏦 PSE / Transferencia Bancaria';
-                if (metodoPagoSeleccionado === 'billetera') nombreMetodo = '📱 Billetera Digital (Nequi/Daviplata/MP)';
-                if (metodoPagoSeleccionado === 'efectivo') nombreMetodo = '💵 Pago Contra Entrega';
-
-                fetch('/api/crear-pedido', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({
-                        cliente: CLIENTE_NOMBRE,
-                        sede: SEDE_ACTUAL,
-                        productos: detallesItems,
-                        metodo_pago: nombreMetodo,
-                        total: total
-                    })
-                })
-                .then(function(res) { return res.json(); })
-                .then(function(data) {
-                    if (data.status === 'ok') {
-                        alert('🎉 ¡Pago procesado con éxito mediante ' + nombreMetodo + '!\nTu pedido se enviará desde la sede ' + SEDE_ACTUAL);
-                        carrito = [];
-                        actualizarCarritoUI();
-                        document.getElementById("modal-carrito").style.display = "none";
-                    }
-                })
-                .catch(function() {
-                    alert('Error al procesar el pedido con el servidor.');
-                });
-            };
-        });
-
-        function quitarProducto(index) {
-            carrito.splice(index, 1);
-            actualizarCarritoUI();
-        }
-
-        function actualizarCarritoUI() {
-            document.getElementById('cart-count').innerText = carrito.length;
-            var total = 0;
-            for (var i = 0; i < carrito.length; i++) {
-                total += carrito[i].precio;
-            }
-            document.getElementById('cart-total').innerText = '$' + total.toLocaleString();
-
-            var listaHtml = '';
-            for (var j = 0; j < carrito.length; j++) {
-                listaHtml += '<div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid #e2e8f0;">' +
-                    '<span>' + carrito[j].nombre + '</span>' +
-                    '<div style="display:flex; align-items:center; gap:10px;">' +
-                        '<b>$' + carrito[j].precio.toLocaleString() + '</b>' +
-                        '<button class="btn-remove" type="button" onclick="quitarProducto(' + j + ')">❌ Quitar</button>' +
-                    '</div>' +
-                '</div>';
-            }
-            document.getElementById('cart-items').innerHTML = listaHtml || '<p style="color:var(--gray-text);">El carrito está vacío</p>';
-        }
-
-        function filtrarCategoria(cat, btn) {
-            var catBtns = document.querySelectorAll('.cat-btn');
-            for (var i = 0; i < catBtns.length; i++) {
-                catBtns[i].classList.remove('btn');
-                catBtns[i].classList.add('btn-outline');
-            }
-            btn.classList.add('btn');
-            btn.classList.remove('btn-outline');
-
-            var productos = document.querySelectorAll('.product-card');
-            for (var j = 0; j < productos.length; j++) {
-                if (cat === 'todos' || productos[j].getAttribute('data-cat') === cat) {
-                    productos[j].style.display = 'flex';
-                } else {
-                    productos[j].style.display = 'none';
-                }
-            }
-        }
-    </script>
 </body>
 </html>
 """
 
-# DASHBOARD STAFF CON MONITOREO EN TIEMPO REAL
 HTML_DASHBOARD = """
 <!DOCTYPE html>
 <html lang="es">
@@ -827,7 +781,6 @@ HTML_DASHBOARD = """
         </div>
 
         <div class="main">
-            <!-- PANEL PRINCIPAL -->
             <div id="panel" class="seccion-tab fade-in">
                 <div class="card">
                     <h2>Bienvenido al Panel de Administración Staff</h2>
@@ -849,7 +802,6 @@ HTML_DASHBOARD = """
                 </div>
             </div>
 
-            <!-- ACTIVIDAD DE PEDIDOS EN TIEMPO REAL -->
             <div id="pedidos-live" class="seccion-tab fade-in" style="display:none;">
                 <div class="card">
                     <h2>🔴 Ventas y Pedidos en Tiempo Real</h2>
@@ -872,7 +824,6 @@ HTML_DASHBOARD = """
                 </div>
             </div>
 
-            <!-- GESTIÓN INVENTARIO -->
             <div id="inventario" class="seccion-tab fade-in" style="display:none;">
                 <div class="card">
                     <h3>Registrar Nuevo Ítem de Inventario</h3>
@@ -935,7 +886,6 @@ HTML_DASHBOARD = """
                 </div>
             </div>
 
-            <!-- SEDES CON DIRECCIONES INVENTADAS -->
             <div id="sedes" class="seccion-tab fade-in" style="display:none;">
                 <div class="card">
                     <h2>Configuración de Puntos de Atención</h2>
@@ -952,12 +902,10 @@ HTML_DASHBOARD = """
 </html>
 """
 
-# RUTAS Y CONTROLADORES FLASK
 @app.route('/')
 def inicio():
     return render_template_string(HTML_LANDING, css=CSS_ESTILOS)
 
-# RUTAS STAFF
 @app.route('/login-staff', methods=['GET', 'POST'])
 def login_staff():
     error = None
@@ -977,7 +925,6 @@ def dashboard():
         return redirect(url_for('login_staff'))
     return render_template_string(HTML_DASHBOARD, css=CSS_ESTILOS)
 
-# RUTAS CLIENTE
 @app.route('/cliente-ubicacion')
 def cliente_ubicacion():
     return render_template_string(HTML_CLIENTE_UBICACION, css=CSS_ESTILOS)
@@ -1015,7 +962,6 @@ def tienda():
     cliente_nombre = session.get('cliente_nombre', 'Cliente')
     return render_template_string(HTML_TIENDA, css=CSS_ESTILOS, sede_actual=sede_actual, cliente_nombre=cliente_nombre)
 
-# ENDPOINTS API PARA TIEMPO REAL
 @app.route('/api/crear-pedido', methods=['POST'])
 def crear_pedido():
     from datetime import datetime
