@@ -6,8 +6,8 @@ app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY", "keepinventory_secret_key_12345")
 
 # Credenciales de administrador demo
-ADMIN_EMAIL = "admin@keepinventory.com"
-ADMIN_PASSWORD = "admin123password"
+ADMIN_EMAIL = os.getenv("ADMIN_EMAIL", "admin@keepinventory.com")
+ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "admin123password")
 
 # CSS COMPLETO CON ANIMACIONES Y DISEÑO MEJORADO
 CSS_ESTILOS = """
@@ -77,9 +77,9 @@ body{background:var(--light); color:var(--dark); line-height:1.5; overflow-x:hid
 
 /* DASHBOARD STAFF */
 .dashboard{display:flex;min-height:100vh;}
-.sidebar{width:260px;background:var(--dark);color:white;padding:24px;flex-shrink:0;display:flex;flex-direction:column;justify-space-between;}
+.sidebar{width:260px;background:var(--dark);color:white;padding:24px;flex-shrink:0;display:flex;flex-direction:column;justify-content:space-between;}
 .sidebar .brand{margin-bottom:25px;}
-.sidebar a{display:flex;align-items:center;gap:10px;color:#cbd5e1;padding:12px 14px;text-decoration:none;border-radius:10px;margin:5px 0; font-size:14px; transition:all .2s;}
+.sidebar a{display:flex;align-items:center;gap:10px;color:#cbd5e1;padding:12px 14px;text-decoration:none;border-radius:10px;margin:5px 0; font-size:14px; transition:all .2s; cursor:pointer;}
 .sidebar a:hover,.sidebar a.active{background:var(--primary);color:white; transform:translateX(4px);}
 .main{flex:1;padding:30px; overflow-y:auto; background:#f1f5f9;}
 .card{background:white;padding:24px;border-radius:16px;box-shadow:0 4px 15px rgba(0,0,0,.03);margin-bottom:20px; border:1px solid #e2e8f0; transition:all 0.2s;}
@@ -637,7 +637,7 @@ def cliente_ubicacion():
 
 @app.route('/api/set-sede', methods=['POST'])
 def set_sede():
-    data = request.json
+    data = request.json or {}
     session['sede'] = data.get('sede')
     session['direccion_sede'] = data.get('direccion')
     return {'status': 'ok'}
@@ -650,13 +650,14 @@ def cliente_auth():
 @app.route('/login-cliente', methods=['POST'])
 def login_cliente():
     session['user_type'] = 'cliente'
-    session['cliente_nombre'] = request.form.get('email').split('@')[0].capitalize()
+    email = request.form.get('email', 'cliente@demo.com')
+    session['cliente_nombre'] = email.split('@')[0].capitalize() if '@' in email else email
     return redirect(url_for('tienda'))
 
 @app.route('/registro-cliente', methods=['POST'])
 def registro_cliente():
     session['user_type'] = 'cliente'
-    session['cliente_nombre'] = request.form.get('nombre')
+    session['cliente_nombre'] = request.form.get('nombre', 'Cliente')
     return redirect(url_for('tienda'))
 
 @app.route('/tienda')
