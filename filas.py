@@ -1,6 +1,10 @@
-from flask import Flask, render_template_string, redirect, url_for
+from flask import Flask, render_template_string, redirect, url_for, request
 
 app = Flask(__name__)
+
+# Credenciales de administrador agregadas
+ADMIN_EMAIL = "admin@keepinventory.com"
+ADMIN_PASSWORD = "admin123password"
 
 # CSS COMPLETO
 CSS_ESTILOS = """
@@ -151,11 +155,25 @@ HTML_LOGIN = """
                 <h2>Acceso Staff</h2>
             </div>
             <p>Ingresa tus credenciales de administrador</p>
-            <form action="/dashboard" method="GET">
-                <input type="text" placeholder="Usuario" required>
-                <input type="password" placeholder="Contraseña" required>
+            
+            {% if error %}
+            <div style="color: #dc2626; background: #fee2e2; padding: 10px; border-radius: 8px; font-size: 13px; margin-bottom: 12px;">
+                {{ error }}
+            </div>
+            {% endif %}
+
+            <form action="/login" method="POST">
+                <input type="email" name="usuario" placeholder="Correo del Administrador" required>
+                <input type="password" name="password" placeholder="Contraseña" required>
                 <button type="submit">Iniciar Sesión</button>
             </form>
+
+            <div class="demo-creds">
+                <b>Credenciales Demo:</b><br>
+                Correo: admin@keepinventory.com<br>
+                Clave: admin123password
+            </div>
+
             <a href="/" style="display:block; margin-top:15px; color:var(--gray-text); text-decoration:none; font-size:13px;">← Volver al inicio</a>
         </div>
     </div>
@@ -261,9 +279,20 @@ HTML_TIENDA = """
 def inicio():
     return render_template_string(HTML_LANDING, css=CSS_ESTILOS)
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-    return render_template_string(HTML_LOGIN, css=CSS_ESTILOS)
+    error = None
+    if request.method == 'POST':
+        usuario = request.form.get('usuario')
+        password = request.form.get('password')
+        
+        # Validación con el correo de administrador
+        if usuario == ADMIN_EMAIL and password == ADMIN_PASSWORD:
+            return redirect(url_for('dashboard'))
+        else:
+            error = "Correo o contraseña de administrador incorrectos"
+            
+    return render_template_string(HTML_LOGIN, css=CSS_ESTILOS, error=error)
 
 @app.route('/dashboard')
 def dashboard():
