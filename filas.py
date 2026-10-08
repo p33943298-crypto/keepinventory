@@ -93,7 +93,7 @@ body{background:#f1f5f9; color:var(--dark); line-height:1.6; overflow-x:hidden;}
 .login-container{background:white;padding:42px 35px;border-radius:24px;width:100%;max-width:440px;box-shadow:0 25px 50px -12px rgba(0,0,0,0.35);text-align:center; transition: transform 0.3s ease;}
 .login-container input, .login-container select, .login-container textarea, .pay-input{width:100%;padding:12px 14px;margin:6px 0;border:2px solid var(--gray);border-radius:12px;outline:none; font-size:14px; transition:all 0.3s ease; background:#f8fafc;}
 .login-container input:focus, .pay-input:focus{border-color:var(--primary); background:white; box-shadow:0 0 0 4px rgba(15,138,95,.15);}
-.btn{width:100%;padding:14px 20px;background:var(--primary-gradient);color:white;border:none;border-radius:12px;cursor:pointer;font-weight:700;margin-top:14px; font-size:15px; transition:all .3s ease; display:inline-flex; align-items:center; justify-content:center; gap:8px; box-shadow:0 4px 12px rgba(15,138,95,0.25);}
+.btn{width:100%;padding:14px 20px;background:var(--primary-gradient);color:white;border:none;border-radius:12px;cursor:pointer;font-weight:700;margin-top:14px; font-size:15px; transition:all .3s ease; display:inline-flex; align-items:center; justify-content:center; gap:8px; box-shadow:0 4px 12px rgba(15,138,95,0.25); position:relative; z-index:10;}
 .btn:hover{transform:translateY(-2px); box-shadow:0 8px 20px rgba(15,138,95,0.4); opacity:0.95;}
 .btn:active{transform:translateY(0);}
 .btn-outline{background:transparent; color:var(--primary); border:2px solid var(--primary); box-shadow:none;}
@@ -135,13 +135,13 @@ tr:hover td{background:#f8fafc;}
 .cart-floating-btn{position:fixed; bottom:30px; right:30px; background:var(--primary-gradient); color:white; padding:16px 26px; border-radius:50px; cursor:pointer; font-weight:700; box-shadow:0 10px 30px rgba(15,138,95,0.4); display:flex; align-items:center; gap:12px; z-index:99; transition:all 0.3s ease;}
 .cart-floating-btn:hover{transform:scale(1.08) translateY(-3px); box-shadow:0 15px 35px rgba(15,138,95,0.5);}
 .modal{display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(15,23,42,0.6); backdrop-filter:blur(6px); z-index:1000; justify-content:center; align-items:center;}
-.modal-content{background:white; padding:30px; border-radius:24px; width:90%; max-width:520px; position:relative; animation:fadeIn 0.3s ease; box-shadow:0 25px 50px rgba(0,0,0,0.25); max-height:90vh; overflow-y:auto;}
+.modal-content{background:white; padding:30px; border-radius:24px; width:90%; max-width:520px; position:relative; animation:fadeIn 0.3s ease; box-shadow:0 25px 50px rgba(0,0,0,0.25); max-height:90vh; overflow-y:auto; z-index:1001; pointer-events:auto;}
 .btn-remove{background:#fee2e2; color:#dc2626; border:none; border-radius:8px; padding:6px 10px; cursor:pointer; font-size:12px; font-weight:700; transition:all 0.2s;}
 .btn-remove:hover{background:#fca5a5; transform:scale(1.05);}
 
 /* METODOS DE PAGO UI */
 .pay-options{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:15px 0;}
-.pay-card{border:2px solid var(--gray); border-radius:12px; padding:12px; text-align:center; cursor:pointer; font-size:13px; font-weight:600; transition:all 0.2s;}
+.pay-card{border:2px solid var(--gray); border-radius:12px; padding:12px; text-align:center; cursor:pointer; font-size:13px; font-weight:600; transition:all 0.2s; user-select:none;}
 .pay-card:hover, .pay-card.selected{border-color:var(--primary); background:var(--primary-light); color:var(--primary-dark);}
 
 /* RESPONSIVE */
@@ -396,7 +396,7 @@ HTML_TIENDA = """
                     <span>${p.nombre}</span>
                     <div style="display:flex; align-items:center; gap:10px;">
                         <b>$${p.precio.toLocaleString()}</b>
-                        <button class="btn-remove" onclick="quitarProducto(${index})">❌ Quitar</button>
+                        <button class="btn-remove" type="button" onclick="quitarProducto(${index})">❌ Quitar</button>
                     </div>
                 </div>`;
             });
@@ -412,18 +412,19 @@ HTML_TIENDA = """
             elem.classList.add('selected');
 
             document.querySelectorAll('.form-pago-sub').forEach(f => f.style.display = 'none');
-            document.getElementById('form-pago-' + metodo).style.display = 'block';
+            let subForm = document.getElementById('form-pago-' + metodo);
+            if(subForm) subForm.style.display = 'block';
         }
         
         function procesarCompra() {
             if(carrito.length === 0) { alert('Añade productos primero'); return; }
             
-            // Validaciones por método de pago para simular flujo real
+            // Validaciones flexibles (permiten datos de prueba o inventados)
             if(metodoPagoSeleccionado === 'tarjeta') {
                 let num = document.getElementById('pay-card-num').value;
                 let exp = document.getElementById('pay-card-exp').value;
                 let cvc = document.getElementById('pay-card-cvc').value;
-                if(!num || !exp || !cvc) { alert('Completa los datos de la tarjeta'); return; }
+                if(!num || !exp || !cvc) { alert('Completa los campos de la tarjeta'); return; }
             } else if(metodoPagoSeleccionado === 'pse') {
                 let banco = document.getElementById('pay-pse-bank').value;
                 let doc = document.getElementById('pay-pse-doc').value;
@@ -438,11 +439,11 @@ HTML_TIENDA = """
             let nombreMetodo = {
                 'tarjeta': '💳 Tarjeta Crédito/Débito',
                 'pse': '🏦 PSE / Transferencia Bancaria',
-                'billetera': '📱 Billetera Digital (Nequi/Daviplata/MercadoPago)',
+                'billetera': '📱 Billetera Digital (Nequi/Daviplata/MP)',
                 'efectivo': '💵 Pago Contra Entrega'
-            }[metodoPagoSeleccionado];
+            }[metodoPagoSeleccionado] || '💳 Tarjeta';
 
-            // Enviar pedido al servidor para reflejarse en tiempo real al Administrador
+            // Enviar pedido al servidor
             fetch('/api/crear-pedido', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
@@ -453,11 +454,20 @@ HTML_TIENDA = """
                     metodo_pago: nombreMetodo,
                     total: total
                 })
-            }).then(() => {
-                alert('🎉 ¡Pago procesado con éxito vía ' + nombreMetodo + '!\nTu pedido se enviará desde la sede ' + '{{ sede_actual }}');
-                carrito = [];
-                actualizarCarritoUI();
-                cerrarCarrito();
+            })
+            .then(res => res.json())
+            .then(data => {
+                if(data.status === 'ok') {
+                    alert('🎉 ¡Pago procesado con éxito mediante ' + nombreMetodo + '!\nTu pedido se enviará desde la sede ' + '{{ sede_actual }}');
+                    carrito = [];
+                    actualizarCarritoUI();
+                    cerrarCarrito();
+                } else {
+                    alert('Error al registrar el pedido');
+                }
+            })
+            .catch(err => {
+                alert('Error en la comunicación con el servidor');
             });
         }
 
@@ -499,12 +509,12 @@ HTML_TIENDA = """
 
         <!-- FILTROS DE CATEGORÍA -->
         <div style="display:flex; gap:10px; margin-bottom:25px; overflow-x:auto; padding-bottom:5px;">
-            <button class="btn cat-btn" onclick="filtrarCategoria('todos', this)">Todos los productos</button>
-            <button class="btn btn-outline cat-btn" onclick="filtrarCategoria('bebidas', this)">Bebidas</button>
-            <button class="btn btn-outline cat-btn" onclick="filtrarCategoria('snacks', this)">Snacks & Pasabocas</button>
-            <button class="btn btn-outline cat-btn" onclick="filtrarCategoria('lacteos', this)">Lácteos & Frescos</button>
-            <button class="btn btn-outline cat-btn" onclick="filtrarCategoria('despensa', this)">Despensa</button>
-            <button class="btn btn-outline cat-btn" onclick="filtrarCategoria('dulces', this)">Dulces & Postres</button>
+            <button type="button" class="btn cat-btn" onclick="filtrarCategoria('todos', this)">Todos los productos</button>
+            <button type="button" class="btn btn-outline cat-btn" onclick="filtrarCategoria('bebidas', this)">Bebidas</button>
+            <button type="button" class="btn btn-outline cat-btn" onclick="filtrarCategoria('snacks', this)">Snacks & Pasabocas</button>
+            <button type="button" class="btn btn-outline cat-btn" onclick="filtrarCategoria('lacteos', this)">Lácteos & Frescos</button>
+            <button type="button" class="btn btn-outline cat-btn" onclick="filtrarCategoria('despensa', this)">Despensa</button>
+            <button type="button" class="btn btn-outline cat-btn" onclick="filtrarCategoria('dulces', this)">Dulces & Postres</button>
         </div>
 
         <!-- GRID DE PRODUCTOS COMESTIBLES -->
@@ -517,7 +527,7 @@ HTML_TIENDA = """
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Jugo 100% natural, recién exprimido sin azúcar añadida.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
                     <b style="font-size:18px; color:var(--primary);">$8.500</b>
-                    <button class="btn" onclick="agregarProducto('Jugo Natural de Naranja (1L)', 8500)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <button type="button" class="btn" onclick="agregarProducto('Jugo Natural de Naranja (1L)', 8500)" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
 
@@ -527,7 +537,7 @@ HTML_TIENDA = """
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Café de origen premium con notas a chocolate y avellanas.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
                     <b style="font-size:18px; color:var(--primary);">$24.000</b>
-                    <button class="btn" onclick="agregarProducto('Café Tostado en Grano (500g)', 24000)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <button type="button" class="btn" onclick="agregarProducto('Café Tostado en Grano (500g)', 24000)" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
 
@@ -537,7 +547,7 @@ HTML_TIENDA = """
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Agua de manantial purificada, refrescante y natural.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
                     <b style="font-size:18px; color:var(--primary);">$3.200</b>
-                    <button class="btn" onclick="agregarProducto('Agua Mineral con Gas (600ml)', 3200)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <button type="button" class="btn" onclick="agregarProducto('Agua Mineral con Gas (600ml)', 3200)" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
 
@@ -549,7 +559,7 @@ HTML_TIENDA = """
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Crocantes hojuelas de papa sazonadas con sal marina.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
                     <b style="font-size:18px; color:var(--primary);">$6.000</b>
-                    <button class="btn" onclick="agregarProducto('Papas Fritas Artesanales (150g)', 6000)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <button type="button" class="btn" onclick="agregarProducto('Papas Fritas Artesanales (150g)', 6000)" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
 
@@ -559,7 +569,7 @@ HTML_TIENDA = """
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Almendras, nueces, arándanos secos y maní horneado.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
                     <b style="font-size:18px; color:var(--primary);">$12.500</b>
-                    <button class="btn" onclick="agregarProducto('Mezcla de Frutos Secos (200g)', 12500)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <button type="button" class="btn" onclick="agregarProducto('Mezcla de Frutos Secos (200g)', 12500)" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
 
@@ -569,7 +579,7 @@ HTML_TIENDA = """
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Deliciosas roscas crujientes horneadas bajo en grasa.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
                     <b style="font-size:18px; color:var(--primary);">$5.400</b>
-                    <button class="btn" onclick="agregarProducto('Pretzels Horneados con Sal (120g)', 5400)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <button type="button" class="btn" onclick="agregarProducto('Pretzels Horneados con Sal (120g)', 5400)" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
 
@@ -580,7 +590,7 @@ HTML_TIENDA = """
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Queso semiduro de textura suave y sabor cremoso.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
                     <b style="font-size:18px; color:var(--primary);">$16.800</b>
-                    <button class="btn" onclick="agregarProducto('Queso Gouda Madurado (250g)', 16800)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <button type="button" class="btn" onclick="agregarProducto('Queso Gouda Madurado (250g)', 16800)" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
 
@@ -590,7 +600,7 @@ HTML_TIENDA = """
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Alto en proteína, sin azúcar añadida ni conservantes.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
                     <b style="font-size:18px; color:var(--primary);">$11.000</b>
-                    <button class="btn" onclick="agregarProducto('Yogurt Griego Natural (500g)', 11000)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <button type="button" class="btn" onclick="agregarProducto('Yogurt Griego Natural (500g)', 11000)" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
 
@@ -602,7 +612,7 @@ HTML_TIENDA = """
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Elaborado artesanalmente con fermentación lenta de 24h.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
                     <b style="font-size:18px; color:var(--primary);">$9.800</b>
-                    <button class="btn" onclick="agregarProducto('Pan Tajado de Masa Madre', 9800)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <button type="button" class="btn" onclick="agregarProducto('Pan Tajado de Masa Madre', 9800)" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
 
@@ -612,7 +622,7 @@ HTML_TIENDA = """
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Prensado en frío, ideal para ensaladas y cocina gourmet.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
                     <b style="font-size:18px; color:var(--primary);">$32.000</b>
-                    <button class="btn" onclick="agregarProducto('Aceite de Oliva Extra Virgen (500ml)', 32000)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <button type="button" class="btn" onclick="agregarProducto('Aceite de Oliva Extra Virgen (500ml)', 32000)" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
 
@@ -622,7 +632,7 @@ HTML_TIENDA = """
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Con albahaca fresca, tomates maduros y especias naturales.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
                     <b style="font-size:18px; color:var(--primary);">$7.500</b>
-                    <button class="btn" onclick="agregarProducto('Salsa de Tomate Italiana (400g)', 7500)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <button type="button" class="btn" onclick="agregarProducto('Salsa de Tomate Italiana (400g)', 7500)" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
 
@@ -634,7 +644,7 @@ HTML_TIENDA = """
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Barra de chocolate orgánico amargo con un toque de vainilla.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
                     <b style="font-size:18px; color:var(--primary);">$8.900</b>
-                    <button class="btn" onclick="agregarProducto('Chocolate Negro 70% Cacao (100g)', 8900)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <button type="button" class="btn" onclick="agregarProducto('Chocolate Negro 70% Cacao (100g)', 8900)" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
 
@@ -644,7 +654,7 @@ HTML_TIENDA = """
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Galletas horneadas crujientes con hojuelas de avena y miel pura.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
                     <b style="font-size:18px; color:var(--primary);">$6.800</b>
-                    <button class="btn" onclick="agregarProducto('Galletas de Avena y Miel (200g)', 6800)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <button type="button" class="btn" onclick="agregarProducto('Galletas de Avena y Miel (200g)', 6800)" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
         </div>
@@ -708,8 +718,8 @@ HTML_TIENDA = """
                 <b id="cart-total" style="color:var(--primary);">$0</b>
             </div>
 
-            <button class="btn" onclick="procesarCompra()" style="margin-top:15px;">🔒 Procesar Pago Seguro</button>
-            <button class="btn btn-outline" onclick="cerrarCarrito()" style="margin-top:8px;">Seguir Comprando</button>
+            <button type="button" class="btn" onclick="procesarCompra()" style="margin-top:15px;">🔒 Procesar Pago Seguro</button>
+            <button type="button" class="btn btn-outline" onclick="cerrarCarrito()" style="margin-top:8px;">Seguir Comprando</button>
         </div>
     </div>
 </body>
