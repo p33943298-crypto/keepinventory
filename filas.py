@@ -12,7 +12,7 @@ ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "admin123password")
 # Lista global en memoria para simular la base de datos de pedidos recibidos en tiempo real
 PEDIDOS_REGISTRADOS = []
 
-# CSS COMPLETO CON ANIMACIONES Y DISEÑO MEJORADO
+# CSS COMPLETO CORREGIDO Y OPTIMIZADO
 CSS_ESTILOS = """
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
 
@@ -56,11 +56,6 @@ body{background:#f1f5f9; color:var(--dark); line-height:1.6; overflow-x:hidden;}
   100% { box-shadow: 0 0 0 0 rgba(15, 138, 95, 0); }
 }
 
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-
 .fade-in { animation: fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 .float-anim { animation: float 4s ease-in-out infinite; }
 
@@ -93,7 +88,7 @@ body{background:#f1f5f9; color:var(--dark); line-height:1.6; overflow-x:hidden;}
 .login-container{background:white;padding:42px 35px;border-radius:24px;width:100%;max-width:440px;box-shadow:0 25px 50px -12px rgba(0,0,0,0.35);text-align:center; transition: transform 0.3s ease;}
 .login-container input, .login-container select, .login-container textarea, .pay-input{width:100%;padding:12px 14px;margin:6px 0;border:2px solid var(--gray);border-radius:12px;outline:none; font-size:14px; transition:all 0.3s ease; background:#f8fafc;}
 .login-container input:focus, .pay-input:focus{border-color:var(--primary); background:white; box-shadow:0 0 0 4px rgba(15,138,95,.15);}
-.btn{width:100%;padding:14px 20px;background:var(--primary-gradient);color:white;border:none;border-radius:12px;cursor:pointer;font-weight:700;margin-top:14px; font-size:15px; transition:all .3s ease; display:inline-flex; align-items:center; justify-content:center; gap:8px; box-shadow:0 4px 12px rgba(15,138,95,0.25); position:relative; z-index:10;}
+.btn{width:100%;padding:14px 20px;background:var(--primary-gradient);color:white;border:none;border-radius:12px;cursor:pointer;font-weight:700;margin-top:14px; font-size:15px; transition:all .3s ease; display:inline-flex; align-items:center; justify-content:center; gap:8px; box-shadow:0 4px 12px rgba(15,138,95,0.25);}
 .btn:hover{transform:translateY(-2px); box-shadow:0 8px 20px rgba(15,138,95,0.4); opacity:0.95;}
 .btn:active{transform:translateY(0);}
 .btn-outline{background:transparent; color:var(--primary); border:2px solid var(--primary); box-shadow:none;}
@@ -132,10 +127,12 @@ tr:hover td{background:#f8fafc;}
 .product-badge{position:absolute; top:15px; right:15px; background:var(--accent); color:white; font-size:11px; font-weight:800; padding:4px 10px; border-radius:30px; letter-spacing:0.5px; box-shadow:0 4px 10px rgba(245,158,11,0.3);}
 
 /* CARRITO MODAL Y NOTIFICACIONES */
-.cart-floating-btn{position:fixed; bottom:30px; right:30px; background:var(--primary-gradient); color:white; padding:16px 26px; border-radius:50px; cursor:pointer; font-weight:700; box-shadow:0 10px 30px rgba(15,138,95,0.4); display:flex; align-items:center; gap:12px; z-index:99; transition:all 0.3s ease;}
+.cart-floating-btn{position:fixed; bottom:30px; right:30px; background:var(--primary-gradient); color:white; padding:16px 26px; border-radius:50px; cursor:pointer; font-weight:700; box-shadow:0 10px 30px rgba(15,138,95,0.4); display:flex; align-items:center; gap:12px; z-index:999; transition:all 0.3s ease;}
 .cart-floating-btn:hover{transform:scale(1.08) translateY(-3px); box-shadow:0 15px 35px rgba(15,138,95,0.5);}
-.modal{display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(15,23,42,0.6); backdrop-filter:blur(6px); z-index:1000; justify-content:center; align-items:center;}
-.modal-content{background:white; padding:30px; border-radius:24px; width:90%; max-width:520px; position:relative; animation:fadeIn 0.3s ease; box-shadow:0 25px 50px rgba(0,0,0,0.25); max-height:90vh; overflow-y:auto; z-index:1001; pointer-events:auto;}
+
+/* CORRECCIÓN DE MODAL CAPA Z-INDEX Y POINTER EVENTS */
+.modal{display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(15,23,42,0.6); backdrop-filter:blur(6px); z-index:10000; justify-content:center; align-items:center;}
+.modal-content{background:white; padding:30px; border-radius:24px; width:90%; max-width:520px; position:relative; animation:fadeIn 0.3s ease; box-shadow:0 25px 50px rgba(0,0,0,0.25); max-height:85vh; overflow-y:auto;}
 .btn-remove{background:#fee2e2; color:#dc2626; border:none; border-radius:8px; padding:6px 10px; cursor:pointer; font-size:12px; font-weight:700; transition:all 0.2s;}
 .btn-remove:hover{background:#fca5a5; transform:scale(1.05);}
 
@@ -236,7 +233,7 @@ HTML_LOGIN_STAFF = """
 </html>
 """
 
-# PASO 1 CLIENTE: SELECCIÓN DE UBICACIÓN Y SEDE CON DIRECCIONES INVENTADAS
+# PASO 1 CLIENTE: SELECCIÓN DE UBICACIÓN Y SEDE
 HTML_CLIENTE_UBICACION = """
 <!DOCTYPE html>
 <html lang="es">
@@ -362,7 +359,7 @@ HTML_CLIENTE_AUTH = """
 </html>
 """
 
-# CATÁLOGO INTERACTIVO DE CLIENTES CON PRODUCTOS COMESTIBLES Y MÉTODOS DE PAGO REALES INTEGRADOS
+# CATÁLOGO INTERACTIVO DE CLIENTES CON JS ROBUSTO DE EVENTOS
 HTML_TIENDA = """
 <!DOCTYPE html>
 <html lang="es">
@@ -371,122 +368,6 @@ HTML_TIENDA = """
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catálogo - Cliente</title>
     <style>{{ css | safe }}</style>
-    <script>
-        let carrito = [];
-        let metodoPagoSeleccionado = 'tarjeta';
-
-        function agregarProducto(nombre, precio) {
-            carrito.push({nombre, precio});
-            actualizarCarritoUI();
-        }
-
-        function quitarProducto(index) {
-            carrito.splice(index, 1);
-            actualizarCarritoUI();
-        }
-
-        function actualizarCarritoUI() {
-            document.getElementById('cart-count').innerText = carrito.length;
-            let total = carrito.reduce((sum, p) => sum + p.precio, 0);
-            document.getElementById('cart-total').innerText = '$' + total.toLocaleString();
-
-            let listaHtml = '';
-            carrito.forEach((p, index) => {
-                listaHtml += `<div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid #e2e8f0;">
-                    <span>${p.nombre}</span>
-                    <div style="display:flex; align-items:center; gap:10px;">
-                        <b>$${p.precio.toLocaleString()}</b>
-                        <button class="btn-remove" type="button" onclick="quitarProducto(${index})">❌ Quitar</button>
-                    </div>
-                </div>`;
-            });
-            document.getElementById('cart-items').innerHTML = listaHtml || '<p style="color:var(--gray-text);">El carrito está vacío</p>';
-        }
-
-        function abrirCarrito() { document.getElementById('modal-carrito').style.display = 'flex'; }
-        function cerrarCarrito() { document.getElementById('modal-carrito').style.display = 'none'; }
-
-        function seleccionarMetodoPago(metodo, elem) {
-            metodoPagoSeleccionado = metodo;
-            document.querySelectorAll('.pay-card').forEach(c => c.classList.remove('selected'));
-            elem.classList.add('selected');
-
-            document.querySelectorAll('.form-pago-sub').forEach(f => f.style.display = 'none');
-            let subForm = document.getElementById('form-pago-' + metodo);
-            if(subForm) subForm.style.display = 'block';
-        }
-        
-        function procesarCompra() {
-            if(carrito.length === 0) { alert('Añade productos primero'); return; }
-            
-            // Validaciones flexibles (permiten datos de prueba o inventados)
-            if(metodoPagoSeleccionado === 'tarjeta') {
-                let num = document.getElementById('pay-card-num').value;
-                let exp = document.getElementById('pay-card-exp').value;
-                let cvc = document.getElementById('pay-card-cvc').value;
-                if(!num || !exp || !cvc) { alert('Completa los campos de la tarjeta'); return; }
-            } else if(metodoPagoSeleccionado === 'pse') {
-                let banco = document.getElementById('pay-pse-bank').value;
-                let doc = document.getElementById('pay-pse-doc').value;
-                if(!banco || !doc) { alert('Selecciona tu banco e ingresa tu documento'); return; }
-            } else if(metodoPagoSeleccionado === 'billetera') {
-                let tel = document.getElementById('pay-wallet-tel').value;
-                if(!tel) { alert('Ingresa tu número celular registrado'); return; }
-            }
-
-            let total = carrito.reduce((sum, p) => sum + p.precio, 0);
-            let detallesItems = carrito.map(p => p.nombre).join(', ');
-            let nombreMetodo = {
-                'tarjeta': '💳 Tarjeta Crédito/Débito',
-                'pse': '🏦 PSE / Transferencia Bancaria',
-                'billetera': '📱 Billetera Digital (Nequi/Daviplata/MP)',
-                'efectivo': '💵 Pago Contra Entrega'
-            }[metodoPagoSeleccionado] || '💳 Tarjeta';
-
-            // Enviar pedido al servidor
-            fetch('/api/crear-pedido', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({
-                    cliente: '{{ cliente_nombre }}',
-                    sede: '{{ sede_actual }}',
-                    productos: detallesItems,
-                    metodo_pago: nombreMetodo,
-                    total: total
-                })
-            })
-            .then(res => res.json())
-            .then(data => {
-                if(data.status === 'ok') {
-                    alert('🎉 ¡Pago procesado con éxito mediante ' + nombreMetodo + '!\nTu pedido se enviará desde la sede ' + '{{ sede_actual }}');
-                    carrito = [];
-                    actualizarCarritoUI();
-                    cerrarCarrito();
-                } else {
-                    alert('Error al registrar el pedido');
-                }
-            })
-            .catch(err => {
-                alert('Error en la comunicación con el servidor');
-            });
-        }
-
-        function filtrarCategoria(cat, btn) {
-            document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('btn'));
-            document.querySelectorAll('.cat-btn').forEach(b => b.classList.add('btn-outline'));
-            btn.classList.add('btn');
-            btn.classList.remove('btn-outline');
-
-            let productos = document.querySelectorAll('.product-card');
-            productos.forEach(p => {
-                if(cat === 'todos' || p.dataset.cat === cat) {
-                    p.style.display = 'flex';
-                } else {
-                    p.style.display = 'none';
-                }
-            });
-        }
-    </script>
 </head>
 <body style="background:#f8fafc;">
     <div style="padding:25px; max-width:1200px; margin:0 auto;" class="fade-in">
@@ -527,7 +408,7 @@ HTML_TIENDA = """
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Jugo 100% natural, recién exprimido sin azúcar añadida.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
                     <b style="font-size:18px; color:var(--primary);">$8.500</b>
-                    <button type="button" class="btn" onclick="agregarProducto('Jugo Natural de Naranja (1L)', 8500)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <button type="button" class="btn btn-add" data-nombre="Jugo Natural de Naranja (1L)" data-precio="8500" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
 
@@ -537,7 +418,7 @@ HTML_TIENDA = """
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Café de origen premium con notas a chocolate y avellanas.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
                     <b style="font-size:18px; color:var(--primary);">$24.000</b>
-                    <button type="button" class="btn" onclick="agregarProducto('Café Tostado en Grano (500g)', 24000)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <button type="button" class="btn btn-add" data-nombre="Café Tostado en Grano (500g)" data-precio="24000" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
 
@@ -547,7 +428,7 @@ HTML_TIENDA = """
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Agua de manantial purificada, refrescante y natural.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
                     <b style="font-size:18px; color:var(--primary);">$3.200</b>
-                    <button type="button" class="btn" onclick="agregarProducto('Agua Mineral con Gas (600ml)', 3200)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <button type="button" class="btn btn-add" data-nombre="Agua Mineral con Gas (600ml)" data-precio="3200" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
 
@@ -559,7 +440,7 @@ HTML_TIENDA = """
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Crocantes hojuelas de papa sazonadas con sal marina.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
                     <b style="font-size:18px; color:var(--primary);">$6.000</b>
-                    <button type="button" class="btn" onclick="agregarProducto('Papas Fritas Artesanales (150g)', 6000)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <button type="button" class="btn btn-add" data-nombre="Papas Fritas Artesanales (150g)" data-precio="6000" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
 
@@ -569,7 +450,7 @@ HTML_TIENDA = """
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Almendras, nueces, arándanos secos y maní horneado.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
                     <b style="font-size:18px; color:var(--primary);">$12.500</b>
-                    <button type="button" class="btn" onclick="agregarProducto('Mezcla de Frutos Secos (200g)', 12500)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <button type="button" class="btn btn-add" data-nombre="Mezcla de Frutos Secos (200g)" data-precio="12500" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
 
@@ -579,7 +460,7 @@ HTML_TIENDA = """
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Deliciosas roscas crujientes horneadas bajo en grasa.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
                     <b style="font-size:18px; color:var(--primary);">$5.400</b>
-                    <button type="button" class="btn" onclick="agregarProducto('Pretzels Horneados con Sal (120g)', 5400)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <button type="button" class="btn btn-add" data-nombre="Pretzels Horneados con Sal (120g)" data-precio="5400" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
 
@@ -590,7 +471,7 @@ HTML_TIENDA = """
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Queso semiduro de textura suave y sabor cremoso.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
                     <b style="font-size:18px; color:var(--primary);">$16.800</b>
-                    <button type="button" class="btn" onclick="agregarProducto('Queso Gouda Madurado (250g)', 16800)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <button type="button" class="btn btn-add" data-nombre="Queso Gouda Madurado (250g)" data-precio="16800" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
 
@@ -600,7 +481,7 @@ HTML_TIENDA = """
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Alto en proteína, sin azúcar añadida ni conservantes.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
                     <b style="font-size:18px; color:var(--primary);">$11.000</b>
-                    <button type="button" class="btn" onclick="agregarProducto('Yogurt Griego Natural (500g)', 11000)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <button type="button" class="btn btn-add" data-nombre="Yogurt Griego Natural (500g)" data-precio="11000" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
 
@@ -612,7 +493,7 @@ HTML_TIENDA = """
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Elaborado artesanalmente con fermentación lenta de 24h.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
                     <b style="font-size:18px; color:var(--primary);">$9.800</b>
-                    <button type="button" class="btn" onclick="agregarProducto('Pan Tajado de Masa Madre', 9800)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <button type="button" class="btn btn-add" data-nombre="Pan Tajado de Masa Madre" data-precio="9800" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
 
@@ -622,17 +503,7 @@ HTML_TIENDA = """
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Prensado en frío, ideal para ensaladas y cocina gourmet.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
                     <b style="font-size:18px; color:var(--primary);">$32.000</b>
-                    <button type="button" class="btn" onclick="agregarProducto('Aceite de Oliva Extra Virgen (500ml)', 32000)" style="width:auto; padding:8px 12px;">+ Añadir</button>
-                </div>
-            </div>
-
-            <div class="product-card" data-cat="despensa">
-                <div style="font-size:45px; text-align:center; margin:10px 0;">🥫</div>
-                <h3 style="font-size:16px;">Salsa de Tomate Italiana (400g)</h3>
-                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Con albahaca fresca, tomates maduros y especias naturales.</p>
-                <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
-                    <b style="font-size:18px; color:var(--primary);">$7.500</b>
-                    <button type="button" class="btn" onclick="agregarProducto('Salsa de Tomate Italiana (400g)', 7500)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <button type="button" class="btn btn-add" data-nombre="Aceite de Oliva Extra Virgen (500ml)" data-precio="32000" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
 
@@ -644,24 +515,14 @@ HTML_TIENDA = """
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Barra de chocolate orgánico amargo con un toque de vainilla.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
                     <b style="font-size:18px; color:var(--primary);">$8.900</b>
-                    <button type="button" class="btn" onclick="agregarProducto('Chocolate Negro 70% Cacao (100g)', 8900)" style="width:auto; padding:8px 12px;">+ Añadir</button>
-                </div>
-            </div>
-
-            <div class="product-card" data-cat="dulces">
-                <div style="font-size:45px; text-align:center; margin:10px 0;">🍪</div>
-                <h3 style="font-size:16px;">Galletas de Avena y Miel (200g)</h3>
-                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Galletas horneadas crujientes con hojuelas de avena y miel pura.</p>
-                <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
-                    <b style="font-size:18px; color:var(--primary);">$6.800</b>
-                    <button type="button" class="btn" onclick="agregarProducto('Galletas de Avena y Miel (200g)', 6800)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <button type="button" class="btn btn-add" data-nombre="Chocolate Negro 70% Cacao (100g)" data-precio="8900" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- BOTÓN FLOTANTE DEL CARRITO -->
-    <div class="cart-floating-btn" onclick="abrirCarrito()">
+    <div id="btn-open-cart" class="cart-floating-btn">
         🛒 Mi Carrito (<span id="cart-count">0</span>)
     </div>
 
@@ -677,13 +538,13 @@ HTML_TIENDA = """
             <!-- SELECCIÓN DE MÉTODO DE PAGO REAL -->
             <h4 style="margin-top:15px; font-size:14px; color:var(--dark);">Selecciona tu Método de Pago:</h4>
             <div class="pay-options">
-                <div class="pay-card selected" onclick="seleccionarMetodoPago('tarjeta', this)">💳 Tarjeta Débito / Crédito</div>
-                <div class="pay-card" onclick="seleccionarMetodoPago('pse', this)">🏦 PSE / Transferencia</div>
-                <div class="pay-card" onclick="seleccionarMetodoPago('billetera', this)">📱 Nequi / Daviplata / MP</div>
-                <div class="pay-card" onclick="seleccionarMetodoPago('efectivo', this)">💵 Pago Contra Entrega</div>
+                <div class="pay-card selected" data-metodo="tarjeta">💳 Tarjeta Débito / Crédito</div>
+                <div class="pay-card" data-metodo="pse">🏦 PSE / Transferencia</div>
+                <div class="pay-card" data-metodo="billetera">📱 Nequi / Daviplata / MP</div>
+                <div class="pay-card" data-metodo="efectivo">💵 Pago Contra Entrega</div>
             </div>
 
-            <!-- FORMULARIOS ADAPTATIVOS DE PAGO (ACEPTAN DATOS REALES O FALSOS) -->
+            <!-- FORMULARIOS ADAPTATIVOS DE PAGO -->
             <div id="form-pago-tarjeta" class="form-pago-sub">
                 <input type="text" id="pay-card-num" class="pay-input" placeholder="Número de Tarjeta (ej: 4532 0000 0000 0000)">
                 <div style="display:flex; gap:10px;">
@@ -710,7 +571,7 @@ HTML_TIENDA = """
             </div>
 
             <div id="form-pago-efectivo" class="form-pago-sub" style="display:none;">
-                <p style="font-size:12px; color:var(--primary); background:var(--primary-light); padding:10px; border-radius:8px;">Pagas en efectivo o con datáfono al recibir tus productos comestibles en el domicilio.</p>
+                <p style="font-size:12px; color:var(--primary); background:var(--primary-light); padding:10px; border-radius:8px;">Pagas en efectivo o con datáfono al recibir tus productos en el domicilio.</p>
             </div>
 
             <div style="display:flex; justify-content:space-between; align-items:center; font-size:18px; border-top:2px solid var(--gray); padding-top:12px; margin-top:15px;">
@@ -718,10 +579,142 @@ HTML_TIENDA = """
                 <b id="cart-total" style="color:var(--primary);">$0</b>
             </div>
 
-            <button type="button" class="btn" onclick="procesarCompra()" style="margin-top:15px;">🔒 Procesar Pago Seguro</button>
-            <button type="button" class="btn btn-outline" onclick="cerrarCarrito()" style="margin-top:8px;">Seguir Comprando</button>
+            <button id="btn-process-pay" type="button" class="btn" style="margin-top:15px;">🔒 Procesar Pago Seguro</button>
+            <button id="btn-close-cart" type="button" class="btn btn-outline" style="margin-top:8px;">Seguir Comprando</button>
         </div>
     </div>
+
+    <!-- SCRIPT CORREGIDO SIN BLOQUEO DE EVENTOS -->
+    <script>
+        let carrito = [];
+        let metodoPagoSeleccionado = 'tarjeta';
+
+        document.addEventListener("DOMContentLoaded", function() {
+            // Eventos para botones de añadir producto
+            document.querySelectorAll(".btn-add").forEach(btn => {
+                btn.addEventListener("click", function() {
+                    let nombre = this.getAttribute("data-nombre");
+                    let precio = parseInt(this.getAttribute("data-precio"));
+                    carrito.push({nombre, precio});
+                    actualizarCarritoUI();
+                });
+            });
+
+            // Abrir y cerrar carrito
+            document.getElementById("btn-open-cart").addEventListener("click", function() {
+                document.getElementById("modal-carrito").style.display = "flex";
+            });
+
+            document.getElementById("btn-close-cart").addEventListener("click", function() {
+                document.getElementById("modal-carrito").style.display = "none";
+            });
+
+            // Seleccionar métodos de pago
+            document.querySelectorAll(".pay-card").forEach(card => {
+                card.addEventListener("click", function() {
+                    document.querySelectorAll(".pay-card").forEach(c => c.classList.remove("selected"));
+                    this.classList.add("selected");
+                    metodoPagoSeleccionado = this.getAttribute("data-metodo");
+
+                    document.querySelectorAll(".form-pago-sub").forEach(f => f.style.display = "none");
+                    let subForm = document.getElementById("form-pago-" + metodoPagoSeleccionado);
+                    if(subForm) subForm.style.display = "block";
+                });
+            });
+
+            // Procesar compra
+            document.getElementById("btn-process-pay").addEventListener("click", function() {
+                if(carrito.length === 0) {
+                    alert('Añade productos al carrito primero.');
+                    return;
+                }
+
+                if(metodoPagoSeleccionado === 'tarjeta') {
+                    let num = document.getElementById('pay-card-num').value;
+                    let exp = document.getElementById('pay-card-exp').value;
+                    let cvc = document.getElementById('pay-card-cvc').value;
+                    if(!num || !exp || !cvc) { alert('Completa los campos de la tarjeta.'); return; }
+                } else if(metodoPagoSeleccionado === 'pse') {
+                    let banco = document.getElementById('pay-pse-bank').value;
+                    let doc = document.getElementById('pay-pse-doc').value;
+                    if(!banco || !doc) { alert('Selecciona tu banco e ingresa tu documento.'); return; }
+                } else if(metodoPagoSeleccionado === 'billetera') {
+                    let tel = document.getElementById('pay-wallet-tel').value;
+                    if(!tel) { alert('Ingresa tu número celular registrado.'); return; }
+                }
+
+                let total = carrito.reduce((sum, p) => sum + p.precio, 0);
+                let detallesItems = carrito.map(p => p.nombre).join(', ');
+                let nombreMetodo = {
+                    'tarjeta': '💳 Tarjeta Crédito/Débito',
+                    'pse': '🏦 PSE / Transferencia Bancaria',
+                    'billetera': '📱 Billetera Digital (Nequi/Daviplata/MP)',
+                    'efectivo': '💵 Pago Contra Entrega'
+                }[metodoPagoSeleccionado] || '💳 Tarjeta';
+
+                fetch('/api/crear-pedido', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        cliente: '{{ cliente_nombre }}',
+                        sede: '{{ sede_actual }}',
+                        productos: detallesItems,
+                        metodo_pago: nombreMetodo,
+                        total: total
+                    })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if(data.status === 'ok') {
+                        alert('🎉 ¡Pago procesado con éxito mediante ' + nombreMetodo + '!\nTu pedido se enviará desde la sede ' + '{{ sede_actual }}');
+                        carrito = [];
+                        actualizarCarritoUI();
+                        document.getElementById("modal-carrito").style.display = "none";
+                    }
+                })
+                .catch(() => alert('Error de conexión con el servidor.'));
+            });
+        });
+
+        function quitarProducto(index) {
+            carrito.splice(index, 1);
+            actualizarCarritoUI();
+        }
+
+        function actualizarCarritoUI() {
+            document.getElementById('cart-count').innerText = carrito.length;
+            let total = carrito.reduce((sum, p) => sum + p.precio, 0);
+            document.getElementById('cart-total').innerText = '$' + total.toLocaleString();
+
+            let listaHtml = '';
+            carrito.forEach((p, index) => {
+                listaHtml += `<div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid #e2e8f0;">
+                    <span>${p.nombre}</span>
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <b>$${p.precio.toLocaleString()}</b>
+                        <button class="btn-remove" type="button" onclick="quitarProducto(${index})">❌ Quitar</button>
+                    </div>
+                </div>`;
+            });
+            document.getElementById('cart-items').innerHTML = listaHtml || '<p style="color:var(--gray-text);">El carrito está vacío</p>';
+        }
+
+        function filtrarCategoria(cat, btn) {
+            document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('btn'));
+            document.querySelectorAll('.cat-btn').forEach(b => b.classList.add('btn-outline'));
+            btn.classList.add('btn');
+            btn.classList.remove('btn-outline');
+
+            let productos = document.querySelectorAll('.product-card');
+            productos.forEach(p => {
+                if(cat === 'todos' || p.dataset.cat === cat) {
+                    p.style.display = 'flex';
+                } else {
+                    p.style.display = 'none';
+                }
+            });
+        }
+    </script>
 </body>
 </html>
 """
@@ -761,7 +754,6 @@ HTML_DASHBOARD = """
             document.getElementById('form-prod').reset();
         }
 
-        // Función para consultar y actualizar en tiempo real las compras de los clientes con su pago
         function cargarPedidosEnTiempoReal() {
             fetch('/api/pedidos')
                 .then(res => res.json())
@@ -789,7 +781,6 @@ HTML_DASHBOARD = """
                 });
         }
 
-        // Consultar cada 2 segundos
         setInterval(cargarPedidosEnTiempoReal, 2000);
         window.onload = cargarPedidosEnTiempoReal;
     </script>
@@ -833,7 +824,7 @@ HTML_DASHBOARD = """
                 </div>
             </div>
 
-            <!-- ACTIVIDAD DE PEDIDOS EN TIEMPO REAL CON MÉTODOS DE PAGO -->
+            <!-- ACTIVIDAD DE PEDIDOS EN TIEMPO REAL -->
             <div id="pedidos-live" class="seccion-tab fade-in" style="display:none;">
                 <div class="card">
                     <h2>🔴 Ventas y Pedidos en Tiempo Real</h2>
@@ -999,7 +990,7 @@ def tienda():
     cliente_nombre = session.get('cliente_nombre', 'Cliente')
     return render_template_string(HTML_TIENDA, css=CSS_ESTILOS, sede_actual=sede_actual, cliente_nombre=cliente_nombre)
 
-# ENDPOINTS API PARA TIEMPO REAL CON REGISTRO DE MÉTODO DE PAGO
+# ENDPOINTS API PARA TIEMPO REAL
 @app.route('/api/crear-pedido', methods=['POST'])
 def crear_pedido():
     from datetime import datetime
