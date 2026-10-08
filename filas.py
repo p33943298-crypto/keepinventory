@@ -1,8 +1,8 @@
-from flask import Flask, render_template_string
+from flask import Flask, render_template_string, redirect, url_for
 
 app = Flask(__name__)
 
-# Todo el estilo CSS de KeepInventoryLite
+# CSS COMPLETO
 CSS_ESTILOS = """
 /* ========== KeepInventoryLite - CSS COMPLETO FINAL ========== */
 :root{
@@ -31,7 +31,7 @@ body{background:var(--light); color:var(--dark); line-height:1.5;}
 .landing-body{display:flex;justify-content:center;align-items:center;min-height:100vh;background:linear-gradient(135deg,var(--primary),var(--primary-dark));padding:20px;}
 .landing-container{max-width:900px;width:100%;text-align:center;}
 .selector-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
-.selector-card{background:white;padding:40px 30px;border-radius:20px;cursor:pointer;transition:all .2s ease;box-shadow:0 10px 30px rgba(0,0,0,.25);text-align:center;}
+.selector-card{background:white;padding:40px 30px;border-radius:20px;cursor:pointer;transition:all .2s ease;box-shadow:0 10px 30px rgba(0,0,0,.25);text-align:center;text-decoration:none;color:inherit;display:block;}
 .selector-card:hover{transform:translateY(-8px); box-shadow:0 20px 40px rgba(0,0,0,.3);}
 .selector-card .icon{font-size:56px;margin-bottom:15px;}
 .selector-card h2{margin-bottom:8px; font-size:22px;}
@@ -70,7 +70,7 @@ th{background:#f8fafc; font-weight:700; color:var(--gray-text); font-size:12px; 
 .tag-admin{background:var(--red);} .tag-manager{background:var(--blue);} .tag-empleado{background:var(--primary);}
 .select-sede{padding:10px 14px;border-radius:10px;border:1px solid var(--gray);margin-bottom:20px; background:white; min-width:200px;}
 
-/* --- TIENDA CLIENTE - SEDE MUY OBVIA --- */
+/* --- TIENDA CLIENTE --- */
 .sede-selector{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin:20px 0;}
 .sede-card{background:white;border:3px solid var(--gray);border-radius:16px;padding:26px;text-align:center;cursor:pointer;transition:all .2s ease;}
 .sede-card:hover{border-color:var(--primary);transform:scale(1.02); box-shadow:0 8px 20px rgba(0,0,0,.08);}
@@ -92,17 +92,15 @@ th{background:#f8fafc; font-weight:700; color:var(--gray-text); font-size:12px; 
 }
 """
 
-# Plantilla HTML
-HTML_TEMPLATE = """
+# PLANTILLA 1: LANDING PRINCIPAL
+HTML_LANDING = """
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KeepInventoryLite</title>
-    <style>
-        {{ css | safe }}
-    </style>
+    <style>{{ css | safe }}</style>
 </head>
 <body>
     <div class="landing-body">
@@ -113,17 +111,93 @@ HTML_TEMPLATE = """
                 <p>Sistema de Gestión e Inventario</p>
             </div>
             <div class="selector-grid">
-                <div class="selector-card staff">
+                <!-- Enlace a la sección Staff / Login -->
+                <a href="/login" class="selector-card staff">
                     <div class="icon">💼</div>
                     <h2>Personal / Staff</h2>
                     <p>Acceso a administración y control de inventarios.</p>
                     <span>INGRESAR COMO STAFF →</span>
-                </div>
-                <div class="selector-card client">
+                </a>
+                
+                <!-- Enlace a la sección Clientes / Tienda -->
+                <a href="/tienda" class="selector-card client">
                     <div class="icon">🛒</div>
                     <h2>Clientes</h2>
                     <p>Consulta de catálogo y disponibilidad por sede.</p>
                     <span>VER CATÁLOGO →</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+"""
+
+# PLANTILLA 2: LOGIN STAFF
+HTML_LOGIN = """
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Staff KeepInventoryLite</title>
+    <style>{{ css | safe }}</style>
+</head>
+<body>
+    <div class="login-body">
+        <div class="login-container">
+            <div class="brand">
+                <div class="logo">KI</div>
+                <h2>Acceso Staff</h2>
+            </div>
+            <p>Ingresa tus credenciales de administrador</p>
+            <form action="/dashboard" method="GET">
+                <input type="text" placeholder="Usuario" required>
+                <input type="password" placeholder="Contraseña" required>
+                <button type="submit">Iniciar Sesión</button>
+            </form>
+            <a href="/" style="display:block; margin-top:15px; color:var(--gray-text); text-decoration:none; font-size:13px;">← Volver al inicio</a>
+        </div>
+    </div>
+</body>
+</html>
+"""
+
+# PLANTILLA 3: DASHBOARD ADMINISTRACIÓN
+HTML_DASHBOARD = """
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Staff</title>
+    <style>{{ css | safe }}</style>
+</head>
+<body>
+    <div class="dashboard">
+        <div class="sidebar">
+            <div class="brand">
+                <div class="logo">KI</div>
+                <h3>KeepInventory</h3>
+            </div>
+            <a href="#" class="active">📊 Panel Principal</a>
+            <a href="#">📦 Inventario</a>
+            <a href="#">🏪 Sedes</a>
+            <a href="/">🚪 Cerrar Sesión</a>
+        </div>
+        <div class="main">
+            <div class="card">
+                <h2>Bienvenido al Panel de Control</h2>
+                <p>Gestión centralizada de stock, ventas y productos por sede.</p>
+            </div>
+            <div class="grid">
+                <div class="card">
+                    <h3>Sede Norte</h3>
+                    <p>Stock disponible: <b>1,240 ítems</b></p>
+                </div>
+                <div class="card">
+                    <h3>Sede Sur</h3>
+                    <p>Stock disponible: <b>850 ítems</b></p>
                 </div>
             </div>
         </div>
@@ -132,9 +206,72 @@ HTML_TEMPLATE = """
 </html>
 """
 
+# PLANTILLA 4: VISTA DE TIENDA CLIENTES
+HTML_TIENDA = """
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo - Clientes</title>
+    <style>{{ css | safe }}</style>
+</head>
+<body>
+    <div style="padding: 30px; max-width: 1100px; margin: 0 auto;">
+        <div class="brand">
+            <div class="logo">KI</div>
+            <h2>Catálogo de Clientes</h2>
+        </div>
+        <a href="/" style="display:inline-block; margin-bottom:20px; color:var(--primary); font-weight:bold; text-decoration:none;">← Volver a la Selección</a>
+        
+        <h3>Selecciona una Sede</h3>
+        <div class="sede-selector">
+            <div class="sede-card active">
+                <div class="sede-icon">🏢</div>
+                <h3>Sede Principal (Centro)</h3>
+                <p>Abierto de 8:00 AM a 6:00 PM</p>
+            </div>
+            <div class="sede-card">
+                <div class="sede-icon">🏬</div>
+                <h3>Sede Norte</h3>
+                <p>Abierto de 9:00 AM a 7:00 PM</p>
+            </div>
+        </div>
+
+        <h3>Productos Disponibles</h3>
+        <div class="grid" style="margin-top: 20px;">
+            <div class="product-shop">
+                <h4>Producto Ejemplo A</h4>
+                <p>Stock: 15 unidades</p>
+                <b>$25.000</b>
+            </div>
+            <div class="product-shop">
+                <h4>Producto Ejemplo B</h4>
+                <p>Stock: 8 unidades</p>
+                <b>$45.000</b>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+"""
+
+# RUTAS
 @app.route('/')
-def home():
-    return render_template_string(HTML_TEMPLATE, css=CSS_ESTILOS)
+def inicio():
+    return render_template_string(HTML_LANDING, css=CSS_ESTILOS)
+
+@app.route('/login')
+def login():
+    return render_template_string(HTML_LOGIN, css=CSS_ESTILOS)
+
+@app.route('/dashboard')
+def dashboard():
+    return render_template_string(HTML_DASHBOARD, css=CSS_ESTILOS)
+
+@app.route('/tienda')
+def tienda():
+    return render_template_string(HTML_TIENDA, css=CSS_ESTILOS)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
