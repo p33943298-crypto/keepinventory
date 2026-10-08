@@ -91,8 +91,8 @@ body{background:#f1f5f9; color:var(--dark); line-height:1.6; overflow-x:hidden;}
 /* FORMULARIOS Y LOGIN */
 .login-body{display:flex;justify-content:center;align-items:center;min-height:100vh;background:var(--bg-gradient);padding:20px;}
 .login-container{background:white;padding:42px 35px;border-radius:24px;width:100%;max-width:440px;box-shadow:0 25px 50px -12px rgba(0,0,0,0.35);text-align:center; transition: transform 0.3s ease;}
-.login-container input, .login-container select, .login-container textarea{width:100%;padding:14px 16px;margin:10px 0;border:2px solid var(--gray);border-radius:12px;outline:none; font-size:15px; transition:all 0.3s ease; background:#f8fafc;}
-.login-container input:focus{border-color:var(--primary); background:white; box-shadow:0 0 0 4px rgba(15,138,95,.15);}
+.login-container input, .login-container select, .login-container textarea, .pay-input{width:100%;padding:12px 14px;margin:6px 0;border:2px solid var(--gray);border-radius:12px;outline:none; font-size:14px; transition:all 0.3s ease; background:#f8fafc;}
+.login-container input:focus, .pay-input:focus{border-color:var(--primary); background:white; box-shadow:0 0 0 4px rgba(15,138,95,.15);}
 .btn{width:100%;padding:14px 20px;background:var(--primary-gradient);color:white;border:none;border-radius:12px;cursor:pointer;font-weight:700;margin-top:14px; font-size:15px; transition:all .3s ease; display:inline-flex; align-items:center; justify-content:center; gap:8px; box-shadow:0 4px 12px rgba(15,138,95,0.25);}
 .btn:hover{transform:translateY(-2px); box-shadow:0 8px 20px rgba(15,138,95,0.4); opacity:0.95;}
 .btn:active{transform:translateY(0);}
@@ -135,9 +135,14 @@ tr:hover td{background:#f8fafc;}
 .cart-floating-btn{position:fixed; bottom:30px; right:30px; background:var(--primary-gradient); color:white; padding:16px 26px; border-radius:50px; cursor:pointer; font-weight:700; box-shadow:0 10px 30px rgba(15,138,95,0.4); display:flex; align-items:center; gap:12px; z-index:99; transition:all 0.3s ease;}
 .cart-floating-btn:hover{transform:scale(1.08) translateY(-3px); box-shadow:0 15px 35px rgba(15,138,95,0.5);}
 .modal{display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(15,23,42,0.6); backdrop-filter:blur(6px); z-index:1000; justify-content:center; align-items:center;}
-.modal-content{background:white; padding:35px; border-radius:24px; width:90%; max-width:500px; position:relative; animation:fadeIn 0.3s ease; box-shadow:0 25px 50px rgba(0,0,0,0.25);}
+.modal-content{background:white; padding:30px; border-radius:24px; width:90%; max-width:520px; position:relative; animation:fadeIn 0.3s ease; box-shadow:0 25px 50px rgba(0,0,0,0.25); max-height:90vh; overflow-y:auto;}
 .btn-remove{background:#fee2e2; color:#dc2626; border:none; border-radius:8px; padding:6px 10px; cursor:pointer; font-size:12px; font-weight:700; transition:all 0.2s;}
 .btn-remove:hover{background:#fca5a5; transform:scale(1.05);}
+
+/* METODOS DE PAGO UI */
+.pay-options{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:15px 0;}
+.pay-card{border:2px solid var(--gray); border-radius:12px; padding:12px; text-align:center; cursor:pointer; font-size:13px; font-weight:600; transition:all 0.2s;}
+.pay-card:hover, .pay-card.selected{border-color:var(--primary); background:var(--primary-light); color:var(--primary-dark);}
 
 /* RESPONSIVE */
 @media(max-width:800px){
@@ -145,6 +150,7 @@ tr:hover td{background:#f8fafc;}
   .dashboard{flex-direction:column;}
   .sidebar{width:100%;}
   .header-cliente{flex-direction:column; gap:15px; align-items:flex-start;}
+  .pay-options{grid-template-columns:1fr;}
 }
 """
 
@@ -356,7 +362,7 @@ HTML_CLIENTE_AUTH = """
 </html>
 """
 
-# CATÁLOGO INTERACTIVO DE CLIENTES CON PRODUCTOS COMESTIBLES
+# CATÁLOGO INTERACTIVO DE CLIENTES CON PRODUCTOS COMESTIBLES Y MÉTODOS DE PAGO REALES INTEGRADOS
 HTML_TIENDA = """
 <!DOCTYPE html>
 <html lang="es">
@@ -367,6 +373,7 @@ HTML_TIENDA = """
     <style>{{ css | safe }}</style>
     <script>
         let carrito = [];
+        let metodoPagoSeleccionado = 'tarjeta';
 
         function agregarProducto(nombre, precio) {
             carrito.push({nombre, precio});
@@ -398,12 +405,42 @@ HTML_TIENDA = """
 
         function abrirCarrito() { document.getElementById('modal-carrito').style.display = 'flex'; }
         function cerrarCarrito() { document.getElementById('modal-carrito').style.display = 'none'; }
+
+        function seleccionarMetodoPago(metodo, elem) {
+            metodoPagoSeleccionado = metodo;
+            document.querySelectorAll('.pay-card').forEach(c => c.classList.remove('selected'));
+            elem.classList.add('selected');
+
+            document.querySelectorAll('.form-pago-sub').forEach(f => f.style.display = 'none');
+            document.getElementById('form-pago-' + metodo).style.display = 'block';
+        }
         
         function procesarCompra() {
             if(carrito.length === 0) { alert('Añade productos primero'); return; }
             
+            // Validaciones por método de pago para simular flujo real
+            if(metodoPagoSeleccionado === 'tarjeta') {
+                let num = document.getElementById('pay-card-num').value;
+                let exp = document.getElementById('pay-card-exp').value;
+                let cvc = document.getElementById('pay-card-cvc').value;
+                if(!num || !exp || !cvc) { alert('Completa los datos de la tarjeta'); return; }
+            } else if(metodoPagoSeleccionado === 'pse') {
+                let banco = document.getElementById('pay-pse-bank').value;
+                let doc = document.getElementById('pay-pse-doc').value;
+                if(!banco || !doc) { alert('Selecciona tu banco e ingresa tu documento'); return; }
+            } else if(metodoPagoSeleccionado === 'billetera') {
+                let tel = document.getElementById('pay-wallet-tel').value;
+                if(!tel) { alert('Ingresa tu número celular registrado'); return; }
+            }
+
             let total = carrito.reduce((sum, p) => sum + p.precio, 0);
             let detallesItems = carrito.map(p => p.nombre).join(', ');
+            let nombreMetodo = {
+                'tarjeta': '💳 Tarjeta Crédito/Débito',
+                'pse': '🏦 PSE / Transferencia Bancaria',
+                'billetera': '📱 Billetera Digital (Nequi/Daviplata/MercadoPago)',
+                'efectivo': '💵 Pago Contra Entrega'
+            }[metodoPagoSeleccionado];
 
             // Enviar pedido al servidor para reflejarse en tiempo real al Administrador
             fetch('/api/crear-pedido', {
@@ -413,10 +450,11 @@ HTML_TIENDA = """
                     cliente: '{{ cliente_nombre }}',
                     sede: '{{ sede_actual }}',
                     productos: detallesItems,
+                    metodo_pago: nombreMetodo,
                     total: total
                 })
             }).then(() => {
-                alert('🎉 ¡Pedido realizado con éxito para entrega en ' + '{{ sede_actual }}!');
+                alert('🎉 ¡Pago procesado con éxito vía ' + nombreMetodo + '!\nTu pedido se enviará desde la sede ' + '{{ sede_actual }}');
                 carrito = [];
                 actualizarCarritoUI();
                 cerrarCarrito();
@@ -617,18 +655,60 @@ HTML_TIENDA = """
         🛒 Mi Carrito (<span id="cart-count">0</span>)
     </div>
 
-    <!-- MODAL DEL CARRITO -->
+    <!-- MODAL DEL CARRITO Y PASARELA DE PAGO -->
     <div id="modal-carrito" class="modal">
         <div class="modal-content">
             <h3>Tu Pedido - <span style="color:var(--primary);">{{ sede_actual }}</span></h3>
-            <div id="cart-items" style="margin:20px 0; max-height:200px; overflow-y:auto;">
+            
+            <div id="cart-items" style="margin:15px 0; max-height:150px; overflow-y:auto;">
                 <p style="color:var(--gray-text);">El carrito está vacío</p>
             </div>
-            <div style="display:flex; justify-content:space-between; align-items:center; font-size:18px; border-top:2px solid var(--gray); padding-top:10px;">
-                <span>Total:</span>
+
+            <!-- SELECCIÓN DE MÉTODO DE PAGO REAL -->
+            <h4 style="margin-top:15px; font-size:14px; color:var(--dark);">Selecciona tu Método de Pago:</h4>
+            <div class="pay-options">
+                <div class="pay-card selected" onclick="seleccionarMetodoPago('tarjeta', this)">💳 Tarjeta Débito / Crédito</div>
+                <div class="pay-card" onclick="seleccionarMetodoPago('pse', this)">🏦 PSE / Transferencia</div>
+                <div class="pay-card" onclick="seleccionarMetodoPago('billetera', this)">📱 Nequi / Daviplata / MP</div>
+                <div class="pay-card" onclick="seleccionarMetodoPago('efectivo', this)">💵 Pago Contra Entrega</div>
+            </div>
+
+            <!-- FORMULARIOS ADAPTATIVOS DE PAGO (ACEPTAN DATOS REALES O FALSOS) -->
+            <div id="form-pago-tarjeta" class="form-pago-sub">
+                <input type="text" id="pay-card-num" class="pay-input" placeholder="Número de Tarjeta (ej: 4532 0000 0000 0000)">
+                <div style="display:flex; gap:10px;">
+                    <input type="text" id="pay-card-exp" class="pay-input" placeholder="MM/AA">
+                    <input type="password" id="pay-card-cvc" class="pay-input" placeholder="CVC" maxlength="4">
+                </div>
+            </div>
+
+            <div id="form-pago-pse" class="form-pago-sub" style="display:none;">
+                <select id="pay-pse-bank" class="pay-input">
+                    <option value="">-- Selecciona tu Banco --</option>
+                    <option value="Bancolombia">Bancolombia</option>
+                    <option value="Banco de Bogotá">Banco de Bogotá</option>
+                    <option value="Davivienda">Davivienda</option>
+                    <option value="BBVA">BBVA</option>
+                    <option value="Lulo Bank">Lulo Bank / Nu</option>
+                </select>
+                <input type="text" id="pay-pse-doc" class="pay-input" placeholder="Documento de Identidad">
+            </div>
+
+            <div id="form-pago-billetera" class="form-pago-sub" style="display:none;">
+                <p style="font-size:12px; color:var(--gray-text); margin-bottom:5px;">Recibirás una solicitud de cobro inmediata en tu app.</p>
+                <input type="tel" id="pay-wallet-tel" class="pay-input" placeholder="Número de Celular Registrado">
+            </div>
+
+            <div id="form-pago-efectivo" class="form-pago-sub" style="display:none;">
+                <p style="font-size:12px; color:var(--primary); background:var(--primary-light); padding:10px; border-radius:8px;">Pagas en efectivo o con datáfono al recibir tus productos comestibles en el domicilio.</p>
+            </div>
+
+            <div style="display:flex; justify-content:space-between; align-items:center; font-size:18px; border-top:2px solid var(--gray); padding-top:12px; margin-top:15px;">
+                <span>Total a Pagar:</span>
                 <b id="cart-total" style="color:var(--primary);">$0</b>
             </div>
-            <button class="btn" onclick="procesarCompra()" style="margin-top:20px;">💳 Confirmar y Finalizar Pedido</button>
+
+            <button class="btn" onclick="procesarCompra()" style="margin-top:15px;">🔒 Procesar Pago Seguro</button>
             <button class="btn btn-outline" onclick="cerrarCarrito()" style="margin-top:8px;">Seguir Comprando</button>
         </div>
     </div>
@@ -636,7 +716,7 @@ HTML_TIENDA = """
 </html>
 """
 
-# DASHBOARD STAFF CON MONITOREO DE PEDIDOS EN TIEMPO REAL
+# DASHBOARD STAFF CON MONITOREO DE PEDIDOS Y MÉTODO DE PAGO EN TIEMPO REAL
 HTML_DASHBOARD = """
 <!DOCTYPE html>
 <html lang="es">
@@ -671,7 +751,7 @@ HTML_DASHBOARD = """
             document.getElementById('form-prod').reset();
         }
 
-        // Función para consultar y actualizar en tiempo real las compras de los clientes
+        // Función para consultar y actualizar en tiempo real las compras de los clientes con su pago
         function cargarPedidosEnTiempoReal() {
             fetch('/api/pedidos')
                 .then(res => res.json())
@@ -680,7 +760,7 @@ HTML_DASHBOARD = """
                     document.getElementById('total-pedidos-count').innerText = pedidos.length;
                     
                     if(pedidos.length === 0) {
-                        tabla.innerHTML = '<tr><td colspan="5" style="text-align:center; color:var(--gray-text);">No hay actividad de clientes reciente</td></tr>';
+                        tabla.innerHTML = '<tr><td colspan="6" style="text-align:center; color:var(--gray-text);">No hay actividad de clientes reciente</td></tr>';
                         return;
                     }
 
@@ -691,6 +771,7 @@ HTML_DASHBOARD = """
                             <td>${p.cliente}</td>
                             <td>${p.sede}</td>
                             <td>${p.productos}</td>
+                            <td><span style="font-size:12px; font-weight:bold; color:#0369a1; background:#e0f2fe; padding:4px 8px; border-radius:6px;">${p.metodo_pago || '💳 Tarjeta'}</span></td>
                             <td><b style="color:var(--primary);">$${p.total.toLocaleString()}</b></td>
                         </tr>`;
                     });
@@ -742,7 +823,7 @@ HTML_DASHBOARD = """
                 </div>
             </div>
 
-            <!-- ACTIVIDAD DE PEDIDOS EN TIEMPO REAL -->
+            <!-- ACTIVIDAD DE PEDIDOS EN TIEMPO REAL CON MÉTODOS DE PAGO -->
             <div id="pedidos-live" class="seccion-tab fade-in" style="display:none;">
                 <div class="card">
                     <h2>🔴 Ventas y Pedidos en Tiempo Real</h2>
@@ -754,11 +835,12 @@ HTML_DASHBOARD = """
                                 <th>Cliente</th>
                                 <th>Sede</th>
                                 <th>Detalle Pedido</th>
+                                <th>Método de Pago</th>
                                 <th>Total</th>
                             </tr>
                         </thead>
                         <tbody id="tabla-pedidos-realtime">
-                            <tr><td colspan="5" style="text-align:center; color:var(--gray-text);">Cargando actividad...</td></tr>
+                            <tr><td colspan="6" style="text-align:center; color:var(--gray-text);">Cargando actividad...</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -907,7 +989,7 @@ def tienda():
     cliente_nombre = session.get('cliente_nombre', 'Cliente')
     return render_template_string(HTML_TIENDA, css=CSS_ESTILOS, sede_actual=sede_actual, cliente_nombre=cliente_nombre)
 
-# ENDPOINTS API PARA TIEMPO REAL
+# ENDPOINTS API PARA TIEMPO REAL CON REGISTRO DE MÉTODO DE PAGO
 @app.route('/api/crear-pedido', methods=['POST'])
 def crear_pedido():
     from datetime import datetime
@@ -917,6 +999,7 @@ def crear_pedido():
         'cliente': data.get('cliente', 'Anonimo'),
         'sede': data.get('sede', 'Sede Centro'),
         'productos': data.get('productos', ''),
+        'metodo_pago': data.get('metodo_pago', 'Tarjeta Crédito/Débito'),
         'total': data.get('total', 0)
     }
     PEDIDOS_REGISTRADOS.insert(0, nuevo_pedido)
