@@ -1,4 +1,4 @@
-from flask import Flask, render_template_string, redirect, url_for, request, session
+from flask import Flask, render_template_string, redirect, url_for, request, session, jsonify
 import os
 
 app = Flask(__name__)
@@ -8,6 +8,9 @@ app.secret_key = os.getenv("SECRET_KEY", "keepinventory_secret_key_12345")
 # Credenciales de administrador demo
 ADMIN_EMAIL = os.getenv("ADMIN_EMAIL", "admin@keepinventory.com")
 ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "admin123password")
+
+# Lista global en memoria para simular la base de datos de pedidos recibidos en tiempo real
+PEDIDOS_REGISTRADOS = []
 
 # CSS COMPLETO CON ANIMACIONES Y DISEÑO MEJORADO
 CSS_ESTILOS = """
@@ -106,6 +109,8 @@ th{background:#f8fafc; font-weight:700; color:var(--gray-text); font-size:12px; 
 .cart-floating-btn:hover{transform:scale(1.05);}
 .modal{display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000; justify-content:center; align-items:center;}
 .modal-content{background:white; padding:30px; border-radius:20px; width:90%; max-width:480px; position:relative; animation:fadeIn 0.3s ease;}
+.btn-remove{background:#fee2e2; color:#dc2626; border:none; border-radius:6px; padding:4px 8px; cursor:pointer; font-size:12px; font-weight:bold;}
+.btn-remove:hover{background:#fca5a5;}
 
 /* RESPONSIVE */
 @media(max-width:800px){
@@ -198,7 +203,7 @@ HTML_LOGIN_STAFF = """
 </html>
 """
 
-# PASO 1 CLIENTE: SELECCIÓN DE UBICACIÓN Y SEDE
+# PASO 1 CLIENTE: SELECCIÓN DE UBICACIÓN Y SEDE CON DIRECCIONES INVENTADAS
 HTML_CLIENTE_UBICACION = """
 <!DOCTYPE html>
 <html lang="es">
@@ -228,24 +233,24 @@ HTML_CLIENTE_UBICACION = """
         <p style="color:var(--gray-text); margin-bottom:25px;">Elige tu sede o almacén preferido para verificar stock local e itinerario de entregas.</p>
 
         <div class="sede-selector-grid">
-            <div class="sede-card-interactive" onclick="guardarSedeYContinuar('Sede Principal (Centro)', 'Calle 15 #23-45')">
+            <div class="sede-card-interactive" onclick="guardarSedeYContinuar('Sede Principal (Centro)', 'Av. Las Acacias #45-18, Sector Comercial')">
                 <div style="font-size:40px; margin-bottom:10px;">🏢</div>
                 <h3>Sede Centro</h3>
-                <p style="color:var(--gray-text); font-size:13px;">Calle 15 #23-45</p>
+                <p style="color:var(--gray-text); font-size:13px;">Av. Las Acacias #45-18, Sector Comercial</p>
                 <span style="color:var(--primary); font-weight:bold; font-size:13px; margin-top:10px; display:inline-block;">SELECCIONAR ESTA SEDE →</span>
             </div>
 
-            <div class="sede-card-interactive" onclick="guardarSedeYContinuar('Sede Norte', 'Av. Principal #10-12')">
+            <div class="sede-card-interactive" onclick="guardarSedeYContinuar('Sede Norte', 'Calle Del Sol #102-15, Plaza Mayor')">
                 <div style="font-size:40px; margin-bottom:10px;">🏬</div>
                 <h3>Sede Norte</h3>
-                <p style="color:var(--gray-text); font-size:13px;">Av. Principal #10-12</p>
+                <p style="color:var(--gray-text); font-size:13px;">Calle Del Sol #102-15, Plaza Mayor</p>
                 <span style="color:var(--primary); font-weight:bold; font-size:13px; margin-top:10px; display:inline-block;">SELECCIONAR ESTA SEDE →</span>
             </div>
 
-            <div class="sede-card-interactive" onclick="guardarSedeYContinuar('Sede Sur (Express)', 'Cra 45 #80-12')">
+            <div class="sede-card-interactive" onclick="guardarSedeYContinuar('Sede Sur (Express)', 'Transversal 78 #12-30, Parque Industrial')">
                 <div style="font-size:40px; margin-bottom:10px;">🏪</div>
                 <h3>Sede Sur Express</h3>
-                <p style="color:var(--gray-text); font-size:13px;">Cra 45 #80-12</p>
+                <p style="color:var(--gray-text); font-size:13px;">Transversal 78 #12-30, Parque Industrial</p>
                 <span style="color:var(--primary); font-weight:bold; font-size:13px; margin-top:10px; display:inline-block;">SELECCIONAR ESTA SEDE →</span>
             </div>
         </div>
@@ -324,7 +329,7 @@ HTML_CLIENTE_AUTH = """
 </html>
 """
 
-# CATÁLOGO INTERACTIVO DE CLIENTES
+# CATÁLOGO INTERACTIVO DE CLIENTES CON ELIMINACIÓN DE PRODUCTOS Y NOTIFICACIÓN AL ADMIN
 HTML_TIENDA = """
 <!DOCTYPE html>
 <html lang="es">
@@ -341,6 +346,11 @@ HTML_TIENDA = """
             actualizarCarritoUI();
         }
 
+        function quitarProducto(index) {
+            carrito.splice(index, 1);
+            actualizarCarritoUI();
+        }
+
         function actualizarCarritoUI() {
             document.getElementById('cart-count').innerText = carrito.length;
             let total = carrito.reduce((sum, p) => sum + p.precio, 0);
@@ -348,9 +358,12 @@ HTML_TIENDA = """
 
             let listaHtml = '';
             carrito.forEach((p, index) => {
-                listaHtml += `<div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #e2e8f0;">
+                listaHtml += `<div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid #e2e8f0;">
                     <span>${p.nombre}</span>
-                    <b>$${p.precio.toLocaleString()}</b>
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <b>$${p.precio.toLocaleString()}</b>
+                        <button class="btn-remove" onclick="quitarProducto(${index})">❌ Quitar</button>
+                    </div>
                 </div>`;
             });
             document.getElementById('cart-items').innerHTML = listaHtml || '<p style="color:var(--gray-text);">El carrito está vacío</p>';
@@ -361,10 +374,26 @@ HTML_TIENDA = """
         
         function procesarCompra() {
             if(carrito.length === 0) { alert('Añade productos primero'); return; }
-            alert('🎉 ¡Pedido realizado con éxito para entrega en ' + '{{ sede_actual }}!');
-            carrito = [];
-            actualizarCarritoUI();
-            cerrarCarrito();
+            
+            let total = carrito.reduce((sum, p) => sum + p.precio, 0);
+            let detallesItems = carrito.map(p => p.nombre).join(', ');
+
+            // Enviar pedido al servidor para reflejarse en tiempo real al Administrador
+            fetch('/api/crear-pedido', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    cliente: '{{ cliente_nombre }}',
+                    sede: '{{ sede_actual }}',
+                    productos: detallesItems,
+                    total: total
+                })
+            }).then(() => {
+                alert('🎉 ¡Pedido realizado con éxito para entrega en ' + '{{ sede_actual }}!');
+                carrito = [];
+                actualizarCarritoUI();
+                cerrarCarrito();
+            });
         }
 
         function filtrarCategoria(cat, btn) {
@@ -469,7 +498,7 @@ HTML_TIENDA = """
 </html>
 """
 
-# DASHBOARD STAFF CON INTERACTIVIDAD AVANZADA
+# DASHBOARD STAFF CON MONITOREO DE PEDIDOS EN TIEMPO REAL
 HTML_DASHBOARD = """
 <!DOCTYPE html>
 <html lang="es">
@@ -503,6 +532,37 @@ HTML_DASHBOARD = """
             alert('¡Producto agregado al inventario!');
             document.getElementById('form-prod').reset();
         }
+
+        // Función para consultar y actualizar en tiempo real las compras de los clientes
+        function cargarPedidosEnTiempoReal() {
+            fetch('/api/pedidos')
+                .then(res => res.json())
+                .then(pedidos => {
+                    let tabla = document.getElementById('tabla-pedidos-realtime');
+                    document.getElementById('total-pedidos-count').innerText = pedidos.length;
+                    
+                    if(pedidos.length === 0) {
+                        tabla.innerHTML = '<tr><td colspan="5" style="text-align:center; color:var(--gray-text);">No hay actividad de clientes reciente</td></tr>';
+                        return;
+                    }
+
+                    let html = '';
+                    pedidos.forEach(p => {
+                        html += `<tr>
+                            <td><b>${p.hora}</b></td>
+                            <td>${p.cliente}</td>
+                            <td>${p.sede}</td>
+                            <td>${p.productos}</td>
+                            <td><b style="color:var(--primary);">$${p.total.toLocaleString()}</b></td>
+                        </tr>`;
+                    });
+                    tabla.innerHTML = html;
+                });
+        }
+
+        // Consultar cada 2 segundos
+        setInterval(cargarPedidosEnTiempoReal, 2000);
+        window.onload = cargarPedidosEnTiempoReal;
     </script>
 </head>
 <body>
@@ -514,6 +574,7 @@ HTML_DASHBOARD = """
                     <h3>KeepInventory</h3>
                 </div>
                 <a onclick="cambiarSeccion('panel', this)" class="active">📊 Panel Principal</a>
+                <a onclick="cambiarSeccion('pedidos-live', this)">🛒 Pedidos en Vivo (<span id="total-pedidos-count">0</span>)</a>
                 <a onclick="cambiarSeccion('inventario', this)">📦 Inventario</a>
                 <a onclick="cambiarSeccion('sedes', this)">🏪 Sedes</a>
             </div>
@@ -525,7 +586,7 @@ HTML_DASHBOARD = """
             <div id="panel" class="seccion-tab fade-in">
                 <div class="card">
                     <h2>Bienvenido al Panel de Administración Staff</h2>
-                    <p style="color:var(--gray-text);">Control de mercancía, movimiento entre sedes y métricas operativas.</p>
+                    <p style="color:var(--gray-text);">Control de mercancía, movimiento entre sedes y monitoreo en tiempo real.</p>
                 </div>
                 <div class="grid">
                     <div class="card">
@@ -540,6 +601,28 @@ HTML_DASHBOARD = """
                         <h3>Sede Sur Express</h3>
                         <p style="font-size:24px; font-weight:bold; color:var(--primary); margin-top:5px;">410 <span style="font-size:14px; color:var(--dark);">ítems</span></p>
                     </div>
+                </div>
+            </div>
+
+            <!-- ACTIVIDAD DE PEDIDOS EN TIEMPO REAL -->
+            <div id="pedidos-live" class="seccion-tab fade-in" style="display:none;">
+                <div class="card">
+                    <h2>🔴 Ventas y Pedidos en Tiempo Real</h2>
+                    <p style="color:var(--gray-text); margin-bottom:10px;">Esta lista se actualiza automáticamente con la actividad del portal de clientes.</p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Hora</th>
+                                <th>Cliente</th>
+                                <th>Sede</th>
+                                <th>Detalle Pedido</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla-pedidos-realtime">
+                            <tr><td colspan="5" style="text-align:center; color:var(--gray-text);">Cargando actividad...</td></tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
@@ -588,14 +671,14 @@ HTML_DASHBOARD = """
                 </div>
             </div>
 
-            <!-- SEDES -->
+            <!-- SEDES CON DIRECCIONES INVENTADAS -->
             <div id="sedes" class="seccion-tab fade-in" style="display:none;">
                 <div class="card">
                     <h2>Configuración de Puntos de Atención</h2>
                     <div class="grid" style="margin-top:15px;">
-                        <div class="card"><b>Sede Centro</b><br><span style="font-size:13px; color:var(--gray-text);">Calle 15 #23-45</span></div>
-                        <div class="card"><b>Sede Norte</b><br><span style="font-size:13px; color:var(--gray-text);">Av. Principal #10-12</span></div>
-                        <div class="card"><b>Sede Sur Express</b><br><span style="font-size:13px; color:var(--gray-text);">Cra 45 #80-12</span></div>
+                        <div class="card"><b>Sede Centro</b><br><span style="font-size:13px; color:var(--gray-text);">Av. Las Acacias #45-18, Sector Comercial</span></div>
+                        <div class="card"><b>Sede Norte</b><br><span style="font-size:13px; color:var(--gray-text);">Calle Del Sol #102-15, Plaza Mayor</span></div>
+                        <div class="card"><b>Sede Sur Express</b><br><span style="font-size:13px; color:var(--gray-text);">Transversal 78 #12-30, Parque Industrial</span></div>
                     </div>
                 </div>
             </div>
@@ -667,6 +750,25 @@ def tienda():
     sede_actual = session.get('sede', 'Sede Centro')
     cliente_nombre = session.get('cliente_nombre', 'Cliente')
     return render_template_string(HTML_TIENDA, css=CSS_ESTILOS, sede_actual=sede_actual, cliente_nombre=cliente_nombre)
+
+# ENDPOINTS API PARA TIEMPO REAL
+@app.route('/api/crear-pedido', methods=['POST'])
+def crear_pedido():
+    from datetime import datetime
+    data = request.json or {}
+    nuevo_pedido = {
+        'hora': datetime.now().strftime("%H:%M:%S"),
+        'cliente': data.get('cliente', 'Anonimo'),
+        'sede': data.get('sede', 'Sede Centro'),
+        'productos': data.get('productos', ''),
+        'total': data.get('total', 0)
+    }
+    PEDIDOS_REGISTRADOS.insert(0, nuevo_pedido)
+    return jsonify({'status': 'ok'})
+
+@app.route('/api/pedidos', methods=['GET'])
+def obtener_pedidos():
+    return jsonify(PEDIDOS_REGISTRADOS)
 
 @app.route('/logout')
 def logout():
