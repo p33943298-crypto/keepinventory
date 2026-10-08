@@ -339,7 +339,7 @@ HTML_CLIENTE_AUTH = """
 </html>
 """
 
-# CATALOGO Y TIENDA CON BLOQUE RAW DE JINJA PARA PROTEGER EL JAVASCRIPT
+# VISTA Y CATALOGO CORREGIDO Y BLINDADO
 HTML_TIENDA = """
 <!DOCTYPE html>
 <html lang="es">
@@ -357,11 +357,11 @@ HTML_TIENDA = """
                 <div class="logo">KI</div>
                 <div>
                     <h2 style="font-size:20px;">Catálogo Alimentario Digital</h2>
-                    <p style="font-size:12px; color:var(--gray-text);">Sede activa: <b>📍 {{ sede_actual }}</b></p>
+                    <p style="font-size:12px; color:var(--gray-text);">Sede activa: <b>📍 {{ sede_actual | default('Sede Centro', true) }}</b></p>
                 </div>
             </div>
             <div style="display:flex; align-items:center; gap:15px;">
-                <span style="font-size:14px;">Hola, <b>{{ cliente_nombre }}</b></span>
+                <span style="font-size:14px;">Hola, <b>{{ cliente_nombre | default('Cliente Demo', true) }}</b></span>
                 <a href="/cliente-ubicacion" class="btn btn-outline" style="padding:8px 12px; font-size:12px;">📍 Cambiar Ubicación</a>
                 <a href="/logout" class="btn btn-danger" style="padding:8px 12px; font-size:12px;">Cerrar Sesión</a>
             </div>
@@ -499,7 +499,7 @@ HTML_TIENDA = """
 
     <div id="modal-carrito" class="modal">
         <div class="modal-content">
-            <h3>Tu Pedido - <span style="color:var(--primary);">{{ sede_actual }}</span></h3>
+            <h3>Tu Pedido - <span style="color:var(--primary);">{{ sede_actual | default('Sede Centro', true) }}</span></h3>
             
             <div id="cart-items" style="margin:15px 0; max-height:150px; overflow-y:auto;">
                 <p style="color:var(--gray-text);">El carrito está vacío</p>
@@ -553,61 +553,61 @@ HTML_TIENDA = """
     </div>
 
     <script>
-        var CLIENTE_NOMBRE = "{{ cliente_nombre }}";
-        var SEDE_ACTUAL = "{{ sede_actual }}";
+        var CLIENTE_NOMBRE = "{{ cliente_nombre | default('Cliente Demo', true) }}";
+        var SEDE_ACTUAL = "{{ sede_actual | default('Sede Centro', true) }}";
     </script>
 
     {% raw %}
     <script>
-        window.carrito = [];
-        window.metodoPagoSeleccionado = 'tarjeta';
+        var carrito = [];
+        var metodoPagoSeleccionado = 'tarjeta';
 
-        window.agregarProducto = function(nombre, precio) {
-            window.carrito.push({nombre: nombre, precio: precio});
-            window.actualizarCarritoUI();
-        };
+        function agregarProducto(nombre, precio) {
+            carrito.push({nombre: nombre, precio: precio});
+            actualizarCarritoUI();
+        }
 
-        window.quitarProducto = function(index) {
-            window.carrito.splice(index, 1);
-            window.actualizarCarritoUI();
-        };
+        function quitarProducto(index) {
+            carrito.splice(index, 1);
+            actualizarCarritoUI();
+        }
 
-        window.actualizarCarritoUI = function() {
+        function actualizarCarritoUI() {
             var countElem = document.getElementById('cart-count');
-            if(countElem) countElem.innerText = window.carrito.length;
+            if(countElem) countElem.innerText = carrito.length;
 
             var total = 0;
-            for (var i = 0; i < window.carrito.length; i++) {
-                total += window.carrito[i].precio;
+            for (var i = 0; i < carrito.length; i++) {
+                total += carrito[i].precio;
             }
 
             var totalElem = document.getElementById('cart-total');
             if(totalElem) totalElem.innerText = '$' + total.toLocaleString();
 
             var listaHtml = '';
-            for (var j = 0; j < window.carrito.length; j++) {
+            for (var j = 0; j < carrito.length; j++) {
                 listaHtml += '<div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid #e2e8f0;">' +
-                    '<span>' + window.carrito[j].nombre + '</span>' +
+                    '<span>' + carrito[j].nombre + '</span>' +
                     '<div style="display:flex; align-items:center; gap:10px;">' +
-                        '<b>$' + window.carrito[j].precio.toLocaleString() + '</b>' +
-                        '<button class="btn-remove" type="button" onclick="window.quitarProducto(' + j + ')">❌ Quitar</button>' +
+                        '<b>$' + carrito[j].precio.toLocaleString() + '</b>' +
+                        '<button class="btn-remove" type="button" onclick="quitarProducto(' + j + ')">❌ Quitar</button>' +
                     '</div>' +
                 '</div>';
             }
             var itemsElem = document.getElementById('cart-items');
             if(itemsElem) itemsElem.innerHTML = listaHtml || '<p style="color:var(--gray-text);">El carrito está vacío</p>';
-        };
+        }
 
-        window.abrirCarrito = function() {
+        function abrirCarrito() {
             document.getElementById("modal-carrito").style.display = "flex";
-        };
+        }
 
-        window.cerrarCarrito = function() {
+        function cerrarCarrito() {
             document.getElementById("modal-carrito").style.display = "none";
-        };
+        }
 
-        window.seleccionarMetodoPago = function(metodo, elem) {
-            window.metodoPagoSeleccionado = metodo;
+        function seleccionarMetodoPago(metodo, elem) {
+            metodoPagoSeleccionado = metodo;
             var payCards = document.querySelectorAll(".pay-card");
             for (var k = 0; k < payCards.length; k++) {
                 payCards[k].classList.remove("selected");
@@ -621,40 +621,40 @@ HTML_TIENDA = """
             
             var targetForm = document.getElementById("form-pago-" + metodo);
             if(targetForm) targetForm.style.display = "block";
-        };
+        }
 
-        window.procesarCompra = function() {
-            if (window.carrito.length === 0) {
+        function procesarCompra() {
+            if (carrito.length === 0) {
                 alert("Añade productos al carrito primero.");
                 return;
             }
 
-            if (window.metodoPagoSeleccionado === 'tarjeta') {
+            if (metodoPagoSeleccionado === 'tarjeta') {
                 var num = document.getElementById('pay-card-num').value;
                 var exp = document.getElementById('pay-card-exp').value;
                 var cvc = document.getElementById('pay-card-cvc').value;
                 if (!num || !exp || !cvc) { alert('Completa los campos de la tarjeta.'); return; }
-            } else if (window.metodoPagoSeleccionado === 'pse') {
+            } else if (metodoPagoSeleccionado === 'pse') {
                 var banco = document.getElementById('pay-pse-bank').value;
                 var doc = document.getElementById('pay-pse-doc').value;
                 if (!banco || !doc) { alert('Selecciona tu banco e ingresa tu documento.'); return; }
-            } else if (window.metodoPagoSeleccionado === 'billetera') {
+            } else if (metodoPagoSeleccionado === 'billetera') {
                 var tel = document.getElementById('pay-wallet-tel').value;
                 if (!tel) { alert('Ingresa tu número celular registrado.'); return; }
             }
 
             var total = 0;
             var nombresArr = [];
-            for (var n = 0; n < window.carrito.length; n++) {
-                total += window.carrito[n].precio;
-                nombresArr.push(window.carrito[n].nombre);
+            for (var n = 0; n < carrito.length; n++) {
+                total += carrito[n].precio;
+                nombresArr.push(carrito[n].nombre);
             }
             var detallesItems = nombresArr.join(', ');
 
             var nombreMetodo = '💳 Tarjeta Crédito/Débito';
-            if (window.metodoPagoSeleccionado === 'pse') nombreMetodo = '🏦 PSE / Transferencia Bancaria';
-            if (window.metodoPagoSeleccionado === 'billetera') nombreMetodo = '📱 Billetera Digital (Nequi/Daviplata/MP)';
-            if (window.metodoPagoSeleccionado === 'efectivo') nombreMetodo = '💵 Pago Contra Entrega';
+            if (metodoPagoSeleccionado === 'pse') nombreMetodo = '🏦 PSE / Transferencia Bancaria';
+            if (metodoPagoSeleccionado === 'billetera') nombreMetodo = '📱 Billetera Digital (Nequi/Daviplata/MP)';
+            if (metodoPagoSeleccionado === 'efectivo') nombreMetodo = '💵 Pago Contra Entrega';
 
             fetch('/api/crear-pedido', {
                 method: 'POST',
@@ -671,17 +671,17 @@ HTML_TIENDA = """
             .then(function(data) {
                 if (data.status === 'ok') {
                     alert('🎉 ¡Pago procesado con éxito mediante ' + nombreMetodo + '!\nTu pedido se enviará desde la sede ' + SEDE_ACTUAL);
-                    window.carrito = [];
-                    window.actualizarCarritoUI();
-                    window.cerrarCarrito();
+                    carrito = [];
+                    actualizarCarritoUI();
+                    cerrarCarrito();
                 }
             })
             .catch(function() {
                 alert('Error al procesar el pedido con el servidor.');
             });
-        };
+        }
 
-        window.filtrarCategoria = function(cat, btn) {
+        function filtrarCategoria(cat, btn) {
             var catBtns = document.querySelectorAll('.cat-btn');
             for (var i = 0; i < catBtns.length; i++) {
                 catBtns[i].classList.remove('btn');
@@ -698,7 +698,7 @@ HTML_TIENDA = """
                     productos[j].style.display = 'none';
                 }
             }
-        };
+        }
     </script>
     {% endraw %}
 </body>
@@ -789,7 +789,7 @@ HTML_DASHBOARD = """
         <div class="main">
             <div id="panel" class="seccion-tab fade-in">
                 <div class="card">
-                    <h2>Bienvenido al Panel de Administración Staff</h2>
+                    2Bienvenido al Panel de Administración Staff</h2>
                     <p style="color:var(--gray-text);">Control de mercancía alimentaria, movimiento entre sedes y monitoreo en tiempo real.</p>
                 </div>
                 <div class="grid">
