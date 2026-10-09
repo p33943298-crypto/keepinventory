@@ -281,7 +281,6 @@ HTML_LOGIN_STAFF = """
 
             <div class="demo-creds">
                 <b>Credenciales Demo:</b><br>
-                • Superadmin: admin@keepinventory.com / admin123password<br>
                 • Dueño Empresa: dueno@elahorro.com / dueno123<br>
                 • Manager: manager@elahorro.com / mgr123<br>
                 • Empleado (Cajero): empleado@elahorro.com / emp123
