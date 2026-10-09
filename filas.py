@@ -28,10 +28,51 @@ EMPRESAS_REGISTRADAS = [
     }
 ]
 
+# INVENTARIO SUPERMERCADO - CÓDIGOS RÁPIDOS Y GRAN VARIEDAD DE PRODUCTOS
 INVENTARIO_SUPER = [
-    {"codigo": "001", "nombre": "Huevos Kilo", "precio": 6500, "stock": 120, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
-    {"codigo": "002", "nombre": "Maíz tierno lata", "precio": 3200, "stock": 85, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
-    {"codigo": "003", "nombre": "Leche entera 1L", "precio": 4200, "stock": 200, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"}
+    # Lácteos y Huevos
+    {"codigo": "001", "nombre": "Huevos AA x30 unidades", "precio": 18500, "stock": 120, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
+    {"codigo": "002", "nombre": "Leche Entera 1L Colanta", "precio": 4300, "stock": 200, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
+    {"codigo": "003", "nombre": "Queso Campesino 500g", "precio": 12800, "stock": 65, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
+    {"codigo": "004", "nombre": "Mantequilla con Sal 250g", "precio": 9200, "stock": 80, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
+    {"codigo": "005", "nombre": "Yogurt Melocotón 1L", "precio": 8500, "stock": 90, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
+    
+    # Despensa y Granos
+    {"codigo": "006", "nombre": "Arroz Roa Blanco 1Kg", "precio": 4800, "stock": 350, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
+    {"codigo": "007", "nombre": "Aceite Vegetal Premier 900ml", "precio": 14500, "stock": 110, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
+    {"codigo": "008", "nombre": "Frijol Cargamanto 500g", "precio": 6200, "stock": 140, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
+    {"codigo": "009", "nombre": "Lenteja Seleccionada 500g", "precio": 4500, "stock": 160, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
+    {"codigo": "010", "nombre": "Azúcar Blanca Incauca 1Kg", "precio": 4900, "stock": 220, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
+    {"codigo": "011", "nombre": "Sal Marina Refinada 1Kg", "precio": 2100, "stock": 180, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
+    {"codigo": "012", "nombre": "Pasta Espagueti Doria 500g", "precio": 3800, "stock": 210, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
+    {"codigo": "013", "nombre": "Harina de Maíz PAN 1Kg", "precio": 4200, "stock": 300, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
+    {"codigo": "014", "nombre": "Atún en Agua Zenú 170g", "precio": 7800, "stock": 175, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
+    {"codigo": "015", "nombre": "Maíz Tierno Lata 300g", "precio": 4100, "stock": 130, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
+
+    # Carnes y Charcutería
+    {"codigo": "016", "nombre": "Pechuga de Pollo 1Kg", "precio": 16900, "stock": 85, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
+    {"codigo": "017", "nombre": "Carne Molida Especial 1Kg", "precio": 24500, "stock": 70, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
+    {"codigo": "018", "nombre": "Lomo de Cerdo 1Kg", "precio": 2200, "stock": 60, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
+    {"codigo": "019", "nombre": "Salchicha Ranchera x225g", "precio": 9800, "stock": 115, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
+    {"codigo": "020", "nombre": "Jamón Pietrán de Pavo 200g", "precio": 11500, "stock": 95, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
+
+    # Frutas y Verduras
+    {"codigo": "021", "nombre": "Aguacate Hass 1Kg", "precio": 8900, "stock": 90, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
+    {"codigo": "022", "nombre": "Tomate Chonto 1Kg", "precio": 4200, "stock": 150, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
+    {"codigo": "023", "nombre": "Cebolla Cabezona Roja 1Kg", "precio": 3800, "stock": 140, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
+    {"codigo": "024", "nombre": "Papa Sabanera 1Kg", "precio": 3200, "stock": 280, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
+    {"codigo": "025", "nombre": "Manzana Roja Importada 1Kg", "precio": 9500, "stock": 110, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
+
+    # Bebidas
+    {"codigo": "026", "nombre": "Café Sello Rojo 500g", "precio": 18900, "stock": 130, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
+    {"codigo": "027", "nombre": "Coca-Cola Original 1.5L", "precio": 6200, "stock": 190, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
+    {"codigo": "028", "nombre": "Agua Manantial Sin Gas 5L", "precio": 8900, "stock": 80, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
+    {"codigo": "029", "nombre": "Jugo Hit Mora 1L", "precio": 4500, "stock": 140, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
+
+    # Aseo y Cuidado Personal
+    {"codigo": "030", "nombre": "Detergente en Polvo Ariel 2Kg", "precio": 26900, "stock": 75, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
+    {"codigo": "031", "nombre": "Jabón de Baño Palmolive x3", "precio": 11200, "stock": 105, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
+    {"codigo": "032", "nombre": "Papel Higiénico Familia 12 Rollos", "precio": 22500, "stock": 90, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"}
 ]
 
 REPORTES_EMPLEADOS = []
@@ -195,9 +236,9 @@ HTML_LANDING = """
                     <span>INGRESAR COMO STAFF →</span>
                 </a>
                 <a href="/cliente-ubicacion" class="selector-card client">
-                    <div class="icon">🍔</div>
-                    <h2>Portal de Comidas</h2>
-                    <p>Encuentra tu sede y pide hamburguesas, pizzas, bebidas y postres.</p>
+                    <div class="icon">🛒</div>
+                    <h2>Portal de Compras</h2>
+                    <p>Encuentra tu sede y realiza tus compras de mercado online fácilmente.</p>
                     <span>SELECCIONAR MI SEDE →</span>
                 </a>
             </div>
@@ -491,10 +532,10 @@ HTML_DASHBOARD_MANAGER = """
         <div class="main">
             <div class="card">
                 <h2>Registrar Producto con Código Rápido (3 Dígitos)</h2>
-                <p style="color:var(--gray-text); font-size:13px; margin-bottom:15px;">Usa códigos como 001, 002, 003 para facilitar el cobro y búsqueda de los empleados.</p>
+                <p style="color:var(--gray-text); font-size:13px; margin-bottom:15px;">Usa códigos como 033, 034, 035 para facilitar el cobro y búsqueda de los empleados.</p>
                 <form action="/manager/agregar-producto" method="POST" style="display:grid; grid-template-columns:120px 1fr 150px 120px auto; gap:10px;">
-                    <input type="text" name="codigo" placeholder="Código (ej: 004)" maxlength="3" required style="padding:10px; border:1px solid var(--gray); border-radius:8px;">
-                    <input type="text" name="nombre" placeholder="Nombre del producto (Ej: Pan Integral)" required style="padding:10px; border:1px solid var(--gray); border-radius:8px;">
+                    <input type="text" name="codigo" placeholder="Código (ej: 033)" maxlength="3" required style="padding:10px; border:1px solid var(--gray); border-radius:8px;">
+                    <input type="text" name="nombre" placeholder="Nombre del producto (Ej: Pan Tajado Bimbo)" required style="padding:10px; border:1px solid var(--gray); border-radius:8px;">
                     <input type="number" name="precio" placeholder="Precio Unidad" required style="padding:10px; border:1px solid var(--gray); border-radius:8px;">
                     <input type="number" name="stock" placeholder="Cantidad" required style="padding:10px; border:1px solid var(--gray); border-radius:8px;">
                     <button type="submit" class="btn" style="margin:0;">+ Añadir</button>
@@ -647,7 +688,7 @@ HTML_DASHBOARD_EMPLEADO = """
                 <!-- MÓDULO DE COBRO CON CÓDIGOS RÁPIDOS -->
                 <div class="card">
                     <h2>Módulo de Caja - Búsqueda por Código Rápido</h2>
-                    <p style="color:var(--gray-text); font-size:13px; margin-bottom:15px;">Introduce el código de 3 dígitos (Ej: 001, 002, 003) para agregar el producto a la venta.</p>
+                    <p style="color:var(--gray-text); font-size:13px; margin-bottom:15px;">Introduce el código de 3 dígitos (Ej: 001, 006, 016, 026) para agregar el producto a la venta.</p>
                     
                     <form onsubmit="buscarPorCodigoRapido(event)" style="display:flex; gap:10px; margin-bottom:20px;">
                         <input type="text" id="input-codigo-rapido" placeholder="Ej: 001" maxlength="3" required style="padding:12px; font-size:18px; font-weight:bold; border:2px solid var(--primary); border-radius:8px; width:150px;">
@@ -655,7 +696,7 @@ HTML_DASHBOARD_EMPLEADO = """
                     </form>
 
                     <h3>Productos Disponibles en Referencia Rápida:</h3>
-                    <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; margin-top:10px;">
+                    <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; margin-top:10px; max-height:300px; overflow-y:auto;">
                         {% for prod in inventario %}
                         <div style="background:#f8fafc; padding:10px; border-radius:8px; border:1px solid var(--gray); font-size:13px;">
                             <b>#{{ prod.codigo }}</b> - {{ prod.nombre }}<br>
@@ -718,29 +759,29 @@ HTML_CLIENTE_UBICACION = """
     <div style="max-width:900px; margin:0 auto;" class="fade-in">
         <div class="brand" style="margin-bottom:20px;">
             <div class="logo">KI</div>
-            <h2>Paso 1: Selecciona tu Sede de Comida Cercana</h2>
+            <h2>Paso 1: Selecciona tu Sede de Supermercado Cercana</h2>
         </div>
-        <p style="color:var(--gray-text); margin-bottom:25px;">Elige el restaurante o punto express para preparar tu pedido al instante.</p>
+        <p style="color:var(--gray-text); margin-bottom:25px;">Elige tu tienda habitual para gestionar tu mercado a domicilio o recoger en punto.</p>
 
         <div class="sede-selector-grid">
-            <div class="sede-card-interactive" onclick="guardarSedeYContinuar('Sede Principal (Centro)', 'Av. Las Acacias #45-18, Zona Gastronómica')">
+            <div class="sede-card-interactive" onclick="guardarSedeYContinuar('Sede Principal (Centro)', 'Calle 10 # 5-20, Centro Comercial Central')">
                 <div style="font-size:40px; margin-bottom:10px;">🏢</div>
-                <h3>Sede Centro</h3>
-                <p style="color:var(--gray-text); font-size:13px;">Av. Las Acacias #45-18, Zona Gastronómica</p>
+                <h3>Sede Central</h3>
+                <p style="color:var(--gray-text); font-size:13px;">Calle 10 # 5-20, Centro Comercial Central</p>
                 <span style="color:var(--primary); font-weight:bold; font-size:13px; margin-top:10px; display:inline-block;">SELECCIONAR ESTA SEDE →</span>
             </div>
 
-            <div class="sede-card-interactive" onclick="guardarSedeYContinuar('Sede Norte (Plaza)', 'Calle Del Sol #102-15, Mall Gourmet')">
+            <div class="sede-card-interactive" onclick="guardarSedeYContinuar('Sede Norte (Plaza)', 'Av. Principal #102-15, Plaza Norte')">
                 <div style="font-size:40px; margin-bottom:10px;">🏬</div>
-                <h3>Sede Norte Gourmet</h3>
-                <p style="color:var(--gray-text); font-size:13px;">Calle Del Sol #102-15, Mall Gourmet</p>
+                <h3>Sede Norte Plaza</h3>
+                <p style="color:var(--gray-text); font-size:13px;">Av. Principal #102-15, Plaza Norte</p>
                 <span style="color:var(--primary); font-weight:bold; font-size:13px; margin-top:10px; display:inline-block;">SELECCIONAR ESTA SEDE →</span>
             </div>
 
-            <div class="sede-card-interactive" onclick="guardarSedeYContinuar('Sede Sur (Autoservicio)', 'Transversal 78 #12-30, Autopista Sur')">
+            <div class="sede-card-interactive" onclick="guardarSedeYContinuar('Sede Sur (Express)', 'Carrera 45 #12-30, Portal Sur')">
                 <div style="font-size:40px; margin-bottom:10px;">🏪</div>
                 <h3>Sede Sur Express</h3>
-                <p style="color:var(--gray-text); font-size:13px;">Transversal 78 #12-30, Autopista Sur</p>
+                <p style="color:var(--gray-text); font-size:13px;">Carrera 45 #12-30, Portal Sur</p>
                 <span style="color:var(--primary); font-weight:bold; font-size:13px; margin-top:10px; display:inline-block;">SELECCIONAR ESTA SEDE →</span>
             </div>
         </div>
@@ -801,7 +842,7 @@ HTML_CLIENTE_AUTH = """
             <form id="form-login" action="/login-cliente" method="POST">
                 <input type="email" name="email" placeholder="Tu correo electrónico" required>
                 <input type="password" name="password" placeholder="Tu contraseña" required>
-                <button type="submit" class="btn">🍔 Entrar a Pedir Comida</button>
+                <button type="submit" class="btn">🛒 Entrar a Hacer Mercado</button>
             </form>
 
             <!-- FORMULARIO REGISTRO CLIENTE -->
@@ -809,7 +850,7 @@ HTML_CLIENTE_AUTH = """
                 <input type="text" name="nombre" placeholder="Nombre Completo" required>
                 <input type="email" name="email" placeholder="Correo electrónico" required>
                 <input type="password" name="password" placeholder="Crea una Contraseña" required>
-                <button type="submit" class="btn">✨ Crear Cuenta y Pedir</button>
+                <button type="submit" class="btn">✨ Crear Cuenta y Comprar</button>
             </form>
 
             <a href="/cliente-ubicacion" style="display:block; margin-top:20px; color:var(--gray-text); text-decoration:none; font-size:13px;">← Cambiar de Sede</a>
@@ -819,14 +860,14 @@ HTML_CLIENTE_AUTH = """
 </html>
 """
 
-# CATÁLOGO DE COMIDAS CON PAGO REAL ELEGIBLE Y DATOS INVENTADOS
+# CATÁLOGOS CON GRAN VARIEDAD DE PRODUCTOS DE SUPERMERCADO
 HTML_TIENDA = """
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menú Gourmet - Cliente</title>
+    <title>Catálogo de Supermercado - Cliente</title>
     <style>{{ css | safe }}</style>
     <script>
         let carrito = [];
@@ -868,7 +909,7 @@ HTML_TIENDA = """
         function cerrarCarrito() { document.getElementById('modal-carrito').style.display = 'none'; }
         
         function irAPago() {
-            if(carrito.length === 0) { alert('Añade productos de comida primero'); return; }
+            if(carrito.length === 0) { alert('Añade productos de supermercado primero'); return; }
             let total = carrito.reduce((sum, p) => sum + p.precio, 0);
             document.getElementById('monto-pagar').innerText = '$' + total.toLocaleString();
             document.getElementById('paso-carrito').style.display = 'none';
@@ -904,7 +945,7 @@ HTML_TIENDA = """
                     metodo_pago: metodoNombre
                 })
             }).then(() => {
-                alert('🎉 ¡Pago exitoso vía ' + metodoNombre + '! Tu pedido de comida está en camino en ' + '{{ sede_actual }}.');
+                alert('🎉 ¡Pago exitoso vía ' + metodoNombre + '! Tu mercado está en preparación para ' + '{{ sede_actual }}.');
                 carrito = [];
                 actualizarCarritoUI();
                 cerrarCarrito();
@@ -936,7 +977,7 @@ HTML_TIENDA = """
             <div class="brand">
                 <div class="logo">KI</div>
                 <div>
-                    <h2 style="font-size:20px;">Menú de Alimentos y Consumibles</h2>
+                    <h2 style="font-size:20px;">Supermercados El Ahorro - Catálogo</h2>
                     <p style="font-size:12px; color:var(--gray-text);">Sede activa: <b>📍 {{ sede_actual }}</b></p>
                 </div>
             </div>
@@ -947,108 +988,174 @@ HTML_TIENDA = """
             </div>
         </div>
 
-        <!-- FILTROS DE CATEGORÍA -->
+        <!-- FILTROS DE CATEGORÍA DE SUPERMERCADO -->
         <div style="display:flex; gap:10px; margin-bottom:25px; overflow-x:auto; padding-bottom:5px;">
-            <button class="btn cat-btn" onclick="filtrarCategoria('todos', this)">🍔 Todo el Menú</button>
-            <button class="btn btn-outline cat-btn" onclick="filtrarCategoria('hamburguesas', this)">🔥 Hamburguesas</button>
-            <button class="btn btn-outline cat-btn" onclick="filtrarCategoria('pizzas', this)">🍕 Pizzas Artesanales</button>
-            <button class="btn btn-outline cat-btn" onclick="filtrarCategoria('bebidas', this)">🥤 Bebidas & Jugos</button>
-            <button class="btn btn-outline cat-btn" onclick="filtrarCategoria('postres', this)">🍰 Postres</button>
+            <button class="btn cat-btn" onclick="filtrarCategoria('todos', this)">🏪 Todo el Mercado</button>
+            <button class="btn btn-outline cat-btn" onclick="filtrarCategoria('lacteos', this)">🥛 Lácteos y Huevos</button>
+            <button class="btn btn-outline cat-btn" onclick="filtrarCategoria('despensa', this)">🌾 Despensa y Granos</button>
+            <button class="btn btn-outline cat-btn" onclick="filtrarCategoria('carnes', this)">🥩 Carnes y Embutidos</button>
+            <button class="btn btn-outline cat-btn" onclick="filtrarCategoria('frutas', this)">🍎 Frutas y Verduras</button>
+            <button class="btn btn-outline cat-btn" onclick="filtrarCategoria('bebidas', this)">🥤 Bebidas</button>
+            <button class="btn btn-outline cat-btn" onclick="filtrarCategoria('aseo', this)">🧹 Aseo y Limpieza</button>
         </div>
 
-        <!-- GRID DE PRODUCTOS COMIBLES -->
+        <!-- GRID DE PRODUCTOS DE SUPERMERCADO -->
         <div class="grid">
-            <!-- Hamburguesas -->
-            <div class="product-card" data-cat="hamburguesas">
-                <span class="product-badge">BEST SELLER</span>
-                <div style="font-size:45px; text-align:center; margin:10px 0;">🍔</div>
-                <h3 style="font-size:16px;">Hamburguesa Doble Angus BBQ</h3>
-                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Carne 100% angus, queso cheddar fundido, tocino crujiente y salsa BBQ artesanal.</p>
+            
+            <!-- LÁCTEOS Y HUEVOS -->
+            <div class="product-card" data-cat="lacteos">
+                <span class="product-badge">OFERTA</span>
+                <div style="font-size:45px; text-align:center; margin:10px 0;">🥚</div>
+                <h3 style="font-size:16px;">Huevos Frescos AA x30 Unidades</h3>
+                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Cubeta de 30 huevos rojos categoría AA de granja.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
-                    <b style="font-size:18px; color:var(--primary);">$28.900</b>
-                    <button class="btn" onclick="agregarProducto('Hamburguesa Doble Angus BBQ', 28900)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <b style="font-size:18px; color:var(--primary);">$18.500</b>
+                    <button class="btn" onclick="agregarProducto('Huevos Frescos AA x30', 18500)" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
 
-            <div class="product-card" data-cat="hamburguesas">
-                <div style="font-size:45px; text-align:center; margin:10px 0;">🍟</div>
-                <h3 style="font-size:16px;">Hamburguesa Crispy Chicken</h3>
-                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Pechuga de pollo apanada crujiente, ensalada coleslaw y aderezo especial de la casa.</p>
+            <div class="product-card" data-cat="lacteos">
+                <div style="font-size:45px; text-align:center; margin:10px 0;">🥛</div>
+                <h3 style="font-size:16px;">Leche Entera Colanta 1L</h3>
+                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Leche pasteurizada enriquecida con vitaminas A y D.</p>
+                <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
+                    <b style="font-size:18px; color:var(--primary);">$4.300</b>
+                    <button class="btn" onclick="agregarProducto('Leche Entera Colanta 1L', 4300)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-cat="lacteos">
+                <div style="font-size:45px; text-align:center; margin:10px 0;">🧀</div>
+                <h3 style="font-size:16px;">Queso Campesino Fresco 500g</h3>
+                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Queso blanco tajado, ideal para desayunos y arepas.</p>
+                <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
+                    <b style="font-size:18px; color:var(--primary);">$12.800</b>
+                    <button class="btn" onclick="agregarProducto('Queso Campesino 500g', 12800)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                </div>
+            </div>
+
+            <!-- DESPENSA Y GRANOS -->
+            <div class="product-card" data-cat="despensa">
+                <span class="product-badge">MAS VENDIDO</span>
+                <div style="font-size:45px; text-align:center; margin:10px 0;">🍚</div>
+                <h3 style="font-size:16px;">Arroz Roa Superior 1Kg</h3>
+                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Arroz blanco de grano entero de la más alta calidad.</p>
+                <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
+                    <b style="font-size:18px; color:var(--primary);">$4.800</b>
+                    <button class="btn" onclick="agregarProducto('Arroz Roa Superior 1Kg', 4800)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-cat="despensa">
+                <div style="font-size:45px; text-align:center; margin:10px 0;">🌻</div>
+                <h3 style="font-size:16px;">Aceite Vegetal Premier 900ml</h3>
+                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Aceite puro libre de grasas trans para cocinar diariamente.</p>
+                <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
+                    <b style="font-size:18px; color:var(--primary);">$14.500</b>
+                    <button class="btn" onclick="agregarProducto('Aceite Vegetal Premier 900ml', 14500)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-cat="despensa">
+                <div style="font-size:45px; text-align:center; margin:10px 0;">🍝</div>
+                <h3 style="font-size:16px;">Pasta Espagueti Doria 500g</h3>
+                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Pasta tradicional fortificada con hierro y nutrición.</p>
+                <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
+                    <b style="font-size:18px; color:var(--primary);">$3.800</b>
+                    <button class="btn" onclick="agregarProducto('Pasta Espagueti Doria 500g', 3800)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                </div>
+            </div>
+
+            <!-- CARNES Y EMBUTIDOS -->
+            <div class="product-card" data-cat="carnes">
+                <div style="font-size:45px; text-align:center; margin:10px 0;">🍗</div>
+                <h3 style="font-size:16px;">Pechuga de Pollo Entera 1Kg</h3>
+                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Pechuga limpia, fresca y refrigerada de primera opción.</p>
+                <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
+                    <b style="font-size:18px; color:var(--primary);">$16.900</b>
+                    <button class="btn" onclick="agregarProducto('Pechuga de Pollo 1Kg', 16900)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-cat="carnes">
+                <div style="font-size:45px; text-align:center; margin:10px 0;">🥩</div>
+                <h3 style="font-size:16px;">Carne Molida de Res 1Kg</h3>
+                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Corte de res magro molido al día sin conservantes.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
                     <b style="font-size:18px; color:var(--primary);">$24.500</b>
-                    <button class="btn" onclick="agregarProducto('Hamburguesa Crispy Chicken', 24500)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <button class="btn" onclick="agregarProducto('Carne Molida de Res 1Kg', 24500)" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
 
-            <!-- Pizzas -->
-            <div class="product-card" data-cat="pizzas">
-                <span class="product-badge">FAVORITA</span>
-                <div style="font-size:45px; text-align:center; margin:10px 0;">🍕</div>
-                <h3 style="font-size:16px;">Pizza Pepperoni Suprema (Grande)</h3>
-                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Masa madre fermentada 48 horas, doble pepperoni italiano y queso mozzarella.</p>
+            <!-- FRUTAS Y VERDURAS -->
+            <div class="product-card" data-cat="frutas">
+                <div style="font-size:45px; text-align:center; margin:10px 0;">🥑</div>
+                <h3 style="font-size:16px;">Aguacate Hass Selección 1Kg</h3>
+                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Aguacates cremosos y perfectos para madurar.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
-                    <b style="font-size:18px; color:var(--primary);">$45.000</b>
-                    <button class="btn" onclick="agregarProducto('Pizza Pepperoni Suprema Gde', 45000)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <b style="font-size:18px; color:var(--primary);">$8.900</b>
+                    <button class="btn" onclick="agregarProducto('Aguacate Hass 1Kg', 8900)" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
 
-            <div class="product-card" data-cat="pizzas">
-                <div style="font-size:45px; text-align:center; margin:10px 0;">🍅</div>
-                <h3 style="font-size:16px;">Pizza Margarita Tradicional</h3>
-                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Salsa de tomate pomodoro natural, albahaca fresca y bocconcini de mozzarella.</p>
+            <div class="product-card" data-cat="frutas">
+                <div style="font-size:45px; text-align:center; margin:10px 0;">🍎</div>
+                <h3 style="font-size:16px;">Manzana Roja Importada 1Kg</h3>
+                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Manzanas crujientes y dulces seleccionadas.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
-                    <b style="font-size:18px; color:var(--primary);">$38.000</b>
-                    <button class="btn" onclick="agregarProducto('Pizza Margarita Tradicional', 38000)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <b style="font-size:18px; color:var(--primary);">$9.500</b>
+                    <button class="btn" onclick="agregarProducto('Manzana Roja 1Kg', 9500)" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
 
-            <!-- Bebidas -->
+            <!-- BEBIDAS -->
+            <div class="product-card" data-cat="bebidas">
+                <div style="font-size:45px; text-align:center; margin:10px 0;">☕</div>
+                <h3 style="font-size:16px;">Café Sello Rojo Molido 500g</h3>
+                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Café 100% colombiano de tueste medio y gran aroma.</p>
+                <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
+                    <b style="font-size:18px; color:var(--primary);">$18.900</b>
+                    <button class="btn" onclick="agregarProducto('Café Sello Rojo 500g', 18900)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                </div>
+            </div>
+
             <div class="product-card" data-cat="bebidas">
                 <div style="font-size:45px; text-align:center; margin:10px 0;">🥤</div>
-                <h3 style="font-size:16px;">Gaseosa Helada 400ml</h3>
-                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Refrescante bebida gaseosa bien fría en presentación personal.</p>
+                <h3 style="font-size:16px;">Coca-Cola Sabor Original 1.5L</h3>
+                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Gaseosa refrescante ideal para acompañar tus comidas.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
-                    <b style="font-size:18px; color:var(--primary);">$6.000</b>
-                    <button class="btn" onclick="agregarProducto('Gaseosa Helada 400ml', 6000)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <b style="font-size:18px; color:var(--primary);">$6.200</b>
+                    <button class="btn" onclick="agregarProducto('Coca-Cola 1.5L', 6200)" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
 
-            <div class="product-card" data-cat="bebidas">
-                <div style="font-size:45px; text-align:center; margin:10px 0;">🍹</div>
-                <h3 style="font-size:16px;">Limonada de Coco Natural</h3>
-                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Bebida tropical cremosa con limón fresco, crema de coco y hielo frappé.</p>
+            <!-- ASEO Y LIMPIEZA -->
+            <div class="product-card" data-cat="aseo">
+                <div style="font-size:45px; text-align:center; margin:10px 0;">🧺</div>
+                <h3 style="font-size:16px;">Detergente en Polvo Ariel 2Kg</h3>
+                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Limpieza profunda y remoce de manchas difíciles en la ropa.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
-                    <b style="font-size:18px; color:var(--primary);">$11.000</b>
-                    <button class="btn" onclick="agregarProducto('Limonada de Coco Natural', 11000)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <b style="font-size:18px; color:var(--primary);">$26.900</b>
+                    <button class="btn" onclick="agregarProducto('Detergente Ariel 2Kg', 26900)" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
 
-            <!-- Postres -->
-            <div class="product-card" data-cat="postres">
-                <div style="font-size:45px; text-align:center; margin:10px 0;">🍰</div>
-                <h3 style="font-size:16px;">Cheesecake de Frutos Rojos</h3>
-                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Suave pastel de queso estilo Nueva York con compota de moras y arándanos.</p>
+            <div class="product-card" data-cat="aseo">
+                <div style="font-size:45px; text-align:center; margin:10px 0;">🧻</div>
+                <h3 style="font-size:16px;">Papel Higiénico Familia 12 Rollos</h3>
+                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Rendidor, doble hoja acolchada y suavidad superior.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
-                    <b style="font-size:18px; color:var(--primary);">$14.000</b>
-                    <button class="btn" onclick="agregarProducto('Cheesecake de Frutos Rojos', 14000)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <b style="font-size:18px; color:var(--primary);">$22.500</b>
+                    <button class="btn" onclick="agregarProducto('Papel Higiénico Familia x12', 22500)" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
 
-            <div class="product-card" data-cat="postres">
-                <div style="font-size:45px; text-align:center; margin:10px 0;">🍫</div>
-                <h3 style="font-size:16px;">Volcán de Chocolate Tibio</h3>
-                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Bizcocho de chocolate relleno con fudge fundido y acompañado de helado de vainilla.</p>
-                <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
-                    <b style="font-size:18px; color:var(--primary);">$15.500</b>
-                    <button class="btn" onclick="agregarProducto('Volcán de Chocolate Tibio', 15500)" style="width:auto; padding:8px 12px;">+ Añadir</button>
-                </div>
-            </div>
         </div>
     </div>
 
     <!-- BOTÓN FLOTANTE DEL CARRITO -->
     <div class="cart-floating-btn" onclick="abrirCarrito()">
-        🛒 Carrito de Comida (<span id="cart-count">0</span>)
+        🛒 Carrito de Mercado (<span id="cart-count">0</span>)
     </div>
 
     <!-- MODAL DEL CARRITO Y PASARELA DE PAGOS -->
@@ -1066,7 +1173,7 @@ HTML_TIENDA = """
                     <b id="cart-total" style="color:var(--primary);">$0</b>
                 </div>
                 <button class="btn" onclick="irAPago()" style="margin-top:20px;">💳 Proceder al Pago Seguro</button>
-                <button class="btn btn-outline" onclick="cerrarCarrito()" style="margin-top:8px;">Seguir Eligiendo Comida</button>
+                <button class="btn btn-outline" onclick="cerrarCarrito()" style="margin-top:8px;">Seguir Mercando</button>
             </div>
 
             <!-- PASO B: MÉTODOS DE PAGO REALES CON DATOS INVENTADOS -->
@@ -1103,7 +1210,7 @@ HTML_TIENDA = """
                         <input type="text" placeholder="MM/AA" value="12/28" style="padding:10px; font-size:13px;">
                         <input type="text" placeholder="CVV" value="482" style="padding:10px; font-size:13px;">
                     </div>
-                    <button class="btn" onclick="confirmarPagoFinal('Tarjeta de Crédito')">Pagar con Tarjeta</button>
+                    <button class="btn" onclick="confirmarPagoFinal('Tarjeta de Crédito')">Pagar Mercado</button>
                 </div>
 
                 <!-- FORMULARIO 2: PSE -->
@@ -1129,8 +1236,8 @@ HTML_TIENDA = """
                 <!-- FORMULARIO 4: EFECTIVO -->
                 <div id="pago-efectivo" class="payment-sec" style="display:none; margin-top:15px; background:#f8fafc; padding:15px; border-radius:12px;">
                     <p style="font-size:13px; font-weight:bold; margin-bottom:8px;">Pago contra entrega</p>
-                    <input type="text" placeholder="¿Con cuánto dinero vas a pagar?" value="$50.000" style="padding:10px; font-size:13px;">
-                    <button class="btn" onclick="confirmarPagoFinal('Efectivo contra entrega')">Confirmar Pedido</button>
+                    <input type="text" placeholder="¿Con cuánto dinero vas a pagar?" value="$100.000" style="padding:10px; font-size:13px;">
+                    <button class="btn" onclick="confirmarPagoFinal('Efectivo contra entrega')">Confirmar Mercado</button>
                 </div>
 
                 <button class="btn btn-outline" onclick="abrirCarrito()" style="margin-top:15px;">← Volver al Carrito</button>
@@ -1142,7 +1249,7 @@ HTML_TIENDA = """
 </html>
 """
 
-# DASHBOARD STAFF ANTIGUO (Se mantiene por retrocompatibilidad con las 959 líneas originales)
+# DASHBOARD STAFF ANTIGUO
 HTML_DASHBOARD = """
 <!DOCTYPE html>
 <html lang="es">
@@ -1169,11 +1276,11 @@ HTML_DASHBOARD = """
             let nuevaFila = `<tr>
                 <td><b>${nombre}</b></td>
                 <td>${sede}</td>
-                <td>${stock} porciones</td>
+                <td>${stock} unidades</td>
                 <td><span class="tag tag-empleado">Disponible</span></td>
             </tr>`;
             tabla.innerHTML += nuevaFila;
-            alert('¡Alimento agregado al stock de cocina!');
+            alert('¡Producto agregado al stock!');
             document.getElementById('form-prod').reset();
         }
 
@@ -1218,7 +1325,7 @@ HTML_DASHBOARD = """
                 </div>
                 <a onclick="cambiarSeccion('panel', this)" class="active">📊 Panel Principal</a>
                 <a onclick="cambiarSeccion('pedidos-live', this)">🔴 Pedidos (<span id="total-pedidos-count">0</span>)</a>
-                <a onclick="cambiarSeccion('inventario', this)">🍔 Control de Cocina</a>
+                <a onclick="cambiarSeccion('inventario', this)">📦 Control de Stock</a>
                 <a onclick="cambiarSeccion('sedes', this)">🏪 Puntos de Venta</a>
             </div>
             <a href="/logout" style="background:#334155; margin-top:20px;">🚪 Cerrar Sesión</a>
@@ -1248,19 +1355,19 @@ HTML_DASHBOARD = """
             </div>
             <div id="inventario" class="seccion-tab fade-in" style="display:none;">
                 <div class="card">
-                    <h2>Inventario de Cocina</h2>
+                    <h2>Inventario de Almacén</h2>
                     <form id="form-prod" onsubmit="agregarNuevoProducto(event)" style="display:grid; grid-template-columns:1fr 1fr 1fr auto; gap:10px; margin-top:15px;">
                         <input type="text" id="prod-nombre" placeholder="Nombre" required style="padding:10px; border:1px solid var(--gray); border-radius:8px;">
                         <select id="prod-sede" style="padding:10px; border:1px solid var(--gray); border-radius:8px;">
-                            <option>Sede Centro</option><option>Sede Norte</option><option>Sede Sur Express</option>
+                            <option>Sede Central</option><option>Sede Norte</option><option>Sede Sur Express</option>
                         </select>
                         <input type="number" id="prod-stock" placeholder="Stock" required style="padding:10px; border:1px solid var(--gray); border-radius:8px;">
                         <button type="submit" class="btn" style="margin:0;">+ Guardar</button>
                     </form>
                     <table style="margin-top:15px;">
-                        <thead><tr><th>Platillo</th><th>Sede</th><th>Disponibilidad</th><th>Estado</th></tr></thead>
+                        <thead><tr><th>Producto</th><th>Sede</th><th>Disponibilidad</th><th>Estado</th></tr></thead>
                         <tbody id="tabla-inventario">
-                            <tr><td>Hamburguesa Doble Angus BBQ</td><td>Sede Centro</td><td>25 porciones</td><td><span class="tag tag-empleado">Disponible</span></td></tr>
+                            <tr><td>Arroz Roa Blanco 1Kg</td><td>Sede Central</td><td>350 unidades</td><td><span class="tag tag-empleado">Disponible</span></td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -1482,7 +1589,7 @@ def registro_cliente():
 def tienda():
     if session.get('user_type') != 'cliente':
         return redirect(url_for('cliente_ubicacion'))
-    sede_actual = session.get('sede', 'Sede Centro')
+    sede_actual = session.get('sede', 'Sede Principal (Centro)')
     cliente_nombre = session.get('cliente_nombre', 'Cliente')
     return render_template_string(HTML_TIENDA, css=CSS_ESTILOS, sede_actual=sede_actual, cliente_nombre=cliente_nombre)
 
@@ -1492,7 +1599,7 @@ def crear_pedido():
     nuevo_pedido = {
         'hora': datetime.now().strftime("%H:%M:%S"),
         'cliente': data.get('cliente', 'Anonimo'),
-        'sede': data.get('sede', 'Sede Centro'),
+        'sede': data.get('sede', 'Sede Central'),
         'productos': data.get('productos', ''),
         'total': data.get('total', 0),
         'metodo_pago': data.get('metodo_pago', 'Tarjeta'),
