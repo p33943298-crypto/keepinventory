@@ -541,6 +541,13 @@ HTML_DASHBOARD_MANAGER = """
             <div class="card">
                 <h2>Registrar Producto con Código Rápido (3 Dígitos) e Imagen</h2>
                 <p style="color:var(--gray-text); font-size:13px; margin-bottom:15px;">Usa códigos como 033, 034, 035 para facilitar el cobro y búsqueda. Agrega URL de la imagen del producto.</p>
+                
+                {% if error %}
+                <div style="color:#dc2626; background:#fee2e2; padding:10px; border-radius:8px; font-size:13px; margin-bottom:12px;">
+                    {{ error }}
+                </div>
+                {% endif %}
+
                 <form action="/manager/agregar-producto" method="POST" style="display:grid; grid-template-columns:100px 1fr 120px 100px 1fr auto; gap:10px;">
                     <input type="text" name="codigo" placeholder="Código (033)" maxlength="3" required style="padding:10px; border:1px solid var(--gray); border-radius:8px;">
                     <input type="text" name="nombre" placeholder="Nombre del producto" required style="padding:10px; border:1px solid var(--gray); border-radius:8px;">
@@ -628,7 +635,7 @@ HTML_DASHBOARD_EMPLEADO = """
             event.preventDefault();
             let codigo = document.getElementById('input-codigo-rapido').value.trim();
             
-            // Petición AJAX para buscar el producto por código de 3 dígitos
+            # Petición AJAX para buscar el producto por código de 3 dígitos
             fetch('/api/buscar-codigo?codigo=' + codigo)
                 .then(res => res.json())
                 .then(data => {
@@ -700,7 +707,7 @@ HTML_DASHBOARD_EMPLEADO = """
         </div>
         <div class="main">
             <div style="display:grid; grid-template-columns:2fr 1fr; gap:20px;">
-                <!-- MÓDULO DE COBRO CON CÓDIGOS RÁPIDOS -->
+                # MÓDULO DE COBRO CON CÓDIGOS RÁPIDOS
                 <div class="card">
                     <h2>Módulo de Caja - Búsqueda por Código Rápido</h2>
                     <p style="color:var(--gray-text); font-size:13px; margin-bottom:15px;">Introduce el código de 3 dígitos (Ej: 001, 006, 016, 026) para agregar el producto a la venta.</p>
@@ -721,7 +728,7 @@ HTML_DASHBOARD_EMPLEADO = """
                     </div>
                 </div>
 
-                <!-- RESUMEN DE TICKET DE CAJA -->
+                # RESUMEN DE TICKET DE CAJA
                 <div class="card">
                     <h3>Ticket de Venta Actual</h3>
                     <div id="lista-caja-items" style="margin:15px 0; max-height:250px; overflow-y:auto;">
@@ -735,7 +742,7 @@ HTML_DASHBOARD_EMPLEADO = """
                 </div>
             </div>
 
-            <!-- MÓDULO DE REPORTES A MANAGER -->
+            # MÓDULO DE REPORTES A MANAGER
             <div class="card" style="margin-top:20px;">
                 <h2>Reportar Problema o Incidencia al Manager</h2>
                 <form action="/empleado/enviar-reporte" method="POST" style="margin-top:10px;">
@@ -853,14 +860,14 @@ HTML_CLIENTE_AUTH = """
                 <button id="tab-registro" type="button" class="btn btn-outline" onclick="alternarModo('registro')" style="flex:1;">Registrarse</button>
             </div>
 
-            <!-- FORMULARIO LOGIN CLIENTE -->
+            # FORMULARIO LOGIN CLIENTE
             <form id="form-login" action="/login-cliente" method="POST">
                 <input type="email" name="email" placeholder="Tu correo electrónico" required>
                 <input type="password" name="password" placeholder="Tu contraseña" required>
                 <button type="submit" class="btn">🛒 Entrar a Hacer Mercado</button>
             </form>
 
-            <!-- FORMULARIO REGISTRO CLIENTE -->
+            # FORMULARIO REGISTRO CLIENTE
             <form id="form-registro" action="/registro-cliente" method="POST" style="display:none;">
                 <input type="text" name="nombre" placeholder="Nombre Completo" required>
                 <input type="email" name="email" placeholder="Correo electrónico" required>
@@ -986,7 +993,7 @@ HTML_TIENDA = """
 <body style="background:#f8fafc;">
     <div style="padding:25px; max-width:1200px; margin:0 auto;" class="fade-in">
         
-        <!-- HEADER CLIENTE -->
+        # HEADER CLIENTE
         <div class="header-cliente">
             <div class="brand">
                 <div class="logo">KI</div>
@@ -1002,7 +1009,7 @@ HTML_TIENDA = """
             </div>
         </div>
 
-        <!-- FILTROS DE CATEGORÍA DE SUPERMERCADO -->
+        # FILTROS DE CATEGORÍA DE SUPERMERCADO
         <div style="display:flex; gap:10px; margin-bottom:25px; overflow-x:auto; padding-bottom:5px;">
             <button class="btn cat-btn" onclick="filtrarCategoria('todos', this)">🏪 Todo el Mercado</button>
             <button class="btn btn-outline cat-btn" onclick="filtrarCategoria('lacteos', this)">🥛 Lácteos y Huevos</button>
@@ -1013,10 +1020,10 @@ HTML_TIENDA = """
             <button class="btn btn-outline cat-btn" onclick="filtrarCategoria('aseo', this)">🧹 Aseo y Limpieza</button>
         </div>
 
-        <!-- GRID DE PRODUCTOS DE SUPERMERCADO CON IMÁGENES CORREGIDAS -->
+        # GRID DE PRODUCTOS DE SUPERMERCADO CON IMÁGENES CORREGIDAS
         <div class="grid">
             
-            <!-- LÁCTEOS Y HUEVOS -->
+            # LÁCTEOS Y HUEVOS
             <div class="product-card" data-cat="lacteos">
                 <span class="product-badge">OFERTA</span>
                 <div class="product-img-container"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVO8fktZ9PsqGMtJtLrIpxWMrEry8Zt100S55llzxX3Q&s=10" alt="Huevos AA x30 unidades"></div>
@@ -1048,7 +1055,7 @@ HTML_TIENDA = """
                 </div>
             </div>
 
-            <!-- DESPENSA Y GRANOS -->
+            # DESPENSA Y GRANOS
             <div class="product-card" data-cat="despensa">
                 <span class="product-badge">MAS VENDIDO</span>
                 <div class="product-img-container"><img src="https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400&auto=format&fit=crop&q=80" alt="Arroz Roa 1Kg"></div>
@@ -1080,7 +1087,7 @@ HTML_TIENDA = """
                 </div>
             </div>
 
-            <!-- CARNES Y EMBUTIDOS -->
+            # CARNES Y EMBUTIDOS
             <div class="product-card" data-cat="carnes">
                 <div class="product-img-container"><img src="https://images.unsplash.com/photo-1604503468506-a8da13d82791?w=400&auto=format&fit=crop&q=80" alt="Pechuga de Pollo 1Kg"></div>
                 <h3 style="font-size:16px;">Pechuga de Pollo Entera 1Kg</h3>
@@ -1101,7 +1108,7 @@ HTML_TIENDA = """
                 </div>
             </div>
 
-            <!-- FRUTAS Y VERDURAS -->
+            # FRUTAS Y VERDURAS
             <div class="product-card" data-cat="frutas">
                 <div class="product-img-container"><img src="https://images.unsplash.com/photo-1523049673857-eb18f1d7b578?w=400&auto=format&fit=crop&q=80" alt="Aguacate Hass 1Kg"></div>
                 <h3 style="font-size:16px;">Aguacate Hass Selección 1Kg</h3>
@@ -1122,7 +1129,7 @@ HTML_TIENDA = """
                 </div>
             </div>
 
-            <!-- BEBIDAS -->
+            # BEBIDAS
             <div class="product-card" data-cat="bebidas">
                 <div class="product-img-container"><img src="https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=400&auto=format&fit=crop&q=80" alt="Café Sello Rojo 500g"></div>
                 <h3 style="font-size:16px;">Café Sello Rojo Molido 500g</h3>
@@ -1143,7 +1150,7 @@ HTML_TIENDA = """
                 </div>
             </div>
 
-            <!-- ASEO Y LIMPIEZA -->
+            # ASEO Y LIMPIEZA
             <div class="product-card" data-cat="aseo">
                 <div class="product-img-container"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxsUE3LQsQMoxScMRP2K-RuDYFVLafI9H-mJXnETKUKTCTBl0bkF_vPIlh&s=10" alt="Detergente Ariel 2Kg"></div>
                 <h3 style="font-size:16px;">Detergente en Polvo Ariel 2Kg</h3>
@@ -1164,7 +1171,7 @@ HTML_TIENDA = """
                 </div>
             </div>
 
-            <!-- PRODUCTOS DINÁMICOS SUBIDOS POR MANAGERS -->
+            # PRODUCTOS DINÁMICOS SUBIDOS POR MANAGERS
             {% for prod in productos_dinamicos %}
             <div class="product-card" data-cat="todos">
                 <span class="product-badge">NUEVO (#{{ prod.codigo }})</span>
@@ -1183,16 +1190,16 @@ HTML_TIENDA = """
         </div>
     </div>
 
-    <!-- BOTÓN FLOTANTE DEL CARRITO -->
+    # BOTÓN FLOTANTE DEL CARRITO
     <div class="cart-floating-btn" onclick="abrirCarrito()">
         🛒 Carrito de Mercado (<span id="cart-count">0</span>)
     </div>
 
-    <!-- MODAL DEL CARRITO Y PASARELA DE PAGOS -->
+    # MODAL DEL CARRITO Y PASARELA DE PAGOS
     <div id="modal-carrito" class="modal">
         <div class="modal-content">
             
-            <!-- PASO A: REVISIÓN DE CARRITO -->
+            # PASO A: REVISIÓN DE CARRITO
             <div id="paso-carrito">
                 <h3>Tu Pedido - <span style="color:var(--primary);">{{ sede_actual }}</span></h3>
                 <div id="cart-items" style="margin:20px 0; max-height:220px; overflow-y:auto;">
@@ -1206,7 +1213,7 @@ HTML_TIENDA = """
                 <button class="btn btn-outline" onclick="cerrarCarrito()" style="margin-top:8px;">Seguir Mercando</button>
             </div>
 
-            <!-- PASO B: MÉTODOS DE PAGO REALES CON DATOS INVENTADOS -->
+            # PASO B: MÉTODOS DE PAGO REALES CON DATOS INVENTADOS
             <div id="paso-pago" style="display:none;">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
                     <h3>Selecciona Método de Pago</h3>
@@ -1214,7 +1221,7 @@ HTML_TIENDA = """
                 </div>
                 <p style="font-size:13px; color:var(--gray-text); margin-bottom:15px;">Pasarela integrada simulada (Rellena con datos ficticios)</p>
 
-                <!-- Selector de métodos -->
+                # Selector de métodos
                 <div class="payment-method-box" onclick="seleccionarMetodoPago('tarjeta')">
                     <b>💳 Tarjeta de Crédito / Débito</b>
                     <p style="font-size:12px; color:var(--gray-text);">Visa, Mastercard, American Express</p>
@@ -1232,7 +1239,7 @@ HTML_TIENDA = """
                     <p style="font-size:12px; color:var(--gray-text);">Paga al recibir en la puerta</p>
                 </div>
 
-                <!-- FORMULARIO 1: TARJETA -->
+                # FORMULARIO 1: TARJETA
                 <div id="pago-tarjeta" class="payment-sec" style="display:none; margin-top:15px; background:#f8fafc; padding:15px; border-radius:12px;">
                     <p style="font-size:13px; font-weight:bold; margin-bottom:8px;">Datos de la Tarjeta (Inventados)</p>
                     <input type="text" placeholder="Número de Tarjeta (ej: 4532 •••• •••• 8890)" value="4532 8821 9012 3456" style="padding:10px; font-size:13px;">
@@ -1243,7 +1250,7 @@ HTML_TIENDA = """
                     <button class="btn" onclick="confirmarPagoFinal('Tarjeta de Crédito')">Pagar Mercado</button>
                 </div>
 
-                <!-- FORMULARIO 2: PSE -->
+                # FORMULARIO 2: PSE
                 <div id="pago-pse" class="payment-sec" style="display:none; margin-top:15px; background:#f8fafc; padding:15px; border-radius:12px;">
                     <p style="font-size:13px; font-weight:bold; margin-bottom:8px;">Conexión Bancaria PSE (Inventado)</p>
                     <select style="padding:10px; font-size:13px; width:100%; border:1px solid var(--gray); border-radius:8px; margin-bottom:10px;">
@@ -1256,14 +1263,14 @@ HTML_TIENDA = """
                     <button class="btn" onclick="confirmarPagoFinal('PSE Bancario')">Autorizar Pago en Banco</button>
                 </div>
 
-                <!-- FORMULARIO 3: NEQUI -->
+                # FORMULARIO 3: NEQUI
                 <div id="pago-nequi" class="payment-sec" style="display:none; margin-top:15px; background:#f8fafc; padding:15px; border-radius:12px;">
                     <p style="font-size:13px; font-weight:bold; margin-bottom:8px;">Billetera Móvil (Inventado)</p>
                     <input type="text" placeholder="Número Celular (ej: 310 456 7890)" value="312 456 7890" style="padding:10px; font-size:13px;">
                     <button class="btn" onclick="confirmarPagoFinal('Nequi/Daviplata')">Generar Notificación Push</button>
                 </div>
 
-                <!-- FORMULARIO 4: EFECTIVO -->
+                # FORMULARIO 4: EFECTIVO
                 <div id="pago-efectivo" class="payment-sec" style="display:none; margin-top:15px; background:#f8fafc; padding:15px; border-radius:12px;">
                     <p style="font-size:13px; font-weight:bold; margin-bottom:8px;">Pago contra entrega</p>
                     <input type="text" placeholder="¿Con cuánto dinero vas a pagar?" value="$100.000" style="padding:10px; font-size:13px;">
@@ -1522,18 +1529,28 @@ def manager_dashboard():
     user_sede = session.get('user_sede')
     inv_sede = [i for i in INVENTARIO_SUPER if i['sede'] == user_sede]
     rep_sede = [r for r in REPORTES_EMPLEADOS if r.get('sede') == user_sede]
-    return render_template_string(HTML_DASHBOARD_MANAGER, css=CSS_ESTILOS, user={'sede': user_sede}, inventario=inv_sede, reportes=rep_sede)
+    error = request.args.get('error')
+    return render_template_string(HTML_DASHBOARD_MANAGER, css=CSS_ESTILOS, user={'sede': user_sede}, inventario=inv_sede, reportes=rep_sede, error=error)
 
 @app.route('/manager/agregar-producto', methods=['POST'])
 def manager_agregar_producto():
     if session.get('user_type') != 'manager':
         return redirect(url_for('login_staff'))
+    
+    codigo = request.form.get('codigo', '').strip()
+    user_sede = session.get('user_sede')
+    
+    # Validar si el código ya existe en la misma sede para evitar duplicados
+    codigo_repetido = any(i['codigo'] == codigo and i['sede'] == user_sede for i in INVENTARIO_SUPER)
+    if codigo_repetido:
+        return redirect(url_for('manager_dashboard', error=f"El código rápido #{codigo} ya está registrado en esta sede. Usa uno diferente."))
+
     INVENTARIO_SUPER.append({
-        "codigo": request.form.get('codigo'),
+        "codigo": codigo,
         "nombre": request.form.get('nombre'),
         "precio": float(request.form.get('precio', 0)),
         "stock": int(request.form.get('stock', 0)),
-        "sede": session.get('user_sede'),
+        "sede": user_sede,
         "empresa": session.get('empresa_nombre'),
         "imagen": request.form.get('imagen', '').strip()
     })
@@ -1649,9 +1666,6 @@ def logout():
     session.clear()
     return redirect(url_for('inicio'))
 
-# ==========================================
-# PEGA LA NUEVA RUTA AQUÍ:
-# ==========================================
 @app.route('/api/ping-mantener-activo', methods=['GET'])
 def ping_activo():
     return jsonify({
@@ -1659,7 +1673,6 @@ def ping_activo():
         "mensaje": "KeepInventoryLite activo y operativo",
         "hora_local": obtener_tiempo_local()
     }), 200
-# ==========================================
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
