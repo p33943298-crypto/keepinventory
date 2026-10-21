@@ -1,6 +1,6 @@
 from flask import Flask, render_template_string, redirect, url_for, request, session, jsonify
 import os
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 
 app = Flask(__name__)
 # Clave secreta para manejo seguro de sesiones
@@ -9,6 +9,11 @@ app.secret_key = os.getenv("SECRET_KEY", "keepinventory_secret_key_12345")
 # Credenciales de administrador demo
 ADMIN_EMAIL = os.getenv("ADMIN_EMAIL", "admin@keepinventory.com")
 ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "admin123password")
+
+# ZONA HORARIA LOCAL (UTC-5)
+def obtener_tiempo_local():
+    zona_horaria_local = timezone(timedelta(hours=-5))
+    return datetime.now(zona_horaria_local).strftime("%Y-%m-%d %H:%M:%S")
 
 # Lista global en memoria para simular la base de datos y nuevas entidades jerárquicas
 PEDIDOS_REGISTRADOS = []
@@ -28,51 +33,51 @@ EMPRESAS_REGISTRADAS = [
     }
 ]
 
-# INVENTARIO SUPERMERCADO - CÓDIGOS RÁPIDOS Y GRAN VARIEDAD DE PRODUCTOS
+# INVENTARIO SUPERMERCADO - CÓDIGOS RÁPIDOS, GRAN VARIEDAD E IMÁGENES DE PRODUCTOS
 INVENTARIO_SUPER = [
     # Lácteos y Huevos
-    {"codigo": "001", "nombre": "Huevos AA x30 unidades", "precio": 18500, "stock": 120, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
-    {"codigo": "002", "nombre": "Leche Entera 1L Colanta", "precio": 4300, "stock": 200, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
-    {"codigo": "003", "nombre": "Queso Campesino 500g", "precio": 12800, "stock": 65, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
-    {"codigo": "004", "nombre": "Mantequilla con Sal 250g", "precio": 9200, "stock": 80, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
-    {"codigo": "005", "nombre": "Yogurt Melocotón 1L", "precio": 8500, "stock": 90, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
+    {"codigo": "001", "nombre": "Huevos AA x30 unidades", "precio": 18500, "stock": 120, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1516467508483-a7212febe31a?w=400&auto=format&fit=crop&q=80"},
+    {"codigo": "002", "nombre": "Leche Entera 1L Colanta", "precio": 4300, "stock": 200, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1550583724-b2692b85b150?w=400&auto=format&fit=crop&q=80"},
+    {"codigo": "003", "nombre": "Queso Campesino 500g", "precio": 12800, "stock": 65, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1452195100486-9cc805987862?w=400&auto=format&fit=crop&q=80"},
+    {"codigo": "004", "nombre": "Mantequilla con Sal 250g", "precio": 9200, "stock": 80, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1589985270826-4b7bb135bc9d?w=400&auto=format&fit=crop&q=80"},
+    {"codigo": "005", "nombre": "Yogurt Melocotón 1L", "precio": 8500, "stock": 90, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&auto=format&fit=crop&q=80"},
     
     # Despensa y Granos
-    {"codigo": "006", "nombre": "Arroz Roa Blanco 1Kg", "precio": 4800, "stock": 350, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
-    {"codigo": "007", "nombre": "Aceite Vegetal Premier 900ml", "precio": 14500, "stock": 110, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
-    {"codigo": "008", "nombre": "Frijol Cargamanto 500g", "precio": 6200, "stock": 140, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
-    {"codigo": "009", "nombre": "Lenteja Seleccionada 500g", "precio": 4500, "stock": 160, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
-    {"codigo": "010", "nombre": "Azúcar Blanca Incauca 1Kg", "precio": 4900, "stock": 220, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
-    {"codigo": "011", "nombre": "Sal Marina Refinada 1Kg", "precio": 2100, "stock": 180, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
-    {"codigo": "012", "nombre": "Pasta Espagueti Doria 500g", "precio": 3800, "stock": 210, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
-    {"codigo": "013", "nombre": "Harina de Maíz PAN 1Kg", "precio": 4200, "stock": 300, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
-    {"codigo": "014", "nombre": "Atún en Agua Zenú 170g", "precio": 7800, "stock": 175, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
-    {"codigo": "015", "nombre": "Maíz Tierno Lata 300g", "precio": 4100, "stock": 130, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
+    {"codigo": "006", "nombre": "Arroz Roa Blanco 1Kg", "precio": 4800, "stock": 350, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400&auto=format&fit=crop&q=80"},
+    {"codigo": "007", "nombre": "Aceite Vegetal Premier 900ml", "precio": 14500, "stock": 110, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=400&auto=format&fit=crop&q=80"},
+    {"codigo": "008", "nombre": "Frijol Cargamanto 500g", "precio": 6200, "stock": 140, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1551462147-3f0053e21fa2?w=400&auto=format&fit=crop&q=80"},
+    {"codigo": "009", "nombre": "Lenteja Seleccionada 500g", "precio": 4500, "stock": 160, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1515942661991-bbf665f429ed?w=400&auto=format&fit=crop&q=80"},
+    {"codigo": "010", "nombre": "Azúcar Blanca Incauca 1Kg", "precio": 4900, "stock": 220, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1581441363689-1f3c3c71db2e?w=400&auto=format&fit=crop&q=80"},
+    {"codigo": "011", "nombre": "Sal Marina Refinada 1Kg", "precio": 2100, "stock": 180, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1518110925495-5bc2150915f0?w=400&auto=format&fit=crop&q=80"},
+    {"codigo": "012", "nombre": "Pasta Espagueti Doria 500g", "precio": 3800, "stock": 210, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1621996346565-e3d5d6281298?w=400&auto=format&fit=crop&q=80"},
+    {"codigo": "013", "nombre": "Harina de Maíz PAN 1Kg", "precio": 4200, "stock": 300, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&auto=format&fit=crop&q=80"},
+    {"codigo": "014", "nombre": "Atún en Agua Zenú 170g", "precio": 7800, "stock": 175, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1544025162-d76694265947?w=400&auto=format&fit=crop&q=80"},
+    {"codigo": "015", "nombre": "Maíz Tierno Lata 300g", "precio": 4100, "stock": 130, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1551782450-17144efb9c50?w=400&auto=format&fit=crop&q=80"},
 
     # Carnes y Charcutería
-    {"codigo": "016", "nombre": "Pechuga de Pollo 1Kg", "precio": 16900, "stock": 85, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
-    {"codigo": "017", "nombre": "Carne Molida Especial 1Kg", "precio": 24500, "stock": 70, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
-    {"codigo": "018", "nombre": "Lomo de Cerdo 1Kg", "precio": 2200, "stock": 60, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
-    {"codigo": "019", "nombre": "Salchicha Ranchera x225g", "precio": 9800, "stock": 115, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
-    {"codigo": "020", "nombre": "Jamón Pietrán de Pavo 200g", "precio": 11500, "stock": 95, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
+    {"codigo": "016", "nombre": "Pechuga de Pollo 1Kg", "precio": 16900, "stock": 85, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1604503468506-a8da13d82791?w=400&auto=format&fit=crop&q=80"},
+    {"codigo": "017", "nombre": "Carne Molida Especial 1Kg", "precio": 24500, "stock": 70, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1588168333986-5078d3ae3976?w=400&auto=format&fit=crop&q=80"},
+    {"codigo": "018", "nombre": "Lomo de Cerdo 1Kg", "precio": 22000, "stock": 60, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1603048588665-791ca8aea617?w=400&auto=format&fit=crop&q=80"},
+    {"codigo": "019", "nombre": "Salchicha Ranchera x225g", "precio": 9800, "stock": 115, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1541529086526-db283c563270?w=400&auto=format&fit=crop&q=80"},
+    {"codigo": "020", "nombre": "Jamón Pietrán de Pavo 200g", "precio": 11500, "stock": 95, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1509722747041-616f39b57569?w=400&auto=format&fit=crop&q=80"},
 
     # Frutas y Verduras
-    {"codigo": "021", "nombre": "Aguacate Hass 1Kg", "precio": 8900, "stock": 90, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
-    {"codigo": "022", "nombre": "Tomate Chonto 1Kg", "precio": 4200, "stock": 150, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
-    {"codigo": "023", "nombre": "Cebolla Cabezona Roja 1Kg", "precio": 3800, "stock": 140, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
-    {"codigo": "024", "nombre": "Papa Sabanera 1Kg", "precio": 3200, "stock": 280, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
-    {"codigo": "025", "nombre": "Manzana Roja Importada 1Kg", "precio": 9500, "stock": 110, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
+    {"codigo": "021", "nombre": "Aguacate Hass 1Kg", "precio": 8900, "stock": 90, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1523049673857-eb18f1d7b578?w=400&auto=format&fit=crop&q=80"},
+    {"codigo": "022", "nombre": "Tomate Chonto 1Kg", "precio": 4200, "stock": 150, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=400&auto=format&fit=crop&q=80"},
+    {"codigo": "023", "nombre": "Cebolla Cabezona Roja 1Kg", "precio": 3800, "stock": 140, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1618512496249-10603424d3d8?w=400&auto=format&fit=crop&q=80"},
+    {"codigo": "024", "nombre": "Papa Sabanera 1Kg", "precio": 3200, "stock": 280, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=400&auto=format&fit=crop&q=80"},
+    {"codigo": "025", "nombre": "Manzana Roja Importada 1Kg", "precio": 9500, "stock": 110, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=400&auto=format&fit=crop&q=80"},
 
     # Bebidas
-    {"codigo": "026", "nombre": "Café Sello Rojo 500g", "precio": 18900, "stock": 130, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
-    {"codigo": "027", "nombre": "Coca-Cola Original 1.5L", "precio": 6200, "stock": 190, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
-    {"codigo": "028", "nombre": "Agua Manantial Sin Gas 5L", "precio": 8900, "stock": 80, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
-    {"codigo": "029", "nombre": "Jugo Hit Mora 1L", "precio": 4500, "stock": 140, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
+    {"codigo": "026", "nombre": "Café Sello Rojo 500g", "precio": 18900, "stock": 130, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=400&auto=format&fit=crop&q=80"},
+    {"codigo": "027", "nombre": "Coca-Cola Original 1.5L", "precio": 6200, "stock": 190, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=400&auto=format&fit=crop&q=80"},
+    {"codigo": "028", "nombre": "Agua Manantial Sin Gas 5L", "precio": 8900, "stock": 80, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1548839140-29a749e1cf4d?w=400&auto=format&fit=crop&q=80"},
+    {"codigo": "029", "nombre": "Jugo Hit Mora 1L", "precio": 4500, "stock": 140, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1613478223719-2ab802602423?w=400&auto=format&fit=crop&q=80"},
 
     # Aseo y Cuidado Personal
-    {"codigo": "030", "nombre": "Detergente en Polvo Ariel 2Kg", "precio": 26900, "stock": 75, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
-    {"codigo": "031", "nombre": "Jabón de Baño Palmolive x3", "precio": 11200, "stock": 105, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"},
-    {"codigo": "032", "nombre": "Papel Higiénico Familia 12 Rollos", "precio": 22500, "stock": 90, "sede": "Sede Central", "empresa": "Supermercados El Ahorro"}
+    {"codigo": "030", "nombre": "Detergente en Polvo Ariel 2Kg", "precio": 26900, "stock": 75, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1585421514284-efb74c2b69ba?w=400&auto=format&fit=crop&q=80"},
+    {"codigo": "031", "nombre": "Jabón de Baño Palmolive x3", "precio": 11200, "stock": 105, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=400&auto=format&fit=crop&q=80"},
+    {"codigo": "032", "nombre": "Papel Higiénico Familia 12 Rollos", "precio": 22500, "stock": 90, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?w=400&auto=format&fit=crop&q=80"}
 ]
 
 REPORTES_EMPLEADOS = []
@@ -190,6 +195,9 @@ tr:hover td{background:#f8fafc;}
 .product-card{background:white; border-radius:20px; border:1px solid #e2e8f0; padding:22px; display:flex; flex-direction:column; justify-content:space-between; transition:all 0.3s cubic-bezier(0.16, 1, 0.3, 1); position:relative; overflow:hidden; box-shadow:var(--card-shadow);}
 .product-card:hover{transform:translateY(-8px); box-shadow:0 20px 35px rgba(0,0,0,0.08); border-color:var(--primary);}
 .product-badge{position:absolute; top:15px; right:15px; background:var(--accent); color:white; font-size:11px; font-weight:800; padding:4px 10px; border-radius:30px; letter-spacing:0.5px; box-shadow:0 4px 10px rgba(245,158,11,0.3);}
+.product-img-container{width:100%; height:160px; border-radius:12px; overflow:hidden; margin-bottom:12px; background:#f1f5f9; display:flex; align-items:center; justify-content:center;}
+.product-img-container img{width:100%; height:100%; object-fit:cover; transition:transform 0.4s ease;}
+.product-card:hover .product-img-container img{transform:scale(1.08);}
 
 /* CARRITO MODAL Y PASARELA DE PAGOS */
 .cart-floating-btn{position:fixed; bottom:30px; right:30px; background:var(--primary-gradient); color:white; padding:16px 26px; border-radius:50px; cursor:pointer; font-weight:700; box-shadow:0 10px 30px rgba(15,138,95,0.4); display:flex; align-items:center; gap:12px; z-index:99; transition:all 0.3s ease;}
@@ -226,19 +234,19 @@ HTML_LANDING = """
             <div class="brand-large">
                 <div class="logo-large">KI</div>
                 <h1>KeepInventoryLite</h1>
-                <p>Gestión inteligente de inventarios y cadenas de supermercados</p>
+                <p>Gestión inteligente de inventarios y cadenas de supermercados (Zona Horaria Local Activa)</p>
             </div>
             <div class="selector-grid">
                 <a href="/login-staff" class="selector-card staff">
                     <div class="icon">💼</div>
                     <h2>Personal / Dueños / Staff</h2>
-                    <p>Acceso para Superadmin, Dueños de Supermercado, Managers y Empleados.</p>
+                    <p>Acceso para Superadmin, Dueños de Supermercado (diferenciación por marca), Managers y Empleados.</p>
                     <span>INGRESAR COMO STAFF →</span>
                 </a>
                 <a href="/cliente-ubicacion" class="selector-card client">
                     <div class="icon">🛒</div>
                     <h2>Portal de Compras</h2>
-                    <p>Encuentra tu sede y realiza tus compras de mercado online fácilmente.</p>
+                    <p>Encuentra tu sede y realiza tus compras de mercado online fácilmente con fotos de productos.</p>
                     <span>SELECCIONAR MI SEDE →</span>
                 </a>
             </div>
@@ -293,7 +301,7 @@ HTML_LOGIN_STAFF = """
 </html>
 """
 
-# DASHBOARD SUPERADMIN (Crear empresas y dueños)
+# DASHBOARD SUPERADMIN (Crear empresas y dueños especificando nombre de cadena)
 HTML_DASHBOARD_SUPERADMIN = """
 <!DOCTYPE html>
 <html lang="es">
@@ -311,15 +319,16 @@ HTML_DASHBOARD_SUPERADMIN = """
                     <div class="logo">KI</div>
                     <h3>Superadmin</h3>
                 </div>
-                <a class="active">🏢 Empresas y Dueños</a>
+                <a class="active">🏢 Cadenas y Dueños</a>
             </div>
             <a href="/logout" style="background:#334155; margin-top:20px;">🚪 Cerrar Sesión</a>
         </div>
         <div class="main">
             <div class="card">
-                <h2>Crear Nueva Empresa / Cadena de Supermercados</h2>
+                <h2>Crear Nueva Cadena de Supermercados (Diferenciación de marcas)</h2>
+                <p style="color:var(--gray-text); font-size:13px; margin-bottom:15px;">Escribe el nombre único de la cadena para diferenciar las cuentas entre distintos dueños.</p>
                 <form action="/superadmin/crear-empresa" method="POST" style="margin-top:15px; display:grid; gap:12px;">
-                    <input type="text" name="nombre_empresa" placeholder="Nombre de la línea de supermercados" required style="padding:12px; border:1px solid var(--gray); border-radius:8px;">
+                    <input type="text" name="nombre_empresa" placeholder="Nombre de la línea o marca de supermercados" required style="padding:12px; border:1px solid var(--gray); border-radius:8px;">
                     <input type="email" name="email_dueno" placeholder="Correo electrónico del Dueño" required style="padding:12px; border:1px solid var(--gray); border-radius:8px;">
                     <input type="password" name="password_dueno" placeholder="Contraseña asignada al Dueño" required style="padding:12px; border:1px solid var(--gray); border-radius:8px;">
                     <button type="submit" class="btn">✨ Crear Empresa y Cuenta de Dueño</button>
@@ -331,7 +340,7 @@ HTML_DASHBOARD_SUPERADMIN = """
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Nombre de Empresa</th>
+                            <th>Nombre de la Cadena</th>
                             <th>Correo del Dueño</th>
                             <th>Sedes Creadas</th>
                         </tr>
@@ -340,7 +349,7 @@ HTML_DASHBOARD_SUPERADMIN = """
                         {% for emp in empresas %}
                         <tr>
                             <td><b>#{{ emp.id }}</b></td>
-                            <td>{{ emp.nombre_empresa }}</td>
+                            <td><span class="tag" style="background:var(--primary);">{{ emp.nombre_empresa }}</span></td>
                             <td>{{ emp.email_dueno }}</td>
                             <td>{{ emp.sedes|length }} sede(s)</td>
                         </tr>
@@ -390,7 +399,7 @@ HTML_DASHBOARD_DUENO = """
             <!-- GESTIÓN DE SEDES -->
             <div id="sec-sedes" class="tab-sec fade-in">
                 <div class="card">
-                    <h2>Gestión de Sedes de Supermercado</h2>
+                    <h2>Gestión de Sedes de {{ empresa.nombre_empresa }}</h2>
                     <form action="/dueno/crear-sede" method="POST" style="margin-top:15px; display:grid; grid-template-columns:1fr 1fr auto; gap:10px;">
                         <input type="text" name="nombre_sede" placeholder="Nombre de la Sede (Ej: Sede Norte)" required style="padding:10px; border:1px solid var(--gray); border-radius:8px;">
                         <input type="text" name="direccion_sede" placeholder="Ubicación / Dirección" required style="padding:10px; border:1px solid var(--gray); border-radius:8px;">
@@ -472,12 +481,12 @@ HTML_DASHBOARD_DUENO = """
             <!-- REPORTES MENSUALES -->
             <div id="sec-reportes" class="tab-sec fade-in" style="display:none;">
                 <div class="card">
-                    <h2>📊 Reportes Mensuales y Desempeño</h2>
+                    <h2>📊 Reportes Mensuales y Desempeño (Zona Horaria Local)</h2>
                     <p style="color:var(--gray-text); margin-bottom:15px;">Registro acumulado de ventas por empleado, entradas de productos y auditoría mensual.</p>
                     <table>
                         <thead>
                             <tr>
-                                <th>Fecha / Hora</th>
+                                <th>Fecha / Hora Local</th>
                                 <th>Empleado / Cajero</th>
                                 <th>Sede</th>
                                 <th>Productos Vendidos</th>
@@ -506,7 +515,7 @@ HTML_DASHBOARD_DUENO = """
 </html>
 """
 
-# DASHBOARD MANAGER (Agregar productos con código rápido de 3 dígitos)
+# DASHBOARD MANAGER (Agregar productos con código rápido de 3 dígitos e imagen de producto)
 HTML_DASHBOARD_MANAGER = """
 <!DOCTYPE html>
 <html lang="es">
@@ -524,19 +533,20 @@ HTML_DASHBOARD_MANAGER = """
                     <div class="logo">KI</div>
                     <h3>Manager</h3>
                 </div>
-                <a class="active">📦 Control Rápido de Inventario</a>
+                <a class="active">📦 Control Rápido de Inventario e Imágenes</a>
             </div>
             <a href="/logout" style="background:#334155; margin-top:20px;">🚪 Cerrar Sesión</a>
         </div>
         <div class="main">
             <div class="card">
-                <h2>Registrar Producto con Código Rápido (3 Dígitos)</h2>
-                <p style="color:var(--gray-text); font-size:13px; margin-bottom:15px;">Usa códigos como 033, 034, 035 para facilitar el cobro y búsqueda de los empleados.</p>
-                <form action="/manager/agregar-producto" method="POST" style="display:grid; grid-template-columns:120px 1fr 150px 120px auto; gap:10px;">
-                    <input type="text" name="codigo" placeholder="Código (ej: 033)" maxlength="3" required style="padding:10px; border:1px solid var(--gray); border-radius:8px;">
-                    <input type="text" name="nombre" placeholder="Nombre del producto (Ej: Pan Tajado Bimbo)" required style="padding:10px; border:1px solid var(--gray); border-radius:8px;">
-                    <input type="number" name="precio" placeholder="Precio Unidad" required style="padding:10px; border:1px solid var(--gray); border-radius:8px;">
-                    <input type="number" name="stock" placeholder="Cantidad" required style="padding:10px; border:1px solid var(--gray); border-radius:8px;">
+                <h2>Registrar Producto con Código Rápido (3 Dígitos) e Imagen</h2>
+                <p style="color:var(--gray-text); font-size:13px; margin-bottom:15px;">Usa códigos como 033, 034, 035 para facilitar el cobro y búsqueda. Agrega URL de la imagen del producto.</p>
+                <form action="/manager/agregar-producto" method="POST" style="display:grid; grid-template-columns:100px 1fr 120px 100px 1fr auto; gap:10px;">
+                    <input type="text" name="codigo" placeholder="Código (033)" maxlength="3" required style="padding:10px; border:1px solid var(--gray); border-radius:8px;">
+                    <input type="text" name="nombre" placeholder="Nombre del producto" required style="padding:10px; border:1px solid var(--gray); border-radius:8px;">
+                    <input type="number" name="precio" placeholder="Precio ($)" required style="padding:10px; border:1px solid var(--gray); border-radius:8px;">
+                    <input type="number" name="stock" placeholder="Stock" required style="padding:10px; border:1px solid var(--gray); border-radius:8px;">
+                    <input type="text" name="imagen" placeholder="URL Imagen (https://...)" style="padding:10px; border:1px solid var(--gray); border-radius:8px;">
                     <button type="submit" class="btn" style="margin:0;">+ Añadir</button>
                 </form>
             </div>
@@ -546,6 +556,7 @@ HTML_DASHBOARD_MANAGER = """
                 <table>
                     <thead>
                         <tr>
+                            <th>Imagen</th>
                             <th>Código Rápido</th>
                             <th>Producto</th>
                             <th>Precio Unitario</th>
@@ -556,6 +567,11 @@ HTML_DASHBOARD_MANAGER = """
                     <tbody>
                         {% for prod in inventario %}
                         <tr>
+                            <td>
+                                <div style="width:40px; height:40px; border-radius:8px; overflow:hidden; background:#e2e8f0;">
+                                    <img src="{{ prod.imagen or 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=400&auto=format&fit=crop&q=80' }}" alt="prod" style="width:100%; height:100%; object-fit:cover;">
+                                </div>
+                            </td>
                             <td><span class="tag" style="background:var(--dark);">#{{ prod.codigo }}</span></td>
                             <td><b>{{ prod.nombre }}</b></td>
                             <td>${{ "{:,.0f}".format(prod.precio) }}</td>
@@ -572,7 +588,7 @@ HTML_DASHBOARD_MANAGER = """
                 <table>
                     <thead>
                         <tr>
-                            <th>Fecha</th>
+                            <th>Fecha Local</th>
                             <th>Empleado</th>
                             <th>Descripción del Problema / Reporte</th>
                         </tr>
@@ -596,7 +612,7 @@ HTML_DASHBOARD_MANAGER = """
 </html>
 """
 
-# DASHBOARD EMPLEADO / CAJERO (Sistema de cobro rápido por código de 3 dígitos + reporte a manager)
+# DASHBOARD EMPLEADO / CAJERO (Sistema de cobro rápido por código de 3 dígitos + soporte de imágenes y reportes)
 HTML_DASHBOARD_EMPLEADO = """
 <!DOCTYPE html>
 <html lang="es">
@@ -859,7 +875,7 @@ HTML_CLIENTE_AUTH = """
 </html>
 """
 
-# CATÁLOGOS CON GRAN VARIEDAD DE PRODUCTOS DE SUPERMERCADO
+# CATÁLOGOS CON GRAN VARIEDAD DE PRODUCTOS DE SUPERMERCADO E IMÁGENES
 HTML_TIENDA = """
 <!DOCTYPE html>
 <html lang="es">
@@ -998,13 +1014,13 @@ HTML_TIENDA = """
             <button class="btn btn-outline cat-btn" onclick="filtrarCategoria('aseo', this)">🧹 Aseo y Limpieza</button>
         </div>
 
-        <!-- GRID DE PRODUCTOS DE SUPERMERCADO -->
+        <!-- GRID DE PRODUCTOS DE SUPERMERCADO CON IMÁGENES -->
         <div class="grid">
             
             <!-- LÁCTEOS Y HUEVOS -->
             <div class="product-card" data-cat="lacteos">
                 <span class="product-badge">OFERTA</span>
-                <div style="font-size:45px; text-align:center; margin:10px 0;">🥚</div>
+                <div class="product-img-container"><img src="https://images.unsplash.com/photo-1516467508483-a7212febe31a?w=400&auto=format&fit=crop&q=80" alt="prod"></div>
                 <h3 style="font-size:16px;">Huevos Frescos AA x30 Unidades</h3>
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Cubeta de 30 huevos rojos categoría AA de granja.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
@@ -1014,7 +1030,7 @@ HTML_TIENDA = """
             </div>
 
             <div class="product-card" data-cat="lacteos">
-                <div style="font-size:45px; text-align:center; margin:10px 0;">🥛</div>
+                <div class="product-img-container"><img src="https://images.unsplash.com/photo-1550583724-b2692b85b150?w=400&auto=format&fit=crop&q=80" alt="prod"></div>
                 <h3 style="font-size:16px;">Leche Entera Colanta 1L</h3>
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Leche pasteurizada enriquecida con vitaminas A y D.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
@@ -1024,7 +1040,7 @@ HTML_TIENDA = """
             </div>
 
             <div class="product-card" data-cat="lacteos">
-                <div style="font-size:45px; text-align:center; margin:10px 0;">🧀</div>
+                <div class="product-img-container"><img src="https://images.unsplash.com/photo-1452195100486-9cc805987862?w=400&auto=format&fit=crop&q=80" alt="prod"></div>
                 <h3 style="font-size:16px;">Queso Campesino Fresco 500g</h3>
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Queso blanco tajado, ideal para desayunos y arepas.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
@@ -1036,7 +1052,7 @@ HTML_TIENDA = """
             <!-- DESPENSA Y GRANOS -->
             <div class="product-card" data-cat="despensa">
                 <span class="product-badge">MAS VENDIDO</span>
-                <div style="font-size:45px; text-align:center; margin:10px 0;">🍚</div>
+                <div class="product-img-container"><img src="https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400&auto=format&fit=crop&q=80" alt="prod"></div>
                 <h3 style="font-size:16px;">Arroz Roa Superior 1Kg</h3>
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Arroz blanco de grano entero de la más alta calidad.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
@@ -1046,7 +1062,7 @@ HTML_TIENDA = """
             </div>
 
             <div class="product-card" data-cat="despensa">
-                <div style="font-size:45px; text-align:center; margin:10px 0;">🌻</div>
+                <div class="product-img-container"><img src="https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=400&auto=format&fit=crop&q=80" alt="prod"></div>
                 <h3 style="font-size:16px;">Aceite Vegetal Premier 900ml</h3>
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Aceite puro libre de grasas trans para cocinar diariamente.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
@@ -1056,7 +1072,7 @@ HTML_TIENDA = """
             </div>
 
             <div class="product-card" data-cat="despensa">
-                <div style="font-size:45px; text-align:center; margin:10px 0;">🍝</div>
+                <div class="product-img-container"><img src="https://images.unsplash.com/photo-1621996346565-e3d5d6281298?w=400&auto=format&fit=crop&q=80" alt="prod"></div>
                 <h3 style="font-size:16px;">Pasta Espagueti Doria 500g</h3>
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Pasta tradicional fortificada con hierro y nutrición.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
@@ -1067,7 +1083,7 @@ HTML_TIENDA = """
 
             <!-- CARNES Y EMBUTIDOS -->
             <div class="product-card" data-cat="carnes">
-                <div style="font-size:45px; text-align:center; margin:10px 0;">🍗</div>
+                <div class="product-img-container"><img src="https://images.unsplash.com/photo-1604503468506-a8da13d82791?w=400&auto=format&fit=crop&q=80" alt="prod"></div>
                 <h3 style="font-size:16px;">Pechuga de Pollo Entera 1Kg</h3>
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Pechuga limpia, fresca y refrigerada de primera opción.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
@@ -1077,7 +1093,7 @@ HTML_TIENDA = """
             </div>
 
             <div class="product-card" data-cat="carnes">
-                <div style="font-size:45px; text-align:center; margin:10px 0;">🥩</div>
+                <div class="product-img-container"><img src="https://images.unsplash.com/photo-1588168333986-5078d3ae3976?w=400&auto=format&fit=crop&q=80" alt="prod"></div>
                 <h3 style="font-size:16px;">Carne Molida de Res 1Kg</h3>
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Corte de res magro molido al día sin conservantes.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
@@ -1088,7 +1104,7 @@ HTML_TIENDA = """
 
             <!-- FRUTAS Y VERDURAS -->
             <div class="product-card" data-cat="frutas">
-                <div style="font-size:45px; text-align:center; margin:10px 0;">🥑</div>
+                <div class="product-img-container"><img src="https://images.unsplash.com/photo-1523049673857-eb18f1d7b578?w=400&auto=format&fit=crop&q=80" alt="prod"></div>
                 <h3 style="font-size:16px;">Aguacate Hass Selección 1Kg</h3>
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Aguacates cremosos y perfectos para madurar.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
@@ -1098,7 +1114,7 @@ HTML_TIENDA = """
             </div>
 
             <div class="product-card" data-cat="frutas">
-                <div style="font-size:45px; text-align:center; margin:10px 0;">🍎</div>
+                <div class="product-img-container"><img src="https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=400&auto=format&fit=crop&q=80" alt="prod"></div>
                 <h3 style="font-size:16px;">Manzana Roja Importada 1Kg</h3>
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Manzanas crujientes y dulces seleccionadas.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
@@ -1109,7 +1125,7 @@ HTML_TIENDA = """
 
             <!-- BEBIDAS -->
             <div class="product-card" data-cat="bebidas">
-                <div style="font-size:45px; text-align:center; margin:10px 0;">☕</div>
+                <div class="product-img-container"><img src="https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=400&auto=format&fit=crop&q=80" alt="prod"></div>
                 <h3 style="font-size:16px;">Café Sello Rojo Molido 500g</h3>
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Café 100% colombiano de tueste medio y gran aroma.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
@@ -1119,7 +1135,7 @@ HTML_TIENDA = """
             </div>
 
             <div class="product-card" data-cat="bebidas">
-                <div style="font-size:45px; text-align:center; margin:10px 0;">🥤</div>
+                <div class="product-img-container"><img src="https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=400&auto=format&fit=crop&q=80" alt="prod"></div>
                 <h3 style="font-size:16px;">Coca-Cola Sabor Original 1.5L</h3>
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Gaseosa refrescante ideal para acompañar tus comidas.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
@@ -1130,7 +1146,7 @@ HTML_TIENDA = """
 
             <!-- ASEO Y LIMPIEZA -->
             <div class="product-card" data-cat="aseo">
-                <div style="font-size:45px; text-align:center; margin:10px 0;">🧺</div>
+                <div class="product-img-container"><img src="https://images.unsplash.com/photo-1585421514284-efb74c2b69ba?w=400&auto=format&fit=crop&q=80" alt="prod"></div>
                 <h3 style="font-size:16px;">Detergente en Polvo Ariel 2Kg</h3>
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Limpieza profunda y remoce de manchas difíciles en la ropa.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
@@ -1140,7 +1156,7 @@ HTML_TIENDA = """
             </div>
 
             <div class="product-card" data-cat="aseo">
-                <div style="font-size:45px; text-align:center; margin:10px 0;">🧻</div>
+                <div class="product-img-container"><img src="https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?w=400&auto=format&fit=crop&q=80" alt="prod"></div>
                 <h3 style="font-size:16px;">Papel Higiénico Familia 12 Rollos</h3>
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Rendidor, doble hoja acolchada y suavidad superior.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
@@ -1148,6 +1164,22 @@ HTML_TIENDA = """
                     <button class="btn" onclick="agregarProducto('Papel Higiénico Familia x12', 22500)" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
+
+            <!-- PRODUCTOS DINÁMICOS SUBIDOS POR MANAGERS -->
+            {% for prod in productos_dinamicos %}
+            <div class="product-card" data-cat="todos">
+                <span class="product-badge">NUEVO (#{{ prod.codigo }})</span>
+                <div class="product-img-container">
+                    <img src="{{ prod.imagen or 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=400&auto=format&fit=crop&q=80' }}" alt="{{ prod.nombre }}">
+                </div>
+                <h3 style="font-size:16px;">{{ prod.nombre }}</h3>
+                <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Producto añadido recientemente a esta sede.</p>
+                <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
+                    <b style="font-size:18px; color:var(--primary);">${{ "{:,.0f}".format(prod.precio) }}</b>
+                    <button class="btn" onclick="agregarProducto('{{ prod.nombre }}', {{ prod.precio }})" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                </div>
+            </div>
+            {% endfor %}
 
         </div>
     </div>
@@ -1343,7 +1375,7 @@ HTML_DASHBOARD = """
                     <table>
                         <thead>
                             <tr>
-                                <th>Hora</th><th>Cliente</th><th>Sede</th><th>Productos</th><th>Pago</th><th>Total</th>
+                                <th>Hora Local</th><th>Cliente</th><th>Sede</th><th>Productos</th><th>Pago</th><th>Total</th>
                             </tr>
                         </thead>
                         <tbody id="tabla-pedidos-realtime">
@@ -1506,7 +1538,8 @@ def manager_agregar_producto():
         "precio": float(request.form.get('precio', 0)),
         "stock": int(request.form.get('stock', 0)),
         "sede": session.get('user_sede'),
-        "empresa": session.get('empresa_nombre')
+        "empresa": session.get('empresa_nombre'),
+        "imagen": request.form.get('imagen', '').strip()
     })
     return redirect(url_for('manager_dashboard'))
 
@@ -1531,7 +1564,7 @@ def buscar_codigo():
 def registrar_venta_cajero():
     data = request.json or {}
     nuevo_pedido = {
-        'hora': datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        'hora': obtener_tiempo_local(),
         'cliente': data.get('empleado', 'Cajero'),
         'sede': data.get('sede', 'Sede Central'),
         'productos': data.get('productos', ''),
@@ -1547,7 +1580,7 @@ def empleado_enviar_reporte():
     if session.get('user_type') != 'empleado':
         return redirect(url_for('login_staff'))
     REPORTES_EMPLEADOS.insert(0, {
-        'fecha': datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        'fecha': obtener_tiempo_local(),
         'empleado': session.get('user_nombre'),
         'sede': session.get('user_sede'),
         'mensaje': request.form.get('mensaje')
@@ -1590,13 +1623,18 @@ def tienda():
         return redirect(url_for('cliente_ubicacion'))
     sede_actual = session.get('sede', 'Sede Principal (Centro)')
     cliente_nombre = session.get('cliente_nombre', 'Cliente')
-    return render_template_string(HTML_TIENDA, css=CSS_ESTILOS, sede_actual=sede_actual, cliente_nombre=cliente_nombre)
+    
+    # Filtrar productos dinámicos subidos por los managers
+    codigos_base = [f"{i:03d}" for i in range(1, 33)]
+    productos_dinamicos = [i for i in INVENTARIO_SUPER if i['codigo'] not in codigos_base and (i['sede'] == sede_actual or sede_actual in i['sede'])]
+    
+    return render_template_string(HTML_TIENDA, css=CSS_ESTILOS, sede_actual=sede_actual, cliente_nombre=cliente_nombre, productos_dinamicos=productos_dinamicos)
 
 @app.route('/api/crear-pedido', methods=['POST'])
 def crear_pedido():
     data = request.json or {}
     nuevo_pedido = {
-        'hora': datetime.now().strftime("%H:%M:%S"),
+        'hora': obtener_tiempo_local(),
         'cliente': data.get('cliente', 'Anonimo'),
         'sede': data.get('sede', 'Sede Central'),
         'productos': data.get('productos', ''),
