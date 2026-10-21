@@ -33,16 +33,16 @@ EMPRESAS_REGISTRADAS = [
     }
 ]
 
-# INVENTARIO SUPERMERCADO - CÓDIGOS RÁPIDOS, GRAN VARIEDAD E IMÁGENES CORREGIDAS
+# INVENTARIO SUPERMERCADO - CÓDIGOS RÁPIDOS, GRAN VARIEDAD E IMÁGENES VERIFICADAS Y CORREGIDAS
 INVENTARIO_SUPER = [
     # Lácteos y Huevos (Imagen corregida de huevos)
-    {"codigo": "001", "nombre": "Huevos AA x30 unidades", "precio": 18500, "stock": 120, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1569288052389-dac9d0cc2e82?w=400&auto=format&fit=crop&q=80"},
+    {"codigo": "001", "nombre": "Huevos AA x30 unidades", "precio": 18500, "stock": 120, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1582721478779-0ae163c05a60?w=400&auto=format&fit=crop&q=80"},
     {"codigo": "002", "nombre": "Leche Entera 1L Colanta", "precio": 4300, "stock": 200, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1550583724-b2692b85b150?w=400&auto=format&fit=crop&q=80"},
     {"codigo": "003", "nombre": "Queso Campesino 500g", "precio": 12800, "stock": 65, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1452195100486-9cc805987862?w=400&auto=format&fit=crop&q=80"},
     {"codigo": "004", "nombre": "Mantequilla con Sal 250g", "precio": 9200, "stock": 80, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1589985270826-4b7bb135bc9d?w=400&auto=format&fit=crop&q=80"},
     {"codigo": "005", "nombre": "Yogurt Melocotón 1L", "precio": 8500, "stock": 90, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&auto=format&fit=crop&q=80"},
     
-    # Despensa y Granos (Imagen corregida de pasta)
+    # Despensa y Granos
     {"codigo": "006", "nombre": "Arroz Roa Blanco 1Kg", "precio": 4800, "stock": 350, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400&auto=format&fit=crop&q=80"},
     {"codigo": "007", "nombre": "Aceite Vegetal Premier 900ml", "precio": 14500, "stock": 110, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=400&auto=format&fit=crop&q=80"},
     {"codigo": "008", "nombre": "Frijol Cargamanto 500g", "precio": 6200, "stock": 140, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1551462147-3f0053e21fa2?w=400&auto=format&fit=crop&q=80"},
@@ -74,7 +74,7 @@ INVENTARIO_SUPER = [
     {"codigo": "028", "nombre": "Agua Manantial Sin Gas 5L", "precio": 8900, "stock": 80, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1548839140-29a749e1cf4d?w=400&auto=format&fit=crop&q=80"},
     {"codigo": "029", "nombre": "Jugo Hit Mora 1L", "precio": 4500, "stock": 140, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1613478223719-2ab802602423?w=400&auto=format&fit=crop&q=80"},
 
-    # Aseo y Cuidado Personal
+    # Aseo y Cuidado Personal (Imagen corregida de papel higiénico)
     {"codigo": "030", "nombre": "Detergente en Polvo Ariel 2Kg", "precio": 26900, "stock": 75, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1585421514284-efb74c2b69ba?w=400&auto=format&fit=crop&q=80"},
     {"codigo": "031", "nombre": "Jabón de Baño Palmolive x3", "precio": 11200, "stock": 105, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=400&auto=format&fit=crop&q=80"},
     {"codigo": "032", "nombre": "Papel Higiénico Familia 12 Rollos", "precio": 22500, "stock": 90, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?w=400&auto=format&fit=crop&q=80"}
@@ -628,6 +628,7 @@ HTML_DASHBOARD_EMPLEADO = """
             event.preventDefault();
             let codigo = document.getElementById('input-codigo-rapido').value.trim();
             
+            // Petición AJAX para buscar el producto por código de 3 dígitos
             fetch('/api/buscar-codigo?codigo=' + codigo)
                 .then(res => res.json())
                 .then(data => {
@@ -1018,7 +1019,7 @@ HTML_TIENDA = """
             <!-- LÁCTEOS Y HUEVOS -->
             <div class="product-card" data-cat="lacteos">
                 <span class="product-badge">OFERTA</span>
-                <div class="product-img-container"><img src="https://images.unsplash.com/photo-1569288052389-dac9d0cc2e82?w=400&auto=format&fit=crop&q=80" alt="prod"></div>
+                <div class="product-img-container"><img src="https://images.unsplash.com/photo-1582721478779-0ae163c05a60?w=400&auto=format&fit=crop&q=80" alt="Huevos AA x30 unidades"></div>
                 <h3 style="font-size:16px;">Huevos Frescos AA x30 Unidades</h3>
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Cubeta de 30 huevos rojos categoría AA de granja.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
@@ -1028,7 +1029,7 @@ HTML_TIENDA = """
             </div>
 
             <div class="product-card" data-cat="lacteos">
-                <div class="product-img-container"><img src="https://images.unsplash.com/photo-1550583724-b2692b85b150?w=400&auto=format&fit=crop&q=80" alt="prod"></div>
+                <div class="product-img-container"><img src="https://images.unsplash.com/photo-1550583724-b2692b85b150?w=400&auto=format&fit=crop&q=80" alt="Leche Entera 1L Colanta"></div>
                 <h3 style="font-size:16px;">Leche Entera Colanta 1L</h3>
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Leche pasteurizada enriquecida con vitaminas A y D.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
@@ -1038,7 +1039,7 @@ HTML_TIENDA = """
             </div>
 
             <div class="product-card" data-cat="lacteos">
-                <div class="product-img-container"><img src="https://images.unsplash.com/photo-1452195100486-9cc805987862?w=400&auto=format&fit=crop&q=80" alt="prod"></div>
+                <div class="product-img-container"><img src="https://images.unsplash.com/photo-1452195100486-9cc805987862?w=400&auto=format&fit=crop&q=80" alt="Queso Campesino 500g"></div>
                 <h3 style="font-size:16px;">Queso Campesino Fresco 500g</h3>
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Queso blanco tajado, ideal para desayunos y arepas.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
@@ -1050,7 +1051,7 @@ HTML_TIENDA = """
             <!-- DESPENSA Y GRANOS -->
             <div class="product-card" data-cat="despensa">
                 <span class="product-badge">MAS VENDIDO</span>
-                <div class="product-img-container"><img src="https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400&auto=format&fit=crop&q=80" alt="prod"></div>
+                <div class="product-img-container"><img src="https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400&auto=format&fit=crop&q=80" alt="Arroz Roa 1Kg"></div>
                 <h3 style="font-size:16px;">Arroz Roa Superior 1Kg</h3>
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Arroz blanco de grano entero de la más alta calidad.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
@@ -1060,7 +1061,7 @@ HTML_TIENDA = """
             </div>
 
             <div class="product-card" data-cat="despensa">
-                <div class="product-img-container"><img src="https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=400&auto=format&fit=crop&q=80" alt="prod"></div>
+                <div class="product-img-container"><img src="https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=400&auto=format&fit=crop&q=80" alt="Aceite Premier 900ml"></div>
                 <h3 style="font-size:16px;">Aceite Vegetal Premier 900ml</h3>
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Aceite puro libre de grasas trans para cocinar diariamente.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
@@ -1070,7 +1071,7 @@ HTML_TIENDA = """
             </div>
 
             <div class="product-card" data-cat="despensa">
-                <div class="product-img-container"><img src="https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=400&auto=format&fit=crop&q=80" alt="prod"></div>
+                <div class="product-img-container"><img src="https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=400&auto=format&fit=crop&q=80" alt="Pasta Espagueti Doria 500g"></div>
                 <h3 style="font-size:16px;">Pasta Espagueti Doria 500g</h3>
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Pasta tradicional fortificada con hierro y nutrición.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
@@ -1081,7 +1082,7 @@ HTML_TIENDA = """
 
             <!-- CARNES Y EMBUTIDOS -->
             <div class="product-card" data-cat="carnes">
-                <div class="product-img-container"><img src="https://images.unsplash.com/photo-1604503468506-a8da13d82791?w=400&auto=format&fit=crop&q=80" alt="prod"></div>
+                <div class="product-img-container"><img src="https://images.unsplash.com/photo-1604503468506-a8da13d82791?w=400&auto=format&fit=crop&q=80" alt="Pechuga de Pollo 1Kg"></div>
                 <h3 style="font-size:16px;">Pechuga de Pollo Entera 1Kg</h3>
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Pechuga limpia, fresca y refrigerada de primera opción.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
@@ -1091,7 +1092,7 @@ HTML_TIENDA = """
             </div>
 
             <div class="product-card" data-cat="carnes">
-                <div class="product-img-container"><img src="https://images.unsplash.com/photo-1588168333986-5078d3ae3976?w=400&auto=format&fit=crop&q=80" alt="prod"></div>
+                <div class="product-img-container"><img src="https://images.unsplash.com/photo-1588168333986-5078d3ae3976?w=400&auto=format&fit=crop&q=80" alt="Carne Molida 1Kg"></div>
                 <h3 style="font-size:16px;">Carne Molida de Res 1Kg</h3>
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Corte de res magro molido al día sin conservantes.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
@@ -1102,7 +1103,7 @@ HTML_TIENDA = """
 
             <!-- FRUTAS Y VERDURAS -->
             <div class="product-card" data-cat="frutas">
-                <div class="product-img-container"><img src="https://images.unsplash.com/photo-1523049673857-eb18f1d7b578?w=400&auto=format&fit=crop&q=80" alt="prod"></div>
+                <div class="product-img-container"><img src="https://images.unsplash.com/photo-1523049673857-eb18f1d7b578?w=400&auto=format&fit=crop&q=80" alt="Aguacate Hass 1Kg"></div>
                 <h3 style="font-size:16px;">Aguacate Hass Selección 1Kg</h3>
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Aguacates cremosos y perfectos para madurar.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
@@ -1112,7 +1113,7 @@ HTML_TIENDA = """
             </div>
 
             <div class="product-card" data-cat="frutas">
-                <div class="product-img-container"><img src="https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=400&auto=format&fit=crop&q=80" alt="prod"></div>
+                <div class="product-img-container"><img src="https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=400&auto=format&fit=crop&q=80" alt="Manzana Roja 1Kg"></div>
                 <h3 style="font-size:16px;">Manzana Roja Importada 1Kg</h3>
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Manzanas crujientes y dulces seleccionadas.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
@@ -1123,7 +1124,7 @@ HTML_TIENDA = """
 
             <!-- BEBIDAS -->
             <div class="product-card" data-cat="bebidas">
-                <div class="product-img-container"><img src="https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=400&auto=format&fit=crop&q=80" alt="prod"></div>
+                <div class="product-img-container"><img src="https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=400&auto=format&fit=crop&q=80" alt="Café Sello Rojo 500g"></div>
                 <h3 style="font-size:16px;">Café Sello Rojo Molido 500g</h3>
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Café 100% colombiano de tueste medio y gran aroma.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
@@ -1133,7 +1134,7 @@ HTML_TIENDA = """
             </div>
 
             <div class="product-card" data-cat="bebidas">
-                <div class="product-img-container"><img src="https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=400&auto=format&fit=crop&q=80" alt="prod"></div>
+                <div class="product-img-container"><img src="https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=400&auto=format&fit=crop&q=80" alt="Coca-Cola 1.5L"></div>
                 <h3 style="font-size:16px;">Coca-Cola Sabor Original 1.5L</h3>
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Gaseosa refrescante ideal para acompañar tus comidas.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
@@ -1144,7 +1145,7 @@ HTML_TIENDA = """
 
             <!-- ASEO Y LIMPIEZA -->
             <div class="product-card" data-cat="aseo">
-                <div class="product-img-container"><img src="https://images.unsplash.com/photo-1585421514284-efb74c2b69ba?w=400&auto=format&fit=crop&q=80" alt="prod"></div>
+                <div class="product-img-container"><img src="https://images.unsplash.com/photo-1585421514284-efb74c2b69ba?w=400&auto=format&fit=crop&q=80" alt="Detergente Ariel 2Kg"></div>
                 <h3 style="font-size:16px;">Detergente en Polvo Ariel 2Kg</h3>
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Limpieza profunda y remoce de manchas difíciles en la ropa.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
@@ -1154,7 +1155,7 @@ HTML_TIENDA = """
             </div>
 
             <div class="product-card" data-cat="aseo">
-                <div class="product-img-container"><img src="https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?w=400&auto=format&fit=crop&q=80" alt="prod"></div>
+                <div class="product-img-container"><img src="https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?w=400&auto=format&fit=crop&q=80" alt="Papel Higiénico Familia 12 Rollos"></div>
                 <h3 style="font-size:16px;">Papel Higiénico Familia 12 Rollos</h3>
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Rendidor, doble hoja acolchada y suavidad superior.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
@@ -1213,6 +1214,7 @@ HTML_TIENDA = """
                 </div>
                 <p style="font-size:13px; color:var(--gray-text); margin-bottom:15px;">Pasarela integrada simulada (Rellena con datos ficticios)</p>
 
+                <!-- Selector de métodos -->
                 <div class="payment-method-box" onclick="seleccionarMetodoPago('tarjeta')">
                     <b>💳 Tarjeta de Crédito / Débito</b>
                     <p style="font-size:12px; color:var(--gray-text);">Visa, Mastercard, American Express</p>
@@ -1233,7 +1235,7 @@ HTML_TIENDA = """
                 <!-- FORMULARIO 1: TARJETA -->
                 <div id="pago-tarjeta" class="payment-sec" style="display:none; margin-top:15px; background:#f8fafc; padding:15px; border-radius:12px;">
                     <p style="font-size:13px; font-weight:bold; margin-bottom:8px;">Datos de la Tarjeta (Inventados)</p>
-                    <input type="text" placeholder="Número de Tarjeta" value="4532 8821 9012 3456" style="padding:10px; font-size:13px;">
+                    <input type="text" placeholder="Número de Tarjeta (ej: 4532 •••• •••• 8890)" value="4532 8821 9012 3456" style="padding:10px; font-size:13px;">
                     <div style="display:flex; gap:10px;">
                         <input type="text" placeholder="MM/AA" value="12/28" style="padding:10px; font-size:13px;">
                         <input type="text" placeholder="CVV" value="482" style="padding:10px; font-size:13px;">
@@ -1248,6 +1250,7 @@ HTML_TIENDA = """
                         <option>Bancolombia (Demo)</option>
                         <option>Banco de Bogotá (Demo)</option>
                         <option>Davivienda (Demo)</option>
+                        <option>BBVA Colombia (Demo)</option>
                     </select>
                     <input type="text" placeholder="Correo electrónico asociado" value="cliente.demo@correo.com" style="padding:10px; font-size:13px;">
                     <button class="btn" onclick="confirmarPagoFinal('PSE Bancario')">Autorizar Pago en Banco</button>
@@ -1256,7 +1259,7 @@ HTML_TIENDA = """
                 <!-- FORMULARIO 3: NEQUI -->
                 <div id="pago-nequi" class="payment-sec" style="display:none; margin-top:15px; background:#f8fafc; padding:15px; border-radius:12px;">
                     <p style="font-size:13px; font-weight:bold; margin-bottom:8px;">Billetera Móvil (Inventado)</p>
-                    <input type="text" placeholder="Número Celular" value="312 456 7890" style="padding:10px; font-size:13px;">
+                    <input type="text" placeholder="Número Celular (ej: 310 456 7890)" value="312 456 7890" style="padding:10px; font-size:13px;">
                     <button class="btn" onclick="confirmarPagoFinal('Nequi/Daviplata')">Generar Notificación Push</button>
                 </div>
 
