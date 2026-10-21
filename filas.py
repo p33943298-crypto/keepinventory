@@ -75,9 +75,9 @@ INVENTARIO_SUPER = [
     {"codigo": "029", "nombre": "Jugo Hit Mora 1L", "precio": 4500, "stock": 140, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1613478223719-2ab802602423?w=400&auto=format&fit=crop&q=80"},
 
     # Aseo y Cuidado Personal (Imagen corregida de papel higiénico)
-    {"codigo": "030", "nombre": "Detergente en Polvo Ariel 2Kg", "precio": 26900, "stock": 75, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1585421514284-efb74c2b69ba?w=400&auto=format&fit=crop&q=80"},
+    {"codigo": "030", "nombre": "Detergente en Polvo Ariel 2Kg", "precio": 26900, "stock": 75, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8HKgqc_aKcS0OrABlzjz2xiHqQiQwOPnfDJXzPRFabQ&s=10"},
     {"codigo": "031", "nombre": "Jabón de Baño Palmolive x3", "precio": 11200, "stock": 105, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjeDittM5iqnNji-aYFguLuYoWDMz8uQDJMQhHWMfVf7cTfgGfnZ_pUYsy&s=10"},
-    {"codigo": "032", "nombre": "Papel Higiénico Familia 12 Rollos", "precio": 22500, "stock": 90, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?w=400&auto=format&fit=crop&q=80"}
+    {"codigo": "032", "nombre": "Papel Higiénico Familia 12 Rollos", "precio": 22500, "stock": 90, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGn9vkHKlrIoX7X0EztD05bNpNtrsgCtlKu3I09C4ewQ&s=10"}
 ]
 
 REPORTES_EMPLEADOS = []
