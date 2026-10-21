@@ -64,7 +64,7 @@ INVENTARIO_SUPER = [
     # Frutas y Verduras
     {"codigo": "021", "nombre": "Aguacate Hass 1Kg", "precio": 8900, "stock": 90, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1523049673857-eb18f1d7b578?w=400&auto=format&fit=crop&q=80"},
     {"codigo": "022", "nombre": "Tomate Chonto 1Kg", "precio": 4200, "stock": 150, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=400&auto=format&fit=crop&q=80"},
-    {"codigo": "023", "nombre": "Cebolla Cabezona Roja 1Kg", "precio": 3800, "stock": 140, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKg_Pm9rjrPVnYHHE3_glaGej8pnE3Ax-ZdzoUnj-LSw&s=10},
+    {"codigo": "023", "nombre": "Cebolla Cabezona Roja 1Kg", "precio": 3800, "stock": 140, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKg_Pm9rjrPVnYHHE3_glaGej8pnE3Ax-ZdzoUnj-LSw&s=10"},
     {"codigo": "024", "nombre": "Papa Sabanera 1Kg", "precio": 3200, "stock": 280, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=400&auto=format&fit=crop&q=80"},
     {"codigo": "025", "nombre": "Manzana Roja Importada 1Kg", "precio": 9500, "stock": 110, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=400&auto=format&fit=crop&q=80"},
 
