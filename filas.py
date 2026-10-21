@@ -1649,5 +1649,17 @@ def logout():
     session.clear()
     return redirect(url_for('inicio'))
 
+# ==========================================
+# PEGA LA NUEVA RUTA AQUÍ:
+# ==========================================
+@app.route('/api/ping-mantener-activo', methods=['GET'])
+def ping_activo():
+    return jsonify({
+        "status": "online",
+        "mensaje": "KeepInventoryLite activo y operativo",
+        "hora_local": obtener_tiempo_local()
+    }), 200
+# ==========================================
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
