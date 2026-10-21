@@ -58,7 +58,7 @@ INVENTARIO_SUPER = [
     {"codigo": "016", "nombre": "Pechuga de Pollo 1Kg", "precio": 16900, "stock": 85, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1604503468506-a8da13d82791?w=400&auto=format&fit=crop&q=80"},
     {"codigo": "017", "nombre": "Carne Molida Especial 1Kg", "precio": 24500, "stock": 70, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrUaaRLrpYQr_l8EltllB-cEoXnaY42gK-Fk2WdwVoSw&s"},
     {"codigo": "018", "nombre": "Lomo de Cerdo 1Kg", "precio": 22000, "stock": 60, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtVCBiSp6xhaomH2xrJdzsTC66BTa27VwUlZou4K8dnxSrHtUj1GaqxTqh&s=10"},
-    {"codigo": "019", "nombre": "Salchicha Ranchera Premium 14 unidades", "precio": 9800, "stock": 115, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSClyw6bmnKTclvMHUexOnA-Dfc9XKZGlYzZn831DDHmg&s=10"},
+    {"codigo": "019", "nombre": "Salchicha Ranchera Premium 14 unidades", "precio": 9800, "stock": 115, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSClyw6bmnKTclvMHUexOnA-Dfc9XKZGlYzZn831DDHmg&s=10"},
     {"codigo": "020", "nombre": "Jamón Pietrán de Pavo 230g", "precio": 11500, "stock": 95, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTR5SWq9-vYmzlkGuSYC2kzNTjhUDfXsxL2tbYZYKM0PQ&s=10"},
 
     # Frutas y Verduras
