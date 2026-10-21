@@ -1145,7 +1145,7 @@ HTML_TIENDA = """
 
             <!-- ASEO Y LIMPIEZA -->
             <div class="product-card" data-cat="aseo">
-                <div class="product-img-container"><img src="https://images.unsplash.com/photo-1585421514284-efb74c2b69ba?w=400&auto=format&fit=crop&q=80" alt="Detergente Ariel 2Kg"></div>
+                <div class="product-img-container"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxsUE3LQsQMoxScMRP2K-RuDYFVLafI9H-mJXnETKUKTCTBl0bkF_vPIlh&s=10" alt="Detergente Ariel 2Kg"></div>
                 <h3 style="font-size:16px;">Detergente en Polvo Ariel 2Kg</h3>
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Limpieza profunda y remoce de manchas difíciles en la ropa.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
@@ -1155,7 +1155,7 @@ HTML_TIENDA = """
             </div>
 
             <div class="product-card" data-cat="aseo">
-                <div class="product-img-container"><img src="https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?w=400&auto=format&fit=crop&q=80" alt="Papel Higiénico Familia 12 Rollos"></div>
+                <div class="product-img-container"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEvjy-zrI9DcLCFmEKgE1NFuS60y0_AE8FFKuY6ybZFg&s" alt="Papel Higiénico Familia 12 Rollos"></div>
                 <h3 style="font-size:16px;">Papel Higiénico Familia 12 Rollos</h3>
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Rendidor, doble hoja acolchada y suavidad superior.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
