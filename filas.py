@@ -33,23 +33,23 @@ EMPRESAS_REGISTRADAS = [
     }
 ]
 
-# INVENTARIO SUPERMERCADO - CÓDIGOS RÁPIDOS, GRAN VARIEDAD E IMÁGENES DE PRODUCTOS
+# INVENTARIO SUPERMERCADO - CÓDIGOS RÁPIDOS, GRAN VARIEDAD E IMÁGENES CORREGIDAS
 INVENTARIO_SUPER = [
-    # Lácteos y Huevos
-    {"codigo": "001", "nombre": "Huevos AA x30 unidades", "precio": 18500, "stock": 120, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1516467508483-a7212febe31a?w=400&auto=format&fit=crop&q=80"},
+    # Lácteos y Huevos (Imagen corregida de huevos)
+    {"codigo": "001", "nombre": "Huevos AA x30 unidades", "precio": 18500, "stock": 120, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1569288052389-dac9d0cc2e82?w=400&auto=format&fit=crop&q=80"},
     {"codigo": "002", "nombre": "Leche Entera 1L Colanta", "precio": 4300, "stock": 200, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1550583724-b2692b85b150?w=400&auto=format&fit=crop&q=80"},
     {"codigo": "003", "nombre": "Queso Campesino 500g", "precio": 12800, "stock": 65, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1452195100486-9cc805987862?w=400&auto=format&fit=crop&q=80"},
     {"codigo": "004", "nombre": "Mantequilla con Sal 250g", "precio": 9200, "stock": 80, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1589985270826-4b7bb135bc9d?w=400&auto=format&fit=crop&q=80"},
     {"codigo": "005", "nombre": "Yogurt Melocotón 1L", "precio": 8500, "stock": 90, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&auto=format&fit=crop&q=80"},
     
-    # Despensa y Granos
+    # Despensa y Granos (Imagen corregida de pasta)
     {"codigo": "006", "nombre": "Arroz Roa Blanco 1Kg", "precio": 4800, "stock": 350, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400&auto=format&fit=crop&q=80"},
     {"codigo": "007", "nombre": "Aceite Vegetal Premier 900ml", "precio": 14500, "stock": 110, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=400&auto=format&fit=crop&q=80"},
     {"codigo": "008", "nombre": "Frijol Cargamanto 500g", "precio": 6200, "stock": 140, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1551462147-3f0053e21fa2?w=400&auto=format&fit=crop&q=80"},
     {"codigo": "009", "nombre": "Lenteja Seleccionada 500g", "precio": 4500, "stock": 160, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1515942661991-bbf665f429ed?w=400&auto=format&fit=crop&q=80"},
     {"codigo": "010", "nombre": "Azúcar Blanca Incauca 1Kg", "precio": 4900, "stock": 220, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1581441363689-1f3c3c71db2e?w=400&auto=format&fit=crop&q=80"},
     {"codigo": "011", "nombre": "Sal Marina Refinada 1Kg", "precio": 2100, "stock": 180, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1518110925495-5bc2150915f0?w=400&auto=format&fit=crop&q=80"},
-    {"codigo": "012", "nombre": "Pasta Espagueti Doria 500g", "precio": 3800, "stock": 210, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1621996346565-e3d5d6281298?w=400&auto=format&fit=crop&q=80"},
+    {"codigo": "012", "nombre": "Pasta Espagueti Doria 500g", "precio": 3800, "stock": 210, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=400&auto=format&fit=crop&q=80"},
     {"codigo": "013", "nombre": "Harina de Maíz PAN 1Kg", "precio": 4200, "stock": 300, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&auto=format&fit=crop&q=80"},
     {"codigo": "014", "nombre": "Atún en Agua Zenú 170g", "precio": 7800, "stock": 175, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1544025162-d76694265947?w=400&auto=format&fit=crop&q=80"},
     {"codigo": "015", "nombre": "Maíz Tierno Lata 300g", "precio": 4100, "stock": 130, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1551782450-17144efb9c50?w=400&auto=format&fit=crop&q=80"},
@@ -628,7 +628,6 @@ HTML_DASHBOARD_EMPLEADO = """
             event.preventDefault();
             let codigo = document.getElementById('input-codigo-rapido').value.trim();
             
-            // Petición AJAX para buscar el producto por código de 3 dígitos
             fetch('/api/buscar-codigo?codigo=' + codigo)
                 .then(res => res.json())
                 .then(data => {
@@ -875,7 +874,7 @@ HTML_CLIENTE_AUTH = """
 </html>
 """
 
-# CATÁLOGOS CON GRAN VARIEDAD DE PRODUCTOS DE SUPERMERCADO E IMÁGENES
+# CATÁLOGOS CON GRAN VARIEDAD DE PRODUCTOS DE SUPERMERCADO E IMÁGENES CORREGIDAS
 HTML_TIENDA = """
 <!DOCTYPE html>
 <html lang="es">
@@ -948,7 +947,6 @@ HTML_TIENDA = """
             let total = carrito.reduce((sum, p) => sum + p.precio, 0);
             let detallesItems = carrito.map(p => p.nombre).join(', ');
 
-            // Enviar pedido al servidor en tiempo real
             fetch('/api/crear-pedido', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
@@ -1014,13 +1012,13 @@ HTML_TIENDA = """
             <button class="btn btn-outline cat-btn" onclick="filtrarCategoria('aseo', this)">🧹 Aseo y Limpieza</button>
         </div>
 
-        <!-- GRID DE PRODUCTOS DE SUPERMERCADO CON IMÁGENES -->
+        <!-- GRID DE PRODUCTOS DE SUPERMERCADO CON IMÁGENES CORREGIDAS -->
         <div class="grid">
             
             <!-- LÁCTEOS Y HUEVOS -->
             <div class="product-card" data-cat="lacteos">
                 <span class="product-badge">OFERTA</span>
-                <div class="product-img-container"><img src="https://images.unsplash.com/photo-1516467508483-a7212febe31a?w=400&auto=format&fit=crop&q=80" alt="prod"></div>
+                <div class="product-img-container"><img src="https://images.unsplash.com/photo-1569288052389-dac9d0cc2e82?w=400&auto=format&fit=crop&q=80" alt="prod"></div>
                 <h3 style="font-size:16px;">Huevos Frescos AA x30 Unidades</h3>
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Cubeta de 30 huevos rojos categoría AA de granja.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
@@ -1072,7 +1070,7 @@ HTML_TIENDA = """
             </div>
 
             <div class="product-card" data-cat="despensa">
-                <div class="product-img-container"><img src="https://images.unsplash.com/photo-1621996346565-e3d5d6281298?w=400&auto=format&fit=crop&q=80" alt="prod"></div>
+                <div class="product-img-container"><img src="https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=400&auto=format&fit=crop&q=80" alt="prod"></div>
                 <h3 style="font-size:16px;">Pasta Espagueti Doria 500g</h3>
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Pasta tradicional fortificada con hierro y nutrición.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
@@ -1215,7 +1213,6 @@ HTML_TIENDA = """
                 </div>
                 <p style="font-size:13px; color:var(--gray-text); margin-bottom:15px;">Pasarela integrada simulada (Rellena con datos ficticios)</p>
 
-                <!-- Selector de métodos -->
                 <div class="payment-method-box" onclick="seleccionarMetodoPago('tarjeta')">
                     <b>💳 Tarjeta de Crédito / Débito</b>
                     <p style="font-size:12px; color:var(--gray-text);">Visa, Mastercard, American Express</p>
@@ -1236,7 +1233,7 @@ HTML_TIENDA = """
                 <!-- FORMULARIO 1: TARJETA -->
                 <div id="pago-tarjeta" class="payment-sec" style="display:none; margin-top:15px; background:#f8fafc; padding:15px; border-radius:12px;">
                     <p style="font-size:13px; font-weight:bold; margin-bottom:8px;">Datos de la Tarjeta (Inventados)</p>
-                    <input type="text" placeholder="Número de Tarjeta (ej: 4532 •••• •••• 8890)" value="4532 8821 9012 3456" style="padding:10px; font-size:13px;">
+                    <input type="text" placeholder="Número de Tarjeta" value="4532 8821 9012 3456" style="padding:10px; font-size:13px;">
                     <div style="display:flex; gap:10px;">
                         <input type="text" placeholder="MM/AA" value="12/28" style="padding:10px; font-size:13px;">
                         <input type="text" placeholder="CVV" value="482" style="padding:10px; font-size:13px;">
@@ -1251,7 +1248,6 @@ HTML_TIENDA = """
                         <option>Bancolombia (Demo)</option>
                         <option>Banco de Bogotá (Demo)</option>
                         <option>Davivienda (Demo)</option>
-                        <option>BBVA Colombia (Demo)</option>
                     </select>
                     <input type="text" placeholder="Correo electrónico asociado" value="cliente.demo@correo.com" style="padding:10px; font-size:13px;">
                     <button class="btn" onclick="confirmarPagoFinal('PSE Bancario')">Autorizar Pago en Banco</button>
@@ -1260,7 +1256,7 @@ HTML_TIENDA = """
                 <!-- FORMULARIO 3: NEQUI -->
                 <div id="pago-nequi" class="payment-sec" style="display:none; margin-top:15px; background:#f8fafc; padding:15px; border-radius:12px;">
                     <p style="font-size:13px; font-weight:bold; margin-bottom:8px;">Billetera Móvil (Inventado)</p>
-                    <input type="text" placeholder="Número Celular (ej: 310 456 7890)" value="312 456 7890" style="padding:10px; font-size:13px;">
+                    <input type="text" placeholder="Número Celular" value="312 456 7890" style="padding:10px; font-size:13px;">
                     <button class="btn" onclick="confirmarPagoFinal('Nequi/Daviplata')">Generar Notificación Push</button>
                 </div>
 
@@ -1425,12 +1421,10 @@ def login_staff():
         usuario = request.form.get('usuario')
         password = request.form.get('password')
         
-        # 1. Verificar si es Superadmin principal
         if usuario == ADMIN_EMAIL and password == ADMIN_PASSWORD:
             session['user_type'] = 'superadmin'
             return redirect(url_for('superadmin_dashboard'))
         
-        # 2. Verificar si es Dueño, Manager o Empleado en alguna empresa registrada
         for emp in EMPRESAS_REGISTRADAS:
             if emp['email_dueno'] == usuario and emp['password_dueno'] == password:
                 session['user_type'] = 'dueno'
@@ -1439,7 +1433,7 @@ def login_staff():
             
             for staff in emp['usuarios_staff']:
                 if staff['email'] == usuario and staff['password'] == password:
-                    session['user_type'] = staff['rol'] # 'manager' o 'empleado'
+                    session['user_type'] = staff['rol']
                     session['user_nombre'] = staff['nombre']
                     session['user_sede'] = staff['sede']
                     session['empresa_nombre'] = emp['nombre_empresa']
@@ -1523,7 +1517,6 @@ def manager_dashboard():
     if session.get('user_type') != 'manager':
         return redirect(url_for('login_staff'))
     user_sede = session.get('user_sede')
-    emp_nombre = session.get('empresa_nombre')
     inv_sede = [i for i in INVENTARIO_SUPER if i['sede'] == user_sede]
     rep_sede = [r for r in REPORTES_EMPLEADOS if r.get('sede') == user_sede]
     return render_template_string(HTML_DASHBOARD_MANAGER, css=CSS_ESTILOS, user={'sede': user_sede}, inventario=inv_sede, reportes=rep_sede)
@@ -1624,7 +1617,6 @@ def tienda():
     sede_actual = session.get('sede', 'Sede Principal (Centro)')
     cliente_nombre = session.get('cliente_nombre', 'Cliente')
     
-    # Filtrar productos dinámicos subidos por los managers
     codigos_base = [f"{i:03d}" for i in range(1, 33)]
     productos_dinamicos = [i for i in INVENTARIO_SUPER if i['codigo'] not in codigos_base and (i['sede'] == sede_actual or sede_actual in i['sede'])]
     
