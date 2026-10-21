@@ -1019,7 +1019,7 @@ HTML_TIENDA = """
             <!-- LÁCTEOS Y HUEVOS -->
             <div class="product-card" data-cat="lacteos">
                 <span class="product-badge">OFERTA</span>
-                <div class="product-img-container"><img src="https://images.unsplash.com/photo-1582721478779-0ae163c05a60?w=400&auto=format&fit=crop&q=80" alt="Huevos AA x30 unidades"></div>
+                <div class="product-img-container"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVO8fktZ9PsqGMtJtLrIpxWMrEry8Zt100S55llzxX3Q&s=10" alt="Huevos AA x30 unidades"></div>
                 <h3 style="font-size:16px;">Huevos Frescos AA x30 Unidades</h3>
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Cubeta de 30 huevos rojos categoría AA de granja.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
