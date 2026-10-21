@@ -47,7 +47,7 @@ INVENTARIO_SUPER = [
     {"codigo": "007", "nombre": "Aceite Vegetal Premier 900ml", "precio": 14500, "stock": 110, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=400&auto=format&fit=crop&q=80"},
     {"codigo": "008", "nombre": "Frijol Cargamanto 500g", "precio": 6200, "stock": 140, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1551462147-3f0053e21fa2?w=400&auto=format&fit=crop&q=80"},
     {"codigo": "009", "nombre": "Lenteja Seleccionada 500g", "precio": 4500, "stock": 160, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1515942661991-bbf665f429ed?w=400&auto=format&fit=crop&q=80"},
-    {"codigo": "010", "nombre": "Azúcar Blanca Incauca 1Kg", "precio": 4900, "stock": 220, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1581441363689-1f3c3c71db2e?w=400&auto=format&fit=crop&q=80"},
+    {"codigo": "010", "nombre": "Azúcar Blanca Incauca 1Kg", "precio": 4900, "stock": 220, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShXtqHN-FQueb-wm3RtnLk_9bIyERdN9KaCbF8AXneoq6PMwkDTOO6d89b&s=10"},
     {"codigo": "011", "nombre": "Sal Marina Refinada 1Kg", "precio": 2100, "stock": 180, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1518110925495-5bc2150915f0?w=400&auto=format&fit=crop&q=80"},
     {"codigo": "012", "nombre": "Pasta Espagueti Doria 500g", "precio": 3800, "stock": 210, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1551183053-bf91a1d81141?w=400&auto=format&fit=crop&q=80"},
     {"codigo": "013", "nombre": "Harina de Maíz PAN 1Kg", "precio": 4200, "stock": 300, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&auto=format&fit=crop&q=80"},
@@ -56,15 +56,15 @@ INVENTARIO_SUPER = [
 
     # Carnes y Charcutería
     {"codigo": "016", "nombre": "Pechuga de Pollo 1Kg", "precio": 16900, "stock": 85, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1604503468506-a8da13d82791?w=400&auto=format&fit=crop&q=80"},
-    {"codigo": "017", "nombre": "Carne Molida Especial 1Kg", "precio": 24500, "stock": 70, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1588168333986-5078d3ae3976?w=400&auto=format&fit=crop&q=80"},
-    {"codigo": "018", "nombre": "Lomo de Cerdo 1Kg", "precio": 22000, "stock": 60, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1603048588665-791ca8aea617?w=400&auto=format&fit=crop&q=80"},
-    {"codigo": "019", "nombre": "Salchicha Ranchera x225g", "precio": 9800, "stock": 115, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1541529086526-db283c563270?w=400&auto=format&fit=crop&q=80"},
-    {"codigo": "020", "nombre": "Jamón Pietrán de Pavo 200g", "precio": 11500, "stock": 95, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1509722747041-616f39b57569?w=400&auto=format&fit=crop&q=80"},
+    {"codigo": "017", "nombre": "Carne Molida Especial 1Kg", "precio": 24500, "stock": 70, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrUaaRLrpYQr_l8EltllB-cEoXnaY42gK-Fk2WdwVoSw&s"},
+    {"codigo": "018", "nombre": "Lomo de Cerdo 1Kg", "precio": 22000, "stock": 60, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtVCBiSp6xhaomH2xrJdzsTC66BTa27VwUlZou4K8dnxSrHtUj1GaqxTqh&s=10"},
+    {"codigo": "019", "nombre": "Salchicha Ranchera Premium 14 unidades", "precio": 9800, "stock": 115, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSClyw6bmnKTclvMHUexOnA-Dfc9XKZGlYzZn831DDHmg&s=10"},
+    {"codigo": "020", "nombre": "Jamón Pietrán de Pavo 230g", "precio": 11500, "stock": 95, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTR5SWq9-vYmzlkGuSYC2kzNTjhUDfXsxL2tbYZYKM0PQ&s=10"},
 
     # Frutas y Verduras
     {"codigo": "021", "nombre": "Aguacate Hass 1Kg", "precio": 8900, "stock": 90, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1523049673857-eb18f1d7b578?w=400&auto=format&fit=crop&q=80"},
     {"codigo": "022", "nombre": "Tomate Chonto 1Kg", "precio": 4200, "stock": 150, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=400&auto=format&fit=crop&q=80"},
-    {"codigo": "023", "nombre": "Cebolla Cabezona Roja 1Kg", "precio": 3800, "stock": 140, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1618512496249-10603424d3d8?w=400&auto=format&fit=crop&q=80"},
+    {"codigo": "023", "nombre": "Cebolla Cabezona Roja 1Kg", "precio": 3800, "stock": 140, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKg_Pm9rjrPVnYHHE3_glaGej8pnE3Ax-ZdzoUnj-LSw&s=10},
     {"codigo": "024", "nombre": "Papa Sabanera 1Kg", "precio": 3200, "stock": 280, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=400&auto=format&fit=crop&q=80"},
     {"codigo": "025", "nombre": "Manzana Roja Importada 1Kg", "precio": 9500, "stock": 110, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=400&auto=format&fit=crop&q=80"},
 
@@ -76,7 +76,7 @@ INVENTARIO_SUPER = [
 
     # Aseo y Cuidado Personal (Imagen corregida de papel higiénico)
     {"codigo": "030", "nombre": "Detergente en Polvo Ariel 2Kg", "precio": 26900, "stock": 75, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1585421514284-efb74c2b69ba?w=400&auto=format&fit=crop&q=80"},
-    {"codigo": "031", "nombre": "Jabón de Baño Palmolive x3", "precio": 11200, "stock": 105, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=400&auto=format&fit=crop&q=80"},
+    {"codigo": "031", "nombre": "Jabón de Baño Palmolive x3", "precio": 11200, "stock": 105, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjeDittM5iqnNji-aYFguLuYoWDMz8uQDJMQhHWMfVf7cTfgGfnZ_pUYsy&s=10"},
     {"codigo": "032", "nombre": "Papel Higiénico Familia 12 Rollos", "precio": 22500, "stock": 90, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?w=400&auto=format&fit=crop&q=80"}
 ]
 
