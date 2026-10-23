@@ -1666,7 +1666,7 @@ def logout():
     session.clear()
     return redirect(url_for('inicio'))
 
-@app.route('/api/ping-mantener-activo', methods=['GET'])
+@app.route('/api/ping-mantener-activo', methods=['GET', 'HEAD'])
 def ping_activo():
     return "OK", 200
 
