@@ -74,7 +74,7 @@ INVENTARIO_SUPER = [
     {"codigo": "028", "nombre": "Agua Manantial Sin Gas 5L", "precio": 8900, "stock": 80, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1548839140-29a749e1cf4d?w=400&auto=format&fit=crop&q=80"},
     {"codigo": "029", "nombre": "Jugo Hit Mora 1L", "precio": 4500, "stock": 140, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://images.unsplash.com/photo-1613478223719-2ab802602423?w=400&auto=format&fit=crop&q=80"},
 
-    # Aseo y Cuidado Personal (Imagen corregida de papel higiénico)
+    # Aseo y Cuidado Personal
     {"codigo": "030", "nombre": "Detergente en Polvo Ariel 2Kg", "precio": 26900, "stock": 75, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8HKgqc_aKcS0OrABlzjz2xiHqQiQwOPnfDJXzPRFabQ&s=10"},
     {"codigo": "031", "nombre": "Jabón de Baño Palmolive x3", "precio": 11200, "stock": 105, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjeDittM5iqnNji-aYFguLuYoWDMz8uQDJMQhHWMfVf7cTfgGfnZ_pUYsy&s=10"},
     {"codigo": "032", "nombre": "Papel Higiénico Familia 12 Rollos", "precio": 22500, "stock": 90, "sede": "Sede Central", "empresa": "Supermercados El Ahorro", "imagen": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGn9vkHKlrIoX7X0EztD05bNpNtrsgCtlKu3I09C4ewQ&s=10"}
@@ -82,7 +82,7 @@ INVENTARIO_SUPER = [
 
 REPORTES_EMPLEADOS = []
 
-# CSS COMPLETO CON ANIMACIONES Y DISEÑO MEJORADO
+# CSS COMPLETO CON ESTABILIZADOR DE LAYOUT Y ANIMACIONES
 CSS_ESTILOS = """
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
 
@@ -108,7 +108,6 @@ CSS_ESTILOS = """
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Plus Jakarta Sans', 'Segoe UI', system-ui, -apple-system, sans-serif;}
 body{background:#f1f5f9; color:var(--dark); line-height:1.6; overflow-x:hidden;}
 
-/* ANIMACIONES AVANZADAS */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
@@ -129,7 +128,6 @@ body{background:#f1f5f9; color:var(--dark); line-height:1.6; overflow-x:hidden;}
 .fade-in { animation: fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 .float-anim { animation: float 4s ease-in-out infinite; }
 
-/* BRANDING */
 .brand{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
 .logo{width:44px;height:44px;background:var(--primary-gradient);color:white;display:flex;align-items:center;justify-content:center;border-radius:14px;font-weight:800;font-size:20px;flex-shrink:0;box-shadow:0 8px 16px rgba(15,138,95,0.3); transition: transform 0.3s ease;}
 .logo:hover{transform: rotate(5deg) scale(1.05);}
@@ -138,7 +136,6 @@ body{background:#f1f5f9; color:var(--dark); line-height:1.6; overflow-x:hidden;}
 .brand-large h1{font-size:42px; margin-bottom:8px; font-weight:800; letter-spacing:-1px;}
 .brand-large p{opacity:0.9; font-size:16px; font-weight:300;}
 
-/* LANDING SELECTOR */
 .landing-body{display:flex;justify-content:center;align-items:center;min-height:100vh;background:var(--bg-gradient);padding:20px; position:relative;}
 .landing-container{max-width:900px;width:100%;text-align:center; z-index:1;}
 .selector-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;}
@@ -153,7 +150,6 @@ body{background:#f1f5f9; color:var(--dark); line-height:1.6; overflow-x:hidden;}
 .selector-card.staff{border-top:6px solid var(--dark);}
 .selector-card.client{border-top:6px solid var(--primary);}
 
-/* FORMULARIOS Y LOGIN */
 .login-body{display:flex;justify-content:center;align-items:center;min-height:100vh;background:var(--bg-gradient);padding:20px;}
 .login-container{background:white;padding:42px 35px;border-radius:24px;width:100%;max-width:440px;box-shadow:0 25px 50px -12px rgba(0,0,0,0.35);text-align:center; transition: transform 0.3s ease;}
 .login-container input, .login-container select, .login-container textarea{width:100%;padding:14px 16px;margin:10px 0;border:2px solid var(--gray);border-radius:12px;outline:none; font-size:15px; transition:all 0.3s ease; background:#f8fafc;}
@@ -167,7 +163,6 @@ body{background:#f1f5f9; color:var(--dark); line-height:1.6; overflow-x:hidden;}
 .btn-danger:hover{box-shadow:0 8px 20px rgba(239,68,68,0.4);}
 .demo-creds{margin-top:20px; font-size:13px; background:#f8fafc; padding:14px; border-radius:12px; text-align:left; border-left:4px solid var(--primary); border:1px solid #e2e8f0; border-left-width:4px;}
 
-/* DASHBOARD STAFF */
 .dashboard{display:flex;min-height:100vh;}
 .sidebar{width:280px;background:var(--dark);color:white;padding:28px 20px;flex-shrink:0;display:flex;flex-direction:column;justify-content:space-between; box-shadow:4px 0 25px rgba(0,0,0,0.1);}
 .sidebar .brand{margin-bottom:30px;}
@@ -186,20 +181,20 @@ tr:hover td{background:#f8fafc;}
 .tag-admin{background:linear-gradient(135deg, #ef4444, #b91c1c);} 
 .tag-empleado{background:linear-gradient(135deg, #10b981, #047857);}
 
-/* TIENDA CLIENTE */
 .header-cliente{display:flex; justify-content:space-between; align-items:center; background:white; padding:20px 32px; border-radius:20px; margin-bottom:30px; box-shadow:var(--card-shadow); border:1px solid #f1f5f9;}
 .sede-selector-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px;margin:25px 0;}
 .sede-card-interactive{background:white;border:2px solid var(--gray);border-radius:20px;padding:28px 22px;text-align:center;cursor:pointer;transition:all .3s ease; position:relative;}
 .sede-card-interactive:hover{border-color:var(--primary);transform:translateY(-6px); box-shadow:0 15px 35px rgba(15,138,95,0.12);}
 .sede-card-interactive.active{border-color:var(--primary);background:var(--primary-light); animation:pulseGlow 2s infinite;}
-.product-card{background:white; border-radius:20px; border:1px solid #e2e8f0; padding:22px; display:flex; flex-direction:column; justify-content:space-between; transition:all 0.3s cubic-bezier(0.16, 1, 0.3, 1); position:relative; overflow:hidden; box-shadow:var(--card-shadow);}
+
+/* ESTABILIZACIÓN DE TARJETAS PARA EVITAR SALTOS DE LAYOUT */
+.product-card{background:white; border-radius:20px; border:1px solid #e2e8f0; padding:22px; display:flex; flex-direction:column; justify-content:space-between; transition:all 0.3s cubic-bezier(0.16, 1, 0.3, 1); position:relative; overflow:hidden; box-shadow:var(--card-shadow); min-height:360px;}
 .product-card:hover{transform:translateY(-8px); box-shadow:0 20px 35px rgba(0,0,0,0.08); border-color:var(--primary);}
-.product-badge{position:absolute; top:15px; right:15px; background:var(--accent); color:white; font-size:11px; font-weight:800; padding:4px 10px; border-radius:30px; letter-spacing:0.5px; box-shadow:0 4px 10px rgba(245,158,11,0.3);}
-.product-img-container{width:100%; height:160px; border-radius:12px; overflow:hidden; margin-bottom:12px; background:#f1f5f9; display:flex; align-items:center; justify-content:center;}
+.product-badge{position:absolute; top:15px; right:15px; background:var(--accent); color:white; font-size:11px; font-weight:800; padding:4px 10px; border-radius:30px; letter-spacing:0.5px; box-shadow:0 4px 10px rgba(245,158,11,0.3); z-index:2;}
+.product-img-container{width:100%; height:160px; min-height:160px; border-radius:12px; overflow:hidden; margin-bottom:12px; background:#f1f5f9; display:flex; align-items:center; justify-content:center; flex-shrink:0;}
 .product-img-container img{width:100%; height:100%; object-fit:cover; transition:transform 0.4s ease;}
 .product-card:hover .product-img-container img{transform:scale(1.08);}
 
-/* CARRITO MODAL Y PASARELA DE PAGOS */
 .cart-floating-btn{position:fixed; bottom:30px; right:30px; background:var(--primary-gradient); color:white; padding:16px 26px; border-radius:50px; cursor:pointer; font-weight:700; box-shadow:0 10px 30px rgba(15,138,95,0.4); display:flex; align-items:center; gap:12px; z-index:99; transition:all 0.3s ease;}
 .cart-floating-btn:hover{transform:scale(1.08) translateY(-3px); box-shadow:0 15px 35px rgba(15,138,95,0.5);}
 .modal{display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(15,23,42,0.6); backdrop-filter:blur(6px); z-index:1000; justify-content:center; align-items:center;}
@@ -209,7 +204,6 @@ tr:hover td{background:#f8fafc;}
 .payment-method-box{border:2px solid var(--gray); border-radius:12px; padding:12px 16px; margin:10px 0; cursor:pointer; transition:all 0.2s;}
 .payment-method-box:hover{border-color:var(--primary); background:var(--primary-light);}
 
-/* RESPONSIVE */
 @media(max-width:800px){
   .selector-grid{grid-template-columns:1fr;}
   .dashboard{flex-direction:column;}
@@ -218,7 +212,6 @@ tr:hover td{background:#f8fafc;}
 }
 """
 
-# LANDING PRINCIPAL
 HTML_LANDING = """
 <!DOCTYPE html>
 <html lang="es">
@@ -256,7 +249,6 @@ HTML_LANDING = """
 </html>
 """
 
-# LOGIN STAFF (Maneja Superadmin, Dueños, Managers y Empleados)
 HTML_LOGIN_STAFF = """
 <!DOCTYPE html>
 <html lang="es">
@@ -301,7 +293,6 @@ HTML_LOGIN_STAFF = """
 </html>
 """
 
-# DASHBOARD SUPERADMIN (Crear empresas y dueños especificando nombre de cadena)
 HTML_DASHBOARD_SUPERADMIN = """
 <!DOCTYPE html>
 <html lang="es">
@@ -363,7 +354,6 @@ HTML_DASHBOARD_SUPERADMIN = """
 </html>
 """
 
-# DASHBOARD DUEÑO (Crear sedes, managers, empleados, ver reportes mensuales)
 HTML_DASHBOARD_DUENO = """
 <!DOCTYPE html>
 <html lang="es">
@@ -396,7 +386,6 @@ HTML_DASHBOARD_DUENO = """
             <a href="/logout" style="background:#334155; margin-top:20px;">🚪 Cerrar Sesión</a>
         </div>
         <div class="main">
-            <!-- GESTIÓN DE SEDES -->
             <div id="sec-sedes" class="tab-sec fade-in">
                 <div class="card">
                     <h2>Gestión de Sedes de {{ empresa.nombre_empresa }}</h2>
@@ -419,7 +408,6 @@ HTML_DASHBOARD_DUENO = """
                 </div>
             </div>
 
-            <!-- GESTIÓN DE PERSONAL (MANAGERS Y EMPLEADOS) -->
             <div id="sec-personal" class="tab-sec fade-in" style="display:none;">
                 <div class="card">
                     <h2>Crear Cuenta de Manager o Empleado (Cajero)</h2>
@@ -478,7 +466,6 @@ HTML_DASHBOARD_DUENO = """
                 </div>
             </div>
 
-            <!-- REPORTES MENSUALES -->
             <div id="sec-reportes" class="tab-sec fade-in" style="display:none;">
                 <div class="card">
                     <h2>📊 Reportes Mensuales y Desempeño (Zona Horaria Local)</h2>
@@ -515,7 +502,6 @@ HTML_DASHBOARD_DUENO = """
 </html>
 """
 
-# DASHBOARD MANAGER (Agregar productos con código rápido de 3 dígitos e imagen de producto)
 HTML_DASHBOARD_MANAGER = """
 <!DOCTYPE html>
 <html lang="es">
@@ -619,7 +605,7 @@ HTML_DASHBOARD_MANAGER = """
 </html>
 """
 
-# DASHBOARD EMPLEADO / CAJERO (Sistema de cobro rápido por código de 3 dígitos + soporte de imágenes y reportes)
+# DASHBOARD EMPLEADO ROBUSTO Y AMPLIADO CON CONTROL DE ERRORES Y ESTABILIDAD
 HTML_DASHBOARD_EMPLEADO = """
 <!DOCTYPE html>
 <html lang="es">
@@ -631,49 +617,79 @@ HTML_DASHBOARD_EMPLEADO = """
     <script>
         let carritoCaja = [];
 
+        // Función ampliada y optimizada con manejo avanzado de excepciones y feedback visual
         function buscarPorCodigoRapido(event) {
-            event.preventDefault();
-            let codigo = document.getElementById('input-codigo-rapido').value.trim();
+            if(event) event.preventDefault();
+            let inputEl = document.getElementById('input-codigo-rapido');
+            let codigo = inputEl.value.trim();
             
-            # Petición AJAX para buscar el producto por código de 3 dígitos
-            fetch('/api/buscar-codigo?codigo=' + codigo)
-                .then(res => res.json())
+            if(!codigo) {
+                console.warn('Código vacío ingresado');
+                return;
+            }
+
+            // Petición AJAX robusta con control de red
+            fetch('/api/buscar-codigo?codigo=' + encodeURIComponent(codigo))
+                .then(res => {
+                    if (!res.ok) throw new Error('Respuesta de red fallida');
+                    return res.json();
+                })
                 .then(data => {
-                    if(data.encontrado) {
+                    if(data && data.encontrado && data.producto) {
                         carritoCaja.push(data.producto);
                         actualizarCajaUI();
-                        document.getElementById('input-codigo-rapido').value = '';
+                        inputEl.value = '';
+                        inputEl.focus();
                     } else {
                         alert('❌ Producto con código #' + codigo + ' no encontrado en esta sede.');
+                        inputEl.value = '';
+                        inputEl.focus();
                     }
+                })
+                .catch(err => {
+                    console.error('Error detallado al buscar código rápido:', err);
+                    alert('⚠️ Error al conectar con el servidor de inventario. Verifique su conexión.');
+                    inputEl.focus();
                 });
         }
 
         function quitarItemCaja(index) {
-            carritoCaja.splice(index, 1);
-            actualizarCajaUI();
+            if(index > -1 && index < carritoCaja.length) {
+                carritoCaja.splice(index, 1);
+                actualizarCajaUI();
+            }
         }
 
         function actualizarCajaUI() {
-            let total = carritoCaja.reduce((sum, p) => sum + p.precio, 0);
-            document.getElementById('caja-total').innerText = '$' + total.toLocaleString();
+            let total = carritoCaja.reduce((sum, p) => sum + (p.precio || 0), 0);
+            let totalEl = document.getElementById('caja-total');
+            if(totalEl) {
+                totalEl.innerText = '$' + total.toLocaleString();
+            }
 
             let html = '';
             carritoCaja.forEach((p, idx) => {
                 html += `<div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid #e2e8f0;">
                     <span>[#${p.codigo}] ${p.nombre}</span>
                     <div style="display:flex; align-items:center; gap:10px;">
-                        <b>$${p.precio.toLocaleString()}</b>
-                        <button class="btn-remove" onclick="quitarItemCaja(${idx})">❌</button>
+                        <b>$${(p.precio || 0).toLocaleString()}</b>
+                        <button type="button" class="btn-remove" onclick="quitarItemCaja(${idx})">❌</button>
                     </div>
                 </div>`;
             });
-            document.getElementById('lista-caja-items').innerHTML = html || '<p style="color:var(--gray-text);">Ningún producto agregado a la venta actual</p>';
+            
+            let listaEl = document.getElementById('lista-caja-items');
+            if(listaEl) {
+                listaEl.innerHTML = html || '<p style="color:var(--gray-text);">Ningún producto agregado a la venta actual</p>';
+            }
         }
 
         function cobrarVenta() {
-            if(carritoCaja.length === 0) { alert('Agregue productos usando el código rápido primero'); return; }
-            let total = carritoCaja.reduce((sum, p) => sum + p.precio, 0);
+            if(carritoCaja.length === 0) { 
+                alert('Agregue productos usando el código rápido primero'); 
+                return; 
+            }
+            let total = carritoCaja.reduce((sum, p) => sum + (p.precio || 0), 0);
             let nombres = carritoCaja.map(p => p.nombre).join(', ');
 
             fetch('/api/registrar-venta-cajero', {
@@ -685,10 +701,16 @@ HTML_DASHBOARD_EMPLEADO = """
                     sede: '{{ user.sede }}',
                     empleado: '{{ user.nombre }}'
                 })
-            }).then(() => {
+            })
+            .then(res => res.json())
+            .then(() => {
                 alert('✅ ¡Venta cobrada con éxito por $' + total.toLocaleString() + '!');
                 carritoCaja = [];
                 actualizarCajaUI();
+            })
+            .catch(err => {
+                console.error('Error al registrar venta:', err);
+                alert('Error al registrar la venta en el sistema.');
             });
         }
     </script>
@@ -707,13 +729,12 @@ HTML_DASHBOARD_EMPLEADO = """
         </div>
         <div class="main">
             <div style="display:grid; grid-template-columns:2fr 1fr; gap:20px;">
-                # MÓDULO DE COBRO CON CÓDIGOS RÁPIDOS
                 <div class="card">
                     <h2>Módulo de Caja - Búsqueda por Código Rápido</h2>
                     <p style="color:var(--gray-text); font-size:13px; margin-bottom:15px;">Introduce el código de 3 dígitos (Ej: 001, 006, 016, 026) para agregar el producto a la venta.</p>
                     
                     <form onsubmit="buscarPorCodigoRapido(event)" style="display:flex; gap:10px; margin-bottom:20px;">
-                        <input type="text" id="input-codigo-rapido" placeholder="Ej: 001" maxlength="3" required style="padding:12px; font-size:18px; font-weight:bold; border:2px solid var(--primary); border-radius:8px; width:150px;">
+                        <input type="text" id="input-codigo-rapido" placeholder="Ej: 001" maxlength="3" required autocomplete="off" style="padding:12px; font-size:18px; font-weight:bold; border:2px solid var(--primary); border-radius:8px; width:150px;">
                         <button type="submit" class="btn" style="margin:0; width:auto; padding:12px 25px;">🔍 Buscar y Agregar</button>
                     </form>
 
@@ -728,7 +749,6 @@ HTML_DASHBOARD_EMPLEADO = """
                     </div>
                 </div>
 
-                # RESUMEN DE TICKET DE CAJA
                 <div class="card">
                     <h3>Ticket de Venta Actual</h3>
                     <div id="lista-caja-items" style="margin:15px 0; max-height:250px; overflow-y:auto;">
@@ -738,11 +758,10 @@ HTML_DASHBOARD_EMPLEADO = """
                         <span>Total:</span>
                         <b id="caja-total" style="color:var(--primary);">$0</b>
                     </div>
-                    <button class="btn" onclick="cobrarVenta()" style="margin-top:15px;">💵 Cobrar Venta</button>
+                    <button type="button" class="btn" onclick="cobrarVenta()" style="margin-top:15px;">💵 Cobrar Venta</button>
                 </div>
             </div>
 
-            # MÓDULO DE REPORTES A MANAGER
             <div class="card" style="margin-top:20px;">
                 <h2>Reportar Problema o Incidencia al Manager</h2>
                 <form action="/empleado/enviar-reporte" method="POST" style="margin-top:10px;">
@@ -756,7 +775,6 @@ HTML_DASHBOARD_EMPLEADO = """
 </html>
 """
 
-# PASO 1 CLIENTE: SELECCIÓN DE UBICACIÓN Y SEDE
 HTML_CLIENTE_UBICACION = """
 <!DOCTYPE html>
 <html lang="es">
@@ -814,7 +832,6 @@ HTML_CLIENTE_UBICACION = """
 </html>
 """
 
-# PASO 2 CLIENTE: INICIO DE SESIÓN O REGISTRO
 HTML_CLIENTE_AUTH = """
 <!DOCTYPE html>
 <html lang="es">
@@ -860,14 +877,12 @@ HTML_CLIENTE_AUTH = """
                 <button id="tab-registro" type="button" class="btn btn-outline" onclick="alternarModo('registro')" style="flex:1;">Registrarse</button>
             </div>
 
-            # FORMULARIO LOGIN CLIENTE
             <form id="form-login" action="/login-cliente" method="POST">
                 <input type="email" name="email" placeholder="Tu correo electrónico" required>
                 <input type="password" name="password" placeholder="Tu contraseña" required>
                 <button type="submit" class="btn">🛒 Entrar a Hacer Mercado</button>
             </form>
 
-            # FORMULARIO REGISTRO CLIENTE
             <form id="form-registro" action="/registro-cliente" method="POST" style="display:none;">
                 <input type="text" name="nombre" placeholder="Nombre Completo" required>
                 <input type="email" name="email" placeholder="Correo electrónico" required>
@@ -882,7 +897,6 @@ HTML_CLIENTE_AUTH = """
 </html>
 """
 
-# CATÁLOGOS CON GRAN VARIEDAD DE PRODUCTOS DE SUPERMERCADO E IMÁGENES CORREGIDAS
 HTML_TIENDA = """
 <!DOCTYPE html>
 <html lang="es">
@@ -915,7 +929,7 @@ HTML_TIENDA = """
                     <span>${p.nombre}</span>
                     <div style="display:flex; align-items:center; gap:10px;">
                         <b>$${p.precio.toLocaleString()}</b>
-                        <button class="btn-remove" onclick="quitarProducto(${index})">❌</button>
+                        <button type="button" class="btn-remove" onclick="quitarProducto(${index})">❌</button>
                     </div>
                 </div>`;
             });
@@ -965,7 +979,7 @@ HTML_TIENDA = """
                     total: total,
                     metodo_pago: metodoNombre
                 })
-            }).then(() => {
+            }).then(res => res.json()).then(() => {
                 alert('🎉 ¡Pago exitoso vía ' + metodoNombre + '! Tu mercado está en preparación para ' + '{{ sede_actual }}.');
                 carrito = [];
                 actualizarCarritoUI();
@@ -974,8 +988,10 @@ HTML_TIENDA = """
         }
 
         function filtrarCategoria(cat, btn) {
-            document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('btn'));
-            document.querySelectorAll('.cat-btn').forEach(b => b.classList.add('btn-outline'));
+            document.querySelectorAll('.cat-btn').forEach(b => {
+                b.classList.remove('btn');
+                b.classList.add('btn-outline');
+            });
             btn.classList.add('btn');
             btn.classList.remove('btn-outline');
 
@@ -993,7 +1009,6 @@ HTML_TIENDA = """
 <body style="background:#f8fafc;">
     <div style="padding:25px; max-width:1200px; margin:0 auto;" class="fade-in">
         
-        # HEADER CLIENTE
         <div class="header-cliente">
             <div class="brand">
                 <div class="logo">KI</div>
@@ -1009,21 +1024,17 @@ HTML_TIENDA = """
             </div>
         </div>
 
-        # FILTROS DE CATEGORÍA DE SUPERMERCADO
         <div style="display:flex; gap:10px; margin-bottom:25px; overflow-x:auto; padding-bottom:5px;">
-            <button class="btn cat-btn" onclick="filtrarCategoria('todos', this)">🏪 Todo el Mercado</button>
-            <button class="btn btn-outline cat-btn" onclick="filtrarCategoria('lacteos', this)">🥛 Lácteos y Huevos</button>
-            <button class="btn btn-outline cat-btn" onclick="filtrarCategoria('despensa', this)">🌾 Despensa y Granos</button>
-            <button class="btn btn-outline cat-btn" onclick="filtrarCategoria('carnes', this)">🥩 Carnes y Embutidos</button>
-            <button class="btn btn-outline cat-btn" onclick="filtrarCategoria('frutas', this)">🍎 Frutas y Verduras</button>
-            <button class="btn btn-outline cat-btn" onclick="filtrarCategoria('bebidas', this)">🥤 Bebidas</button>
-            <button class="btn btn-outline cat-btn" onclick="filtrarCategoria('aseo', this)">🧹 Aseo y Limpieza</button>
+            <button type="button" class="btn cat-btn" onclick="filtrarCategoria('todos', this)">🏪 Todo el Mercado</button>
+            <button type="button" class="btn btn-outline cat-btn" onclick="filtrarCategoria('lacteos', this)">🥛 Lácteos y Huevos</button>
+            <button type="button" class="btn btn-outline cat-btn" onclick="filtrarCategoria('despensa', this)">🌾 Despensa y Granos</button>
+            <button type="button" class="btn btn-outline cat-btn" onclick="filtrarCategoria('carnes', this)">🥩 Carnes y Embutidos</button>
+            <button type="button" class="btn btn-outline cat-btn" onclick="filtrarCategoria('frutas', this)">🍎 Frutas y Verduras</button>
+            <button type="button" class="btn btn-outline cat-btn" onclick="filtrarCategoria('bebidas', this)">🥤 Bebidas</button>
+            <button type="button" class="btn btn-outline cat-btn" onclick="filtrarCategoria('aseo', this)">🧹 Aseo y Limpieza</button>
         </div>
 
-        # GRID DE PRODUCTOS DE SUPERMERCADO CON IMÁGENES CORREGIDAS
         <div class="grid">
-            
-            # LÁCTEOS Y HUEVOS
             <div class="product-card" data-cat="lacteos">
                 <span class="product-badge">OFERTA</span>
                 <div class="product-img-container"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVO8fktZ9PsqGMtJtLrIpxWMrEry8Zt100S55llzxX3Q&s=10" alt="Huevos AA x30 unidades"></div>
@@ -1031,7 +1042,7 @@ HTML_TIENDA = """
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Cubeta de 30 huevos rojos categoría AA de granja.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
                     <b style="font-size:18px; color:var(--primary);">$18.500</b>
-                    <button class="btn" onclick="agregarProducto('Huevos Frescos AA x30', 18500)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <button type="button" class="btn" onclick="agregarProducto('Huevos Frescos AA x30', 18500)" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
 
@@ -1041,7 +1052,7 @@ HTML_TIENDA = """
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Leche pasteurizada enriquecida con vitaminas A y D.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
                     <b style="font-size:18px; color:var(--primary);">$4.300</b>
-                    <button class="btn" onclick="agregarProducto('Leche Entera Colanta 1L', 4300)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <button type="button" class="btn" onclick="agregarProducto('Leche Entera Colanta 1L', 4300)" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
 
@@ -1051,11 +1062,10 @@ HTML_TIENDA = """
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Queso blanco tajado, ideal para desayunos y arepas.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
                     <b style="font-size:18px; color:var(--primary);">$12.800</b>
-                    <button class="btn" onclick="agregarProducto('Queso Campesino 500g', 12800)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <button type="button" class="btn" onclick="agregarProducto('Queso Campesino 500g', 12800)" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
 
-            # DESPENSA Y GRANOS
             <div class="product-card" data-cat="despensa">
                 <span class="product-badge">MAS VENDIDO</span>
                 <div class="product-img-container"><img src="https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400&auto=format&fit=crop&q=80" alt="Arroz Roa 1Kg"></div>
@@ -1063,7 +1073,7 @@ HTML_TIENDA = """
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Arroz blanco de grano entero de la más alta calidad.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
                     <b style="font-size:18px; color:var(--primary);">$4.800</b>
-                    <button class="btn" onclick="agregarProducto('Arroz Roa Superior 1Kg', 4800)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <button type="button" class="btn" onclick="agregarProducto('Arroz Roa Superior 1Kg', 4800)" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
 
@@ -1073,7 +1083,7 @@ HTML_TIENDA = """
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Aceite puro libre de grasas trans para cocinar diariamente.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
                     <b style="font-size:18px; color:var(--primary);">$14.500</b>
-                    <button class="btn" onclick="agregarProducto('Aceite Vegetal Premier 900ml', 14500)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <button type="button" class="btn" onclick="agregarProducto('Aceite Vegetal Premier 900ml', 14500)" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
 
@@ -1083,18 +1093,17 @@ HTML_TIENDA = """
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Pasta tradicional fortificada con hierro y nutrición.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
                     <b style="font-size:18px; color:var(--primary);">$3.800</b>
-                    <button class="btn" onclick="agregarProducto('Pasta Espagueti Doria 500g', 3800)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <button type="button" class="btn" onclick="agregarProducto('Pasta Espagueti Doria 500g', 3800)" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
 
-            # CARNES Y EMBUTIDOS
             <div class="product-card" data-cat="carnes">
                 <div class="product-img-container"><img src="https://images.unsplash.com/photo-1604503468506-a8da13d82791?w=400&auto=format&fit=crop&q=80" alt="Pechuga de Pollo 1Kg"></div>
                 <h3 style="font-size:16px;">Pechuga de Pollo Entera 1Kg</h3>
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Pechuga limpia, fresca y refrigerada de primera opción.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
                     <b style="font-size:18px; color:var(--primary);">$16.900</b>
-                    <button class="btn" onclick="agregarProducto('Pechuga de Pollo 1Kg', 16900)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <button type="button" class="btn" onclick="agregarProducto('Pechuga de Pollo 1Kg', 16900)" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
 
@@ -1104,18 +1113,17 @@ HTML_TIENDA = """
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Corte de res magro molido al día sin conservantes.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
                     <b style="font-size:18px; color:var(--primary);">$24.500</b>
-                    <button class="btn" onclick="agregarProducto('Carne Molida de Res 1Kg', 24500)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <button type="button" class="btn" onclick="agregarProducto('Carne Molida de Res 1Kg', 24500)" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
 
-            # FRUTAS Y VERDURAS
             <div class="product-card" data-cat="frutas">
                 <div class="product-img-container"><img src="https://images.unsplash.com/photo-1523049673857-eb18f1d7b578?w=400&auto=format&fit=crop&q=80" alt="Aguacate Hass 1Kg"></div>
                 <h3 style="font-size:16px;">Aguacate Hass Selección 1Kg</h3>
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Aguacates cremosos y perfectos para madurar.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
                     <b style="font-size:18px; color:var(--primary);">$8.900</b>
-                    <button class="btn" onclick="agregarProducto('Aguacate Hass 1Kg', 8900)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <button type="button" class="btn" onclick="agregarProducto('Aguacate Hass 1Kg', 8900)" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
 
@@ -1125,18 +1133,17 @@ HTML_TIENDA = """
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Manzanas crujientes y dulces seleccionadas.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
                     <b style="font-size:18px; color:var(--primary);">$9.500</b>
-                    <button class="btn" onclick="agregarProducto('Manzana Roja 1Kg', 9500)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <button type="button" class="btn" onclick="agregarProducto('Manzana Roja 1Kg', 9500)" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
 
-            # BEBIDAS
             <div class="product-card" data-cat="bebidas">
                 <div class="product-img-container"><img src="https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=400&auto=format&fit=crop&q=80" alt="Café Sello Rojo 500g"></div>
                 <h3 style="font-size:16px;">Café Sello Rojo Molido 500g</h3>
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Café 100% colombiano de tueste medio y gran aroma.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
                     <b style="font-size:18px; color:var(--primary);">$18.900</b>
-                    <button class="btn" onclick="agregarProducto('Café Sello Rojo 500g', 18900)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <button type="button" class="btn" onclick="agregarProducto('Café Sello Rojo 500g', 18900)" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
 
@@ -1146,18 +1153,17 @@ HTML_TIENDA = """
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Gaseosa refrescante ideal para acompañar tus comidas.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
                     <b style="font-size:18px; color:var(--primary);">$6.200</b>
-                    <button class="btn" onclick="agregarProducto('Coca-Cola 1.5L', 6200)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <button type="button" class="btn" onclick="agregarProducto('Coca-Cola 1.5L', 6200)" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
 
-            # ASEO Y LIMPIEZA
             <div class="product-card" data-cat="aseo">
                 <div class="product-img-container"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxsUE3LQsQMoxScMRP2K-RuDYFVLafI9H-mJXnETKUKTCTBl0bkF_vPIlh&s=10" alt="Detergente Ariel 2Kg"></div>
                 <h3 style="font-size:16px;">Detergente en Polvo Ariel 2Kg</h3>
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Limpieza profunda y remoce de manchas difíciles en la ropa.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
                     <b style="font-size:18px; color:var(--primary);">$26.900</b>
-                    <button class="btn" onclick="agregarProducto('Detergente Ariel 2Kg', 26900)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <button type="button" class="btn" onclick="agregarProducto('Detergente Ariel 2Kg', 26900)" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
 
@@ -1167,11 +1173,10 @@ HTML_TIENDA = """
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Rendidor, doble hoja acolchada y suavidad superior.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
                     <b style="font-size:18px; color:var(--primary);">$22.500</b>
-                    <button class="btn" onclick="agregarProducto('Papel Higiénico Familia x12', 22500)" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <button type="button" class="btn" onclick="agregarProducto('Papel Higiénico Familia x12', 22500)" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
 
-            # PRODUCTOS DINÁMICOS SUBIDOS POR MANAGERS
             {% for prod in productos_dinamicos %}
             <div class="product-card" data-cat="todos">
                 <span class="product-badge">NUEVO (#{{ prod.codigo }})</span>
@@ -1182,7 +1187,7 @@ HTML_TIENDA = """
                 <p style="color:var(--gray-text); font-size:13px; margin:8px 0;">Producto añadido recientemente a esta sede.</p>
                 <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
                     <b style="font-size:18px; color:var(--primary);">${{ "{:,.0f}".format(prod.precio) }}</b>
-                    <button class="btn" onclick="agregarProducto('{{ prod.nombre }}', {{ prod.precio }})" style="width:auto; padding:8px 12px;">+ Añadir</button>
+                    <button type="button" class="btn" onclick="agregarProducto('{{ prod.nombre }}', {{ prod.precio }})" style="width:auto; padding:8px 12px;">+ Añadir</button>
                 </div>
             </div>
             {% endfor %}
@@ -1190,16 +1195,13 @@ HTML_TIENDA = """
         </div>
     </div>
 
-    # BOTÓN FLOTANTE DEL CARRITO
     <div class="cart-floating-btn" onclick="abrirCarrito()">
         🛒 Carrito de Mercado (<span id="cart-count">0</span>)
     </div>
 
-    # MODAL DEL CARRITO Y PASARELA DE PAGOS
     <div id="modal-carrito" class="modal">
         <div class="modal-content">
             
-            # PASO A: REVISIÓN DE CARRITO
             <div id="paso-carrito">
                 <h3>Tu Pedido - <span style="color:var(--primary);">{{ sede_actual }}</span></h3>
                 <div id="cart-items" style="margin:20px 0; max-height:220px; overflow-y:auto;">
@@ -1209,11 +1211,10 @@ HTML_TIENDA = """
                     <span>Total a Pagar:</span>
                     <b id="cart-total" style="color:var(--primary);">$0</b>
                 </div>
-                <button class="btn" onclick="irAPago()" style="margin-top:20px;">💳 Proceder al Pago Seguro</button>
-                <button class="btn btn-outline" onclick="cerrarCarrito()" style="margin-top:8px;">Seguir Mercando</button>
+                <button type="button" class="btn" onclick="irAPago()" style="margin-top:20px;">💳 Proceder al Pago Seguro</button>
+                <button type="button" class="btn btn-outline" onclick="cerrarCarrito()" style="margin-top:8px;">Seguir Mercando</button>
             </div>
 
-            # PASO B: MÉTODOS DE PAGO REALES CON DATOS INVENTADOS
             <div id="paso-pago" style="display:none;">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
                     <h3>Selecciona Método de Pago</h3>
@@ -1221,7 +1222,6 @@ HTML_TIENDA = """
                 </div>
                 <p style="font-size:13px; color:var(--gray-text); margin-bottom:15px;">Pasarela integrada simulada (Rellena con datos ficticios)</p>
 
-                # Selector de métodos
                 <div class="payment-method-box" onclick="seleccionarMetodoPago('tarjeta')">
                     <b>💳 Tarjeta de Crédito / Débito</b>
                     <p style="font-size:12px; color:var(--gray-text);">Visa, Mastercard, American Express</p>
@@ -1239,18 +1239,16 @@ HTML_TIENDA = """
                     <p style="font-size:12px; color:var(--gray-text);">Paga al recibir en la puerta</p>
                 </div>
 
-                # FORMULARIO 1: TARJETA
                 <div id="pago-tarjeta" class="payment-sec" style="display:none; margin-top:15px; background:#f8fafc; padding:15px; border-radius:12px;">
                     <p style="font-size:13px; font-weight:bold; margin-bottom:8px;">Datos de la Tarjeta (Inventados)</p>
-                    <input type="text" placeholder="Número de Tarjeta (ej: 4532 •••• •••• 8890)" value="4532 8821 9012 3456" style="padding:10px; font-size:13px;">
+                    <input type="text" placeholder="Número de Tarjeta" value="4532 8821 9012 3456" style="padding:10px; font-size:13px;">
                     <div style="display:flex; gap:10px;">
                         <input type="text" placeholder="MM/AA" value="12/28" style="padding:10px; font-size:13px;">
                         <input type="text" placeholder="CVV" value="482" style="padding:10px; font-size:13px;">
                     </div>
-                    <button class="btn" onclick="confirmarPagoFinal('Tarjeta de Crédito')">Pagar Mercado</button>
+                    <button type="button" class="btn" onclick="confirmarPagoFinal('Tarjeta de Crédito')">Pagar Mercado</button>
                 </div>
 
-                # FORMULARIO 2: PSE
                 <div id="pago-pse" class="payment-sec" style="display:none; margin-top:15px; background:#f8fafc; padding:15px; border-radius:12px;">
                     <p style="font-size:13px; font-weight:bold; margin-bottom:8px;">Conexión Bancaria PSE (Inventado)</p>
                     <select style="padding:10px; font-size:13px; width:100%; border:1px solid var(--gray); border-radius:8px; margin-bottom:10px;">
@@ -1260,24 +1258,22 @@ HTML_TIENDA = """
                         <option>BBVA Colombia (Demo)</option>
                     </select>
                     <input type="text" placeholder="Correo electrónico asociado" value="cliente.demo@correo.com" style="padding:10px; font-size:13px;">
-                    <button class="btn" onclick="confirmarPagoFinal('PSE Bancario')">Autorizar Pago en Banco</button>
+                    <button type="button" class="btn" onclick="confirmarPagoFinal('PSE Bancario')">Autorizar Pago en Banco</button>
                 </div>
 
-                # FORMULARIO 3: NEQUI
                 <div id="pago-nequi" class="payment-sec" style="display:none; margin-top:15px; background:#f8fafc; padding:15px; border-radius:12px;">
                     <p style="font-size:13px; font-weight:bold; margin-bottom:8px;">Billetera Móvil (Inventado)</p>
-                    <input type="text" placeholder="Número Celular (ej: 310 456 7890)" value="312 456 7890" style="padding:10px; font-size:13px;">
-                    <button class="btn" onclick="confirmarPagoFinal('Nequi/Daviplata')">Generar Notificación Push</button>
+                    <input type="text" placeholder="Número Celular" value="312 456 7890" style="padding:10px; font-size:13px;">
+                    <button type="button" class="btn" onclick="confirmarPagoFinal('Nequi/Daviplata')">Generar Notificación Push</button>
                 </div>
 
-                # FORMULARIO 4: EFECTIVO
                 <div id="pago-efectivo" class="payment-sec" style="display:none; margin-top:15px; background:#f8fafc; padding:15px; border-radius:12px;">
                     <p style="font-size:13px; font-weight:bold; margin-bottom:8px;">Pago contra entrega</p>
                     <input type="text" placeholder="¿Con cuánto dinero vas a pagar?" value="$100.000" style="padding:10px; font-size:13px;">
-                    <button class="btn" onclick="confirmarPagoFinal('Efectivo contra entrega')">Confirmar Mercado</button>
+                    <button type="button" class="btn" onclick="confirmarPagoFinal('Efectivo contra entrega')">Confirmar Mercado</button>
                 </div>
 
-                <button class="btn btn-outline" onclick="abrirCarrito()" style="margin-top:15px;">← Volver al Carrito</button>
+                <button type="button" class="btn btn-outline" onclick="abrirCarrito()" style="margin-top:15px;">← Volver al Carrito</button>
             </div>
 
         </div>
@@ -1286,7 +1282,6 @@ HTML_TIENDA = """
 </html>
 """
 
-# DASHBOARD STAFF ANTIGUO
 HTML_DASHBOARD = """
 <!DOCTYPE html>
 <html lang="es">
@@ -1418,12 +1413,10 @@ HTML_DASHBOARD = """
 </html>
 """
 
-# RUTAS Y CONTROLADORES FLASK
 @app.route('/')
 def inicio():
     return render_template_string(HTML_LANDING, css=CSS_ESTILOS)
 
-# RUTAS LOGIN STAFF JERÁRQUICO
 @app.route('/login-staff', methods=['GET', 'POST'])
 def login_staff():
     error = None
@@ -1540,7 +1533,6 @@ def manager_agregar_producto():
     codigo = request.form.get('codigo', '').strip()
     user_sede = session.get('user_sede')
     
-    # Validar si el código ya existe en la misma sede para evitar duplicados
     codigo_repetido = any(i['codigo'] == codigo and i['sede'] == user_sede for i in INVENTARIO_SUPER)
     if codigo_repetido:
         return redirect(url_for('manager_dashboard', error=f"El código rápido #{codigo} ya está registrado en esta sede. Usa uno diferente."))
@@ -1600,7 +1592,6 @@ def empleado_enviar_reporte():
     })
     return redirect(url_for('empleado_dashboard'))
 
-# RUTAS CLIENTE
 @app.route('/cliente-ubicacion')
 def cliente_ubicacion():
     return render_template_string(HTML_CLIENTE_UBICACION, css=CSS_ESTILOS)
